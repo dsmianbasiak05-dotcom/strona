@@ -149,9 +149,14 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
           <motion.ul
             layout
             className={cn(
-              "mt-6 grid grid-cols-2 gap-x-3 gap-y-10 md:gap-x-5 md:gap-y-14",
-              // Column count follows the catalogue size so a short list never looks broken.
-              results.length >= 4 ? "md:grid-cols-3 lg:grid-cols-4" : results.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2",
+              "mt-6 grid gap-x-3 gap-y-12 md:gap-x-5 md:gap-y-14",
+              // Column count follows the catalogue size so a short list never looks broken:
+              // ≤2 products stack on phones and sit side by side from md.
+              results.length >= 4
+                ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+                : results.length === 3
+                  ? "grid-cols-2 md:grid-cols-3"
+                  : "grid-cols-1 md:grid-cols-2",
             )}
           >
             <AnimatePresence mode="popLayout" initial={false}>
@@ -167,7 +172,7 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
                   <ProductCard
                     product={product}
                     priority={i < 4}
-                    sizes={results.length <= 2 ? "(min-width: 768px) 50vw, 50vw" : "(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"}
+                    sizes={results.length <= 2 ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"}
                   />
                 </motion.li>
               ))}

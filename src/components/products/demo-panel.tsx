@@ -27,7 +27,7 @@ export function DemoPanel({ product }: { product: Product }) {
         <DemoBadge />
       </div>
       <h1 className="display mt-5 text-[15vw] leading-[0.9] sm:text-7xl xl:text-[5.75rem]">
-        <span className="label mb-3 block text-graphite">MONCRÉ</span>
+        <span className="label mb-3 block text-graphite">Koncept systemu kolorów</span>
         {product.type}
       </h1>
       <p className="mt-3 text-[15px] text-graphite">{product.categoryLabel}</p>

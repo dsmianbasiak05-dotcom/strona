@@ -43,9 +43,10 @@ src/
 **Zdjęcia według roli** — `product.images[].role`: `front`, `set`, `packaging`, `back`, `lid` (+ `focus` = kadrowanie).
 Komponenty wybierają zdjęcie po roli (`productImage()`), więc nowy produkt z innym zestawem ujęć nie wymaga zmian w UI.
 
-**Produkt demonstracyjny (DEMO / CONCEPT):** `MONCRÉ Demo Espresso` w `src/data/products.ts` (`demo: true`,
-`status: "concept"`, bez ceny i wariantów) + placeholder `public/images/products/demo-espresso/placeholder.jpg`
-(neutralny słoik bez logo MONCRÉ). Widoczny tylko w sklepie i na `/product/demo-espresso` (noindex);
+**Produkt demonstracyjny (DEMO / CONCEPT):** `Demo Espresso` w `src/data/products.ts` (`demo: true`,
+`status: "concept"`, bez ceny i wariantów) + mockup `public/images/products/demo-espresso/jar-front.jpg` — render słoika No.1
+z usuniętym nadrukiem (logo, No.1, slogany) i kolorem zmienionym z granatu na espresso
+(`scripts/make-demo-espresso.py`; ta sama geometria, światło i kadr). Widoczny tylko w sklepie i na `/product/demo-espresso` (noindex);
 wykluczony ze strony głównej, wyszukiwarki, menu produktów, sitemapy i danych strukturalnych.
 Usunięcie: skasować wpis i katalog ze zdjęciem.
 

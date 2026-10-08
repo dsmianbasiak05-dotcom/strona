@@ -26,6 +26,7 @@ const categorySeo: Record<string, string> = {
   powder: "puder do włosów",
   spray: "spray do stylizacji włosów",
   sets: "zestaw kosmetyków do stylizacji włosów",
+  demo: "produkt demonstracyjny (DEMO / CONCEPT)",
 };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {

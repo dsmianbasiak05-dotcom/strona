@@ -25,7 +25,7 @@ export function ProductBand({ product }: { product: Product }) {
     <section aria-label={`${product.name} — ${product.tagline}`} className="mt-20 bg-product text-product-secondary md:mt-28">
       <div className="container-x section-y grid gap-8 md:grid-cols-12 md:items-end">
         <div className="md:col-span-8" style={fit}>
-          <p className="label text-product-secondary/65">MONCRÉ · {marker}</p>
+          <p className="label text-product-secondary/65">{product.demo ? "Demo / Concept" : `MONCRÉ · ${marker}`}</p>
           <RevealLines
             lines={words}
             className="display mt-4 text-[length:var(--band-sm)] leading-[0.8] md:text-[length:var(--band-md)] lg:text-[length:var(--band-lg)]"
