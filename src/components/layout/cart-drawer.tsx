@@ -61,13 +61,13 @@ export function CartDrawer() {
             {lines.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-6 px-8 text-center">
                 <p className="display text-5xl leading-[0.9]">
-                  Nothing
+                  Koszyk
                   <br />
-                  here yet.
+                  jest pusty.
                 </p>
                 <p className="max-w-[28ch] text-sm text-graphite">Twój koszyk jest pusty. Zacznij od naszych essentials.</p>
                 <ButtonLink href="/shop" onClick={close} arrow>
-                  Shop products
+                  Przejdź do sklepu
                 </ButtonLink>
               </div>
             ) : (
@@ -90,20 +90,20 @@ export function CartDrawer() {
                 </ul>
                 <div className="border-t border-ink/10 px-5 pt-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-8 md:pb-8">
                   <div className="flex items-baseline justify-between">
-                    <span className="label">Subtotal</span>
+                    <span className="label">Suma</span>
                     <span className="text-lg font-bold tabular-nums">{formatMoney(subtotal)}</span>
                   </div>
                   <p className="mt-1 text-xs text-graphite">Koszt dostawy: do ustalenia.</p>
                   <div className="mt-5 grid gap-2">
                     <ButtonLink href="/checkout" onClick={close} size="lg" className="w-full" arrow>
-                      Checkout
+                      Do kasy
                     </ButtonLink>
                     <Link
                       href="/cart"
                       onClick={close}
                       className="label link-underline mx-auto py-3 text-ink/80"
                     >
-                      View cart
+                      Zobacz koszyk
                     </Link>
                   </div>
                 </div>

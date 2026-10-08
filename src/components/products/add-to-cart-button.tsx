@@ -26,13 +26,16 @@ export function AddToCartButton({
   className,
   size = "md",
   variant = "primary",
-  label = "Add to cart",
+  label = "Dodaj do koszyka",
 }: Props) {
   const add = useCart((s) => s.add);
   const open = useCart((s) => s.open);
   const [added, setAdded] = useState(false);
   const variantToAdd = product.variants.find((v) => v.id === variantId) ?? product.variants[0];
   const available = variantToAdd?.available ?? false;
+
+  // Demo/concept entries have no purchase or waitlist action at all.
+  if (product.demo) return null;
 
   // Not on sale yet: every "add" entry point becomes a waitlist CTA.
   if (!isPurchasable(product)) {
@@ -44,7 +47,7 @@ export function AddToCartButton({
         className={className}
         onClick={(e) => e.stopPropagation()}
       >
-        Join the waitlist
+        Zapisz się na listę
       </ButtonLink>
     );
   }
@@ -76,7 +79,7 @@ export function AddToCartButton({
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="block"
           >
-            {!available ? "Sold out" : added ? "Added ✓" : label}
+            {!available ? "Wyprzedane" : added ? "Dodano ✓" : label}
           </motion.span>
         </AnimatePresence>
       </span>

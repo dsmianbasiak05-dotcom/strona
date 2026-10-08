@@ -20,7 +20,7 @@ export function AccountView() {
 
   return (
     <>
-      <PageIntro size="sm" eyebrow="Account" lines={mode === "login" ? ["Welcome", "back."] : ["Join", "MONCRÉ."]} key={mode} />
+      <PageIntro size="sm" eyebrow="Konto" lines={mode === "login" ? ["Logowanie."] : ["Załóż konto."]} key={mode} />
       <div className="container-x grid gap-16 pb-24 md:pb-32 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <div role="tablist" aria-label="Logowanie lub rejestracja" className="flex border-b border-ink/15">
@@ -36,7 +36,7 @@ export function AccountView() {
                 }}
                 className={cn("label relative h-12 px-1 mr-8", mode === m ? "text-ink" : "text-ink/45")}
               >
-                {m === "login" ? "Sign in" : "Create account"}
+                {m === "login" ? "Zaloguj się" : "Załóż konto"}
                 {mode === m && <motion.span layoutId="acc-tab" className="absolute inset-x-0 -bottom-px h-[2px] bg-ink" />}
               </button>
             ))}
@@ -56,7 +56,7 @@ export function AccountView() {
               </div>
             )}
             <div>
-              <label htmlFor="acc-email" className="label mb-2 block text-[10px] text-ink/70">Email</label>
+              <label htmlFor="acc-email" className="label mb-2 block text-[10px] text-ink/70">E-mail</label>
               <input id="acc-email" type="email" autoComplete="email" className={input} required />
             </div>
             <div>
@@ -71,7 +71,7 @@ export function AccountView() {
               />
             </div>
             <Button type="submit" size="lg" className="mt-2 w-full" arrow>
-              {mode === "login" ? "Sign in" : "Create account"}
+              {mode === "login" ? "Zaloguj się" : "Załóż konto"}
             </Button>
             {notice && (
               <p role="status" className="bg-bone p-4 text-sm">
@@ -83,8 +83,8 @@ export function AccountView() {
 
         <div className="lg:col-span-6 lg:col-start-7">
           <div className="grain relative overflow-hidden bg-ink p-8 text-bone md:p-12">
-            <p className="label text-bone/55">Members</p>
-            <p className="display mt-4 text-5xl md:text-6xl">Why an account?</p>
+            <p className="label text-bone/55">Konto</p>
+            <p className="display mt-4 text-5xl md:text-6xl">Po co konto?</p>
             <ul className="mt-8 space-y-4 text-[15px]">
               {["Historia zamówień i śledzenie przesyłek", "Szybszy checkout", "Ulubione na każdym urządzeniu", "Wcześniejszy dostęp do dropów"].map((t, i) => (
                 <li key={t} className="flex gap-4 border-t border-bone/12 pt-4">
@@ -94,7 +94,7 @@ export function AccountView() {
               ))}
             </ul>
             <Link href="/favorites" className="label link-underline mt-10 inline-block">
-              View favorites →
+              Zobacz ulubione →
             </Link>
           </div>
         </div>

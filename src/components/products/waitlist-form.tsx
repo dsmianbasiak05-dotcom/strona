@@ -55,7 +55,7 @@ export function WaitlistForm({
             animate={{ opacity: 1, y: 0 }}
             className={cn("border p-4 text-[15px]", t.ok)}
           >
-            <span className="display mr-2 text-2xl">You&apos;re on the list.</span>
+            <span className="display mr-2 text-2xl">Jesteś na liście.</span>
             Damy znać, gdy {productName} będzie dostępny.
           </motion.p>
         ) : (
@@ -69,7 +69,7 @@ export function WaitlistForm({
             }}
           >
             <label htmlFor={inputId} className={cn("label mb-2 block text-[10px]", t.label)}>
-              Email
+              E-mail
             </label>
             <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
               <input
@@ -77,7 +77,7 @@ export function WaitlistForm({
                 type="email"
                 autoComplete="email"
                 inputMode="email"
-                placeholder="EMAIL ADDRESS"
+                placeholder="TWÓJ E-MAIL"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -95,7 +95,7 @@ export function WaitlistForm({
                 type="submit"
                 className={cn("label h-14 px-8 transition-[background-color,opacity] duration-500", t.button)}
               >
-                Join the waitlist
+                Zapisz się
               </button>
             </div>
             <p

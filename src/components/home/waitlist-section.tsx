@@ -20,7 +20,7 @@ export function WaitlistSection({ product }: { product: Product }) {
           </p>
           <div id="waitlist-title" className="mt-6">
             <RevealLines
-              lines={onSale ? ["Now", "available."] : ["Coming", "soon."]}
+              lines={onSale ? ["Już", "dostępne."] : ["Coming", "soon."]}
               className="display text-[24vw] leading-[0.84] md:text-[15vw] lg:text-[min(11vw,11.5rem)]"
             />
           </div>
@@ -31,7 +31,7 @@ export function WaitlistSection({ product }: { product: Product }) {
           </p>
           {onSale ? (
             <ButtonLink href={`/product/${product.slug}`} size="lg" className="mt-6 w-full" arrow>
-              Shop No.1
+              Kup {product.type}
             </ButtonLink>
           ) : (
             <>

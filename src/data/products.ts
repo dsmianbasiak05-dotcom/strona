@@ -1,8 +1,8 @@
 import type { Product, ProductCategory } from "@/lib/commerce/types";
 
 /**
- * CATALOG — MONCRÉ has one product: MONCRÉ No.1 (hair clay, 75 ml, 85 zł),
- * not yet on sale. Only brand-confirmed data (or text printed on the
+ * CATALOG — MONCRÉ has one real product: MONCRÉ No.1 (hair clay, 75 ml,
+ * 85 zł), not yet on sale. A second entry is a clearly flagged DEMO. Only brand-confirmed data (or text printed on the
  * official pack) is used. Never add product claims the brand has not given.
  */
 
@@ -31,12 +31,6 @@ export const products: Product[] = [
     description:
       "MONCRÉ No.1 — glinka do włosów. Efekt mat + tekstura, utrwalenie średnie do mocnego. Do wszystkich rodzajów włosów.",
     // Exactly as provided by the brand.
-    highlights: [
-      { label: "Type", value: "Matte clay" },
-      { label: "Effect", value: "Mat + texture" },
-      { label: "Hold", value: "Medium to strong hold" },
-      { label: "Size", value: "75 ml" },
-    ],
     specs: [
       { label: "Rodzaj", value: "Glinka do włosów" },
       { label: "Efekt", value: "Mat + tekstura" },
@@ -51,8 +45,8 @@ export const products: Product[] = [
       "Do wszystkich rodzajów włosów",
       "Pojemność: 75 ml",
     ],
-    // Printed on the pack: "Rozetrzyj niewielką ilość w dłoniach i wmasuj w suche włosy. Ułóż palcami."
-    howToUse: ["Rozetrzyj niewielką ilość w dłoniach.", "Wmasuj w suche włosy.", "Ułóż palcami."],
+    // Usage instructions not provided by the brand yet (the pack render is a mock-up) — not shown.
+    howToUse: [],
     // INCI not provided yet — not published.
     ingredients: null,
     variants: [{ id: "v_moncre_no1_75ml", title: "75 ml", price: pln(85), available: true }],
@@ -67,12 +61,64 @@ export const products: Product[] = [
     bestseller: true,
     featured: true,
   },
+
+  // ─────────────────────────────────────────────────────────────────────
+  // ⚠️ DEMO / CONCEPT — NOT A MONCRÉ PRODUCT.
+  // Exists only to show how the shop handles a second product with a
+  // different palette (espresso). No price, no properties, no claims.
+  // Image is an unbranded neutral jar placeholder (no MONCRÉ logo).
+  // To remove: delete this entry and /public/images/products/demo-espresso.
+  // ─────────────────────────────────────────────────────────────────────
+  {
+    id: "p_demo_espresso",
+    demo: true,
+    status: "concept",
+    number: 2,
+    categoryLabel: "Produkt demonstracyjny",
+    theme: {
+      primary: "#3b2a22", // espresso
+      secondary: "#efe6da", // cream
+      accent: "#8b7d70", // warm neutral
+      background: "#e9e5df", // light neutral
+    },
+    slug: "demo-espresso",
+    name: "MONCRÉ Demo Espresso",
+    type: "Demo Espresso",
+    category: "demo",
+    styles: [],
+    tagline: "DEMO / CONCEPT",
+    description:
+      "Produkt demonstracyjny. Służy wyłącznie do pokazania, jak sklep prezentuje produkt w innej palecie kolorów. Nie jest produktem MONCRÉ i nie jest w sprzedaży.",
+    details: [],
+    howToUse: [],
+    ingredients: null,
+    variants: [],
+    images: [
+      {
+        role: "front",
+        src: "/images/products/demo-espresso/placeholder.jpg",
+        alt: "Placeholder: neutralny słoik w kolorze espresso, bez logo — wizualizacja demonstracyjna",
+        width: 2000,
+        height: 2000,
+        focus: "50% 52%",
+      },
+    ],
+  },
 ];
+
+const categoryNames: Record<ProductCategory, string> = {
+  clay: "Glinki",
+  pomade: "Pomady",
+  powder: "Pudry",
+  spray: "Spraye",
+  sets: "Zestawy",
+  demo: "Demo",
+};
 
 /** Shop tabs — only categories that actually have products. */
 export const categories: { key: ProductCategory | "all"; label: string }[] = [
-  { key: "all", label: "All" },
-  ...(["clay", "pomade", "powder", "spray", "sets"] as const)
+  { key: "all", label: "Wszystkie" },
+  ...(Object.keys(categoryNames) as ProductCategory[])
     .filter((c) => products.some((p) => p.category === c))
-    .map((c) => ({ key: c, label: c[0].toUpperCase() + c.slice(1) })),
+    .map((c) => ({ key: c, label: categoryNames[c] })),
 ];

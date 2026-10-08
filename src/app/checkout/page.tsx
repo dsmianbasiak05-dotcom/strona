@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CheckoutView } from "@/components/checkout/checkout-view";
 
 export const metadata: Metadata = {
-  title: "Checkout",
+  title: "Zamówienie",
   robots: { index: false, follow: false },
 };
 

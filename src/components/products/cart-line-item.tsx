@@ -65,7 +65,7 @@ export function CartLineItem({ line, onNavigate }: { line: ResolvedLine; onNavig
             onClick={() => remove(line.variantId)}
             className="label link-underline py-2 text-[10px] text-graphite hover:text-ink"
           >
-            Remove
+            Usuń
           </button>
         </div>
       </div>

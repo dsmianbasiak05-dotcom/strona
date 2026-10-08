@@ -26,7 +26,7 @@ export function SearchOverlay() {
   useDialog(open, close, ref);
 
   const results = useMemo(
-    () => (query.trim() ? filterProducts(products, { q: query }).slice(0, 4) : []),
+    () => (query.trim() ? filterProducts(products.filter((p) => !p.demo), { q: query }).slice(0, 4) : []),
     [query],
   );
 
@@ -55,7 +55,7 @@ export function SearchOverlay() {
           >
             <div className="container-x pt-5 pb-10 md:pt-8 md:pb-14">
               <div className="flex items-center justify-between">
-                <p className="label text-graphite">Search MONCRÉ</p>
+                <p className="label text-graphite">Szukaj w MONCRÉ</p>
                 <button
                   type="button"
                   onClick={close}
@@ -83,7 +83,7 @@ export function SearchOverlay() {
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="What are you looking for?"
+                  placeholder="Czego szukasz?"
                   autoComplete="off"
                   className="display h-20 w-full min-w-0 bg-transparent text-4xl placeholder:text-ink/25 focus:outline-none md:h-28 md:text-7xl"
                 />

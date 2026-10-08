@@ -17,15 +17,15 @@ import { themeStyle } from "@/lib/theme";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const primary = [
-  { href: "/shop", label: "Shop" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "/shop", label: "Sklep" },
+  { href: "/about", label: "O marce" },
+  { href: "/contact", label: "Kontakt" },
 ];
 
 const secondary = [
-  { href: "/account", label: "Account" },
-  { href: "/favorites", label: "Favorites" },
-  { href: "/cart", label: "Cart" },
+  { href: "/account", label: "Konto" },
+  { href: "/favorites", label: "Ulubione" },
+  { href: "/cart", label: "Koszyk" },
 ];
 
 export function MobileMenu() {
@@ -89,9 +89,9 @@ export function MobileMenu() {
               transition={{ delay: 0.45, duration: 0.6 }}
               className="mt-8"
             >
-              <p className="label mb-4 text-bone/50">Products</p>
+              <p className="label mb-4 text-bone/50">Produkty</p>
               <ul className="space-y-2">
-                {products.map((p) => (
+                {products.filter((p) => !p.demo).map((p) => (
                   <li key={p.id}>
                     <Link href={`/product/${p.slug}`} onClick={close} className="flex items-center gap-4">
                       <div style={themeStyle(p.theme)} className="relative aspect-[4/3] w-28 shrink-0 overflow-hidden bg-product-bg">

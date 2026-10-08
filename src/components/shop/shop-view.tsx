@@ -11,10 +11,10 @@ import { cn } from "@/lib/utils";
 import { pluralProducts } from "@/lib/format";
 
 const sortOptions: { key: SortKey; label: string }[] = [
-  { key: "featured", label: "Featured" },
-  { key: "price-asc", label: "Price: low → high" },
-  { key: "price-desc", label: "Price: high → low" },
-  { key: "name", label: "Name A–Z" },
+  { key: "featured", label: "Polecane" },
+  { key: "price-asc", label: "Cena: rosnąco" },
+  { key: "price-desc", label: "Cena: malejąco" },
+  { key: "name", label: "Nazwa A–Z" },
 ];
 
 export interface ShopInitialState {
@@ -98,7 +98,7 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
                 type="search"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search"
+                placeholder="Szukaj"
                 className="h-full w-full min-w-0 bg-transparent text-sm placeholder:text-ink/40 focus:outline-none"
               />
             </label>
@@ -131,7 +131,7 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
             }}
             className="label inline-flex h-9 items-center gap-1.5 text-graphite hover:text-ink"
           >
-            <X className="size-3.5" /> Clear filters
+            <X className="size-3.5" /> Wyczyść filtry
           </button>
         )}
 
@@ -142,11 +142,18 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
 
         {results.length === 0 ? (
           <div className="py-24 text-center">
-            <p className="display text-6xl md:text-8xl">No match.</p>
+            <p className="display text-6xl md:text-8xl">Brak wyników.</p>
             <p className="mt-4 text-graphite">Spróbuj innego filtra lub wyczyść wyszukiwanie.</p>
           </div>
         ) : (
-          <motion.ul layout className="mt-6 grid grid-cols-2 gap-x-3 gap-y-10 md:grid-cols-3 md:gap-x-5 md:gap-y-14 lg:grid-cols-4">
+          <motion.ul
+            layout
+            className={cn(
+              "mt-6 grid grid-cols-2 gap-x-3 gap-y-10 md:gap-x-5 md:gap-y-14",
+              // Column count follows the catalogue size so a short list never looks broken.
+              results.length >= 4 ? "md:grid-cols-3 lg:grid-cols-4" : results.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2",
+            )}
+          >
             <AnimatePresence mode="popLayout" initial={false}>
               {results.map((product, i) => (
                 <motion.li
@@ -160,7 +167,7 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
                   <ProductCard
                     product={product}
                     priority={i < 4}
-                    sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                    sizes={results.length <= 2 ? "(min-width: 768px) 50vw, 50vw" : "(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"}
                   />
                 </motion.li>
               ))}

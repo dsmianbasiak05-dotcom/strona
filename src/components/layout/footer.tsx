@@ -4,35 +4,35 @@ import { Logo } from "@/components/brand/logo";
 
 const columns = [
   {
-    title: "Shop",
+    title: "Sklep",
     links: [
-      { href: "/shop", label: "All Products" },
+      { href: "/shop", label: "Wszystkie produkty" },
       { href: "/product/no-1", label: "MONCRÉ No.1" },
     ],
   },
   {
-    title: "Help",
+    title: "Pomoc",
     links: [
-      { href: "/contact", label: "Contact" },
-      { href: "/contact#shipping", label: "Shipping" },
-      { href: "/contact#returns", label: "Returns" },
-      { href: "/contact#faq", label: "FAQ" },
+      { href: "/contact", label: "Kontakt" },
+      { href: "/contact#shipping", label: "Dostawa" },
+      { href: "/contact#returns", label: "Zwroty" },
+      { href: "/contact#faq", label: "Pytania" },
     ],
   },
   {
-    title: "Follow",
+    title: "Obserwuj",
     links: [
       { href: siteConfig.social.instagram, label: "Instagram", external: true },
       { href: siteConfig.social.tiktok, label: "TikTok", external: true },
     ],
   },
   {
-    title: "Legal",
+    title: "Informacje prawne",
     // Placeholder routes — legal documents to be provided by the brand.
     links: [
-      { href: "/contact#privacy", label: "Privacy Policy" },
-      { href: "/contact#terms", label: "Terms" },
-      { href: "/contact#cookies", label: "Cookies" },
+      { href: "/contact#privacy", label: "Polityka prywatności" },
+      { href: "/contact#terms", label: "Regulamin" },
+      { href: "/contact#cookies", label: "Pliki cookies" },
     ],
   },
 ];
@@ -45,7 +45,7 @@ export function Footer() {
           <div>
             <Logo className="text-4xl" />
             <p className="mt-4 max-w-[28ch] text-[15px] leading-relaxed text-bone/60">
-              Styling essentials for modern men&apos;s hair. Style with purpose.
+              Kosmetyki do stylizacji męskich włosów.
             </p>
           </div>
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 lg:col-span-2">

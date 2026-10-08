@@ -43,6 +43,17 @@ src/
 **Zdjęcia według roli** — `product.images[].role`: `front`, `set`, `packaging`, `back`, `lid` (+ `focus` = kadrowanie).
 Komponenty wybierają zdjęcie po roli (`productImage()`), więc nowy produkt z innym zestawem ujęć nie wymaga zmian w UI.
 
+**Produkt demonstracyjny (DEMO / CONCEPT):** `MONCRÉ Demo Espresso` w `src/data/products.ts` (`demo: true`,
+`status: "concept"`, bez ceny i wariantów) + placeholder `public/images/products/demo-espresso/placeholder.jpg`
+(neutralny słoik bez logo MONCRÉ). Widoczny tylko w sklepie i na `/product/demo-espresso` (noindex);
+wykluczony ze strony głównej, wyszukiwarki, menu produktów, sitemapy i danych strukturalnych.
+Usunięcie: skasować wpis i katalog ze zdjęciem.
+
+**Język:** interfejs po polsku; po angielsku tylko elementy marki/kampanii
+(MONCRÉ, YOUR HAIR. YOUR RULES., FOR DAILY CHAOS., COMING SOON, No.1).
+
+**Routing:** `/` → `/shop` (zawsze listing produktów) → `/product/[slug]`.
+
 **Dodanie No.2:** nowy obiekt w `products` (number, theme, images z rolami, status). Sklep od 2 produktów
 automatycznie pokazuje siatkę z filtrami; strona główna pokazuje produkt `featured` + pozostałe karty.
 

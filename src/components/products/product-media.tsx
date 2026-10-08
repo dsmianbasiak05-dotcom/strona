@@ -73,7 +73,7 @@ export function PackshotPlaceholder({
       <span className={cn("display leading-[0.9]", compact ? "text-[13px]" : "text-[clamp(1.6rem,4vw,3rem)]")}>
         {product.type}
       </span>
-      {!compact && <span className="label text-[10px] text-graphite">Photo coming soon</span>}
+      {!compact && <span className="label text-[10px] text-graphite">Zdjęcie wkrótce</span>}
     </div>
   );
 }

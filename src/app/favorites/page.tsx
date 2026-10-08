@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { FavoritesView } from "@/components/shop/favorites-view";
 
 export const metadata: Metadata = {
-  title: "Favorites",
+  title: "Ulubione",
   robots: { index: false, follow: true },
 };
 

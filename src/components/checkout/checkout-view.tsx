@@ -142,13 +142,13 @@ export function CheckoutView() {
     return (
       <div className="container-x flex min-h-[80vh] flex-col items-start justify-center pt-28 pb-20">
         <p className="label text-graphite">Order {orderId}</p>
-        <h1 className="display mt-4 text-[18vw] md:text-[10rem]">Thank you.</h1>
+        <h1 className="display mt-4 text-[18vw] md:text-[10rem]">Dziękujemy.</h1>
         <p className="mt-6 max-w-[44ch] text-lg leading-relaxed">
           To było zamówienie testowe — płatność nie została pobrana. Po podłączeniu bramki płatności (Przelewy24, PayU,
           Stripe) w tym miejscu pojawi się potwierdzenie.
         </p>
         <ButtonLink href="/shop" size="lg" className="mt-10" arrow>
-          Continue shopping
+          Wróć do sklepu
         </ButtonLink>
       </div>
     );
@@ -157,9 +157,9 @@ export function CheckoutView() {
   if (mounted && lines.length === 0) {
     return (
       <div className="container-x flex min-h-[70vh] flex-col items-center justify-center pt-28 pb-20 text-center">
-        <h1 className="display text-6xl md:text-8xl">Your cart is empty.</h1>
+        <h1 className="display text-6xl md:text-8xl">Koszyk jest pusty.</h1>
         <ButtonLink href="/shop" size="lg" className="mt-8" arrow>
-          Shop products
+          Przejdź do sklepu
         </ButtonLink>
       </div>
     );
@@ -199,7 +199,7 @@ export function CheckoutView() {
           className="container-x flex h-14 items-center justify-between"
         >
           <span className="label inline-flex items-center gap-2">
-            {summaryOpen ? "Hide" : "Show"} order summary
+            {summaryOpen ? "Ukryj" : "Pokaż"} podsumowanie
             <ChevronDown className={cn("size-4 transition-transform", summaryOpen && "rotate-180")} />
           </span>
           <span className="font-bold tabular-nums">{formatMoney(total)}</span>
@@ -225,20 +225,20 @@ export function CheckoutView() {
       <div className="container-x grid gap-10 pb-24 lg:grid-cols-12 lg:gap-16">
         <form noValidate onSubmit={onSubmit} className="pt-8 lg:col-span-7 lg:pt-16">
           <div className="mb-8 flex items-end justify-between">
-            <h1 className="display text-7xl md:text-8xl">Checkout</h1>
+            <h1 className="display text-7xl md:text-8xl">Zamówienie</h1>
             <p className="label inline-flex items-center gap-1.5 pb-2 text-graphite">
-              <Lock className="size-3.5" /> Secure
+              <Lock className="size-3.5" /> Bezpieczne zamówienie
             </p>
           </div>
 
-          <Step n="01" title="Contact">
+          <Step n="01" title="Kontakt">
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field id="email" label="Email" type="email" autoComplete="email" inputMode="email" value={customer.email} onChange={update("email")} error={errors.email} className="sm:col-span-2" />
+              <Field id="email" label="E-mail" type="email" autoComplete="email" inputMode="email" value={customer.email} onChange={update("email")} error={errors.email} className="sm:col-span-2" />
               <Field id="phone" label="Telefon" type="tel" autoComplete="tel" inputMode="tel" value={customer.phone} onChange={update("phone")} error={errors.phone} className="sm:col-span-2" />
             </div>
           </Step>
 
-          <Step n="02" title="Delivery">
+          <Step n="02" title="Dostawa">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field id="firstName" label="Imię" autoComplete="given-name" value={customer.firstName} onChange={update("firstName")} error={errors.firstName} />
               <Field id="lastName" label="Nazwisko" autoComplete="family-name" value={customer.lastName} onChange={update("lastName")} error={errors.lastName} />
@@ -274,7 +274,7 @@ export function CheckoutView() {
             </fieldset>
           </Step>
 
-          <Step n="03" title="Payment">
+          <Step n="03" title="Płatność">
             <fieldset>
               <legend className="sr-only">Metoda płatności</legend>
               <div className="grid gap-2 sm:grid-cols-3">
@@ -330,13 +330,13 @@ export function CheckoutView() {
           </Step>
 
           <Button type="submit" size="lg" className="w-full" disabled={submitting || !mounted || !canOrder}>
-            {submitting ? "Processing…" : `Place order — ${formatMoney(total)}`}
+            {submitting ? "Przetwarzanie…" : `Zamawiam — ${formatMoney(total)}`}
           </Button>
         </form>
 
         <aside className="hidden lg:col-span-5 lg:block">
           <div className="sticky top-24 mt-16 bg-bone p-8">
-            <h2 className="display mb-8 text-4xl">Your order</h2>
+            <h2 className="display mb-8 text-4xl">Twoje zamówienie</h2>
             {summaryList}
             <div className="mt-8">
               <SummaryRows subtotal={subtotal} shipping={shipping} />

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CartView } from "@/components/checkout/cart-view";
 
 export const metadata: Metadata = {
-  title: "Cart",
+  title: "Koszyk",
   robots: { index: false, follow: true },
   alternates: { canonical: "/cart" },
 };

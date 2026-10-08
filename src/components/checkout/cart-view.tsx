@@ -12,14 +12,14 @@ export function CartView() {
 
   return (
     <>
-      <PageIntro size="sm" eyebrow={mounted ? `${count} items` : "Your bag"} lines={["Your cart"]} />
+      <PageIntro size="sm" eyebrow={mounted ? `Produkty: ${count}` : "Koszyk"} lines={["Koszyk."]} />
       <div className="container-x pb-24 md:pb-32">
         {mounted && lines.length === 0 ? (
           <div className="border-t border-ink/15 py-20 text-center">
-            <p className="display text-6xl md:text-8xl">Nothing here yet.</p>
+            <p className="display text-6xl md:text-8xl">Koszyk jest pusty.</p>
             <p className="mt-4 text-graphite">Twój koszyk jest pusty.</p>
             <ButtonLink href="/shop" size="lg" className="mt-8" arrow>
-              Shop products
+              Przejdź do sklepu
             </ButtonLink>
           </div>
         ) : (
@@ -35,12 +35,12 @@ export function CartView() {
             </ul>
             <aside className="lg:col-span-4">
               <div className="bg-bone p-6 md:p-8 lg:sticky lg:top-24">
-                <h2 className="display text-4xl">Summary</h2>
+                <h2 className="display text-4xl">Podsumowanie</h2>
                 <div className="mt-8">
                   <SummaryRows subtotal={subtotal} shipping={null} />
                 </div>
                 <ButtonLink href="/checkout" size="lg" className="mt-8 w-full" arrow>
-                  Checkout
+                  Do kasy
                 </ButtonLink>
               </div>
             </aside>

@@ -12,7 +12,7 @@ export function LineupSection({ featured, products }: { featured: Product; produ
   return (
     <section id="line-up" aria-labelledby="lineup-title" className="section-y scroll-mt-20">
       <div className="container-x">
-        <SectionHeading id="lineup-title" index="01" eyebrow="MONCRÉ" lines={["The line-up."]} />
+        <SectionHeading id="lineup-title" index="01" eyebrow="MONCRÉ" lines={["Produkty."]} />
         <div className="mt-10 md:mt-14">
           <FeaturedProduct product={featured} />
         </div>

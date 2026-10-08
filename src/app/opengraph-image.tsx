@@ -20,7 +20,7 @@ export default function OpengraphImage() {
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ fontSize: 26, letterSpacing: 6, opacity: 0.6 }}>MEN&apos;S HAIR STYLING</div>
+        <div style={{ fontSize: 26, letterSpacing: 6, opacity: 0.6 }}>STYLIZACJA MĘSKICH WŁOSÓW</div>
         <div style={{ display: "flex", flexDirection: "column", fontSize: 168, fontWeight: 900, lineHeight: 0.9, letterSpacing: -4 }}>
           <span>YOUR HAIR.</span>
           <span>YOUR RULES.</span>

@@ -1,15 +1,27 @@
+import type { Product } from "@/lib/commerce/types";
 import { cn } from "@/lib/utils";
 
-export function ComingSoonBadge({ className, tone = "dark" }: { className?: string; tone?: "dark" | "light" }) {
+/** "COMING SOON" stays in English — it is campaign language, not UI copy. */
+export function ComingSoonBadge({ className }: { className?: string }) {
   return (
-    <span
-      className={cn(
-        "label inline-flex h-7 items-center px-3 text-[10px]",
-        tone === "dark" ? "bg-ink text-bone" : "bg-bone text-ink",
-        className,
-      )}
-    >
+    <span className={cn("label inline-flex h-7 items-center bg-ink px-3 text-[10px] text-paper", className)}>
       Coming soon
     </span>
   );
+}
+
+/** Explicit marker for demo/concept entries — must never read as a real product. */
+export function DemoBadge({ className }: { className?: string }) {
+  return (
+    <span className={cn("label inline-flex h-7 items-center border border-ink bg-paper px-3 text-[10px] text-ink", className)}>
+      Demo / Concept
+    </span>
+  );
+}
+
+/** Status badge for any product: demo → DEMO / CONCEPT, not on sale → COMING SOON. */
+export function StatusBadge({ product, className }: { product: Product; className?: string }) {
+  if (product.demo) return <DemoBadge className={className} />;
+  if (product.status !== "active") return <ComingSoonBadge className={className} />;
+  return null;
 }

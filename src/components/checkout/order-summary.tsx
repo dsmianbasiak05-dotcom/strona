@@ -13,7 +13,7 @@ export function SummaryRows({
   return (
     <dl className="space-y-3 text-[15px]">
       <div className="flex justify-between">
-        <dt className="text-ink/70">Subtotal</dt>
+        <dt className="text-ink/70">Produkty</dt>
         <dd className="tabular-nums">{formatMoney(subtotal)}</dd>
       </div>
       <div className="flex justify-between">
@@ -23,7 +23,7 @@ export function SummaryRows({
         </dd>
       </div>
       <div className="flex items-baseline justify-between border-t border-ink/15 pt-4">
-        <dt className="label">Total</dt>
+        <dt className="label">Razem</dt>
         <dd className="text-xl font-bold tabular-nums">{formatMoney(total)}</dd>
       </div>
     </dl>

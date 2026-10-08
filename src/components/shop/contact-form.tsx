@@ -13,7 +13,7 @@ export function ContactForm() {
   if (sent) {
     return (
       <div role="status" className="border-t border-ink/15 pt-10">
-        <p className="display text-6xl">Message sent.</p>
+        <p className="display text-6xl">Wiadomość wysłana.</p>
         <p className="mt-4 text-graphite">Dzięki! (Tryb demonstracyjny — wiadomość nie została wysłana.)</p>
       </div>
     );
@@ -32,7 +32,7 @@ export function ContactForm() {
         <input id="c-name" name="name" required autoComplete="name" className={input} />
       </div>
       <div>
-        <label htmlFor="c-email" className="label text-graphite">Email</label>
+        <label htmlFor="c-email" className="label text-graphite">E-mail</label>
         <input id="c-email" name="email" type="email" required autoComplete="email" className={input} />
       </div>
       <div className="sm:col-span-2">
@@ -49,7 +49,7 @@ export function ContactForm() {
         <textarea id="c-msg" name="message" required rows={5} className={`${input} resize-none`} />
       </div>
       <Button type="submit" size="lg" className="sm:col-span-2 sm:justify-self-start" arrow>
-        Send message
+        Wyślij wiadomość
       </Button>
     </form>
   );

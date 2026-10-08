@@ -44,10 +44,10 @@ export function PurchasePanel({ product }: { product: Product }) {
 
   return (
     <div className="lg:sticky lg:top-24">
-      <nav aria-label="Breadcrumb" className="label text-[10px] text-graphite">
+      <nav aria-label="Ścieżka nawigacji" className="label text-[10px] text-graphite">
         <ol className="flex flex-wrap items-center gap-2">
           <li>
-            <Link href="/" className="hover:text-ink">Home</Link>
+            <Link href="/" className="hover:text-ink">Strona główna</Link>
           </li>
           <li aria-hidden>/</li>
           <li>
@@ -97,7 +97,7 @@ export function PurchasePanel({ product }: { product: Product }) {
 
       {product.variants.length > 1 && (
         <fieldset className="mt-7">
-          <legend className="label mb-3">Size</legend>
+          <legend className="label mb-3">Wariant</legend>
           <div className="flex flex-wrap gap-2">
             {product.variants.map((v) => (
               <label
@@ -129,7 +129,7 @@ export function PurchasePanel({ product }: { product: Product }) {
           <QuantityStepper value={quantity} onChange={setQuantity} max={CART_MAX_QTY} label="Ilość" />
           <AddToCartButton product={product} variantId={variant.id} quantity={quantity} className="h-12 w-full" />
           <Button variant="secondary" className="col-span-2 h-12 w-full" onClick={buyNow} disabled={!variant.available}>
-            Buy now
+            Kup teraz
           </Button>
         </div>
       ) : (
@@ -150,7 +150,7 @@ export function PurchasePanel({ product }: { product: Product }) {
               ? []
               : [
             {
-                    title: "Product details",
+                    title: "Szczegóły produktu",
                     content: (
                       <ul className="list-inside list-disc space-y-1">
                         {product.details.map((d) => (
@@ -160,27 +160,32 @@ export function PurchasePanel({ product }: { product: Product }) {
                     ),
                   },
                 ]),
+            // Only shown once the brand provides usage instructions.
+            ...(product.howToUse.length
+              ? [
+                  {
+                    title: "Sposób użycia",
+                    content: (
+                      <ol className="space-y-2">
+                        {product.howToUse.map((step, i) => (
+                          <li key={step} className="flex gap-3">
+                            <span className="label pt-1 text-graphite tabular-nums">0{i + 1}</span>
+                            {step}
+                          </li>
+                        ))}
+                      </ol>
+                    ),
+                  },
+                ]
+              : []),
             {
-              title: "How to use",
-              content: (
-                <ol className="space-y-2">
-                  {product.howToUse.map((step, i) => (
-                    <li key={step} className="flex gap-3">
-                      <span className="label pt-1 text-graphite tabular-nums">0{i + 1}</span>
-                      {step}
-                    </li>
-                  ))}
-                </ol>
-              ),
-            },
-            {
-              title: "Ingredients",
+              title: "Skład",
               content: product.ingredients ?? (
-                <p>Pełny skład (INCI) zostanie uzupełniony przed startem sprzedaży.</p>
+                <p>Informacja w przygotowaniu.</p>
               ),
             },
             {
-              title: "Shipping",
+              title: "Dostawa",
               content: <p>{SHIPPING_TBA}</p>,
             },
           ]}

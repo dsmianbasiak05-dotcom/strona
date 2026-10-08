@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Product } from "@/lib/commerce/types";
-import { isPurchasable, productSize } from "@/lib/commerce";
+import { isPurchasable, productPrice } from "@/lib/commerce";
 import { formatMoney } from "@/lib/format";
 import { themeStyle } from "@/lib/theme";
 import { Reveal } from "@/components/ui/reveal";
@@ -14,7 +14,8 @@ import { ProductMedia } from "./product-media";
 export function FeaturedProduct({ product }: { product: Product }) {
   const onSale = isPurchasable(product);
   const href = `/product/${product.slug}`;
-  const rows = [...(product.highlights ?? []), { label: "Price", value: formatMoney(product.variants[0].price) }];
+  const price = productPrice(product);
+  const rows = [...(product.specs ?? []), ...(price ? [{ label: "Cena", value: formatMoney(price) }] : [])];
 
   return (
     <article style={themeStyle(product.theme)} className="grid md:grid-cols-12">
@@ -33,7 +34,7 @@ export function FeaturedProduct({ product }: { product: Product }) {
       <Reveal delay={0.08} className="bg-product text-product-secondary md:col-span-5">
         <div className="flex h-full flex-col p-6 md:p-10 xl:p-14">
           <div className="flex items-start justify-between gap-4">
-            <p className="label text-product-secondary/70">MONCRÉ · No.{product.number}</p>
+            <p className="label text-product-secondary/70">MONCRÉ</p>
             {!onSale && (
               <span className="label inline-flex h-7 items-center bg-product-secondary px-3 text-[10px] text-product">
                 Coming soon
@@ -60,18 +61,16 @@ export function FeaturedProduct({ product }: { product: Product }) {
               href={onSale ? href : "#waitlist"}
               className="label inline-flex h-14 items-center justify-center bg-product-secondary px-6 text-product transition-opacity duration-500 hover:opacity-85"
             >
-              {onSale ? `Shop ${product.type}` : "Join the waitlist"}
+              {onSale ? "Dodaj do koszyka" : "Zapisz się na listę"}
             </Link>
             <Link
               href={href}
               className="label inline-flex h-14 items-center justify-center border border-product-secondary/50 px-6 transition-colors duration-500 hover:bg-product-secondary hover:text-product"
             >
-              Discover {product.type}
+              Poznaj {product.type}
             </Link>
           </div>
-          <p className="mt-4 text-xs text-product-secondary/60">
-            {product.categoryLabel} · {productSize(product)} · cena brutto
-          </p>
+          {price && <p className="mt-4 text-xs text-product-secondary/60">Cena brutto.</p>}
         </div>
       </Reveal>
     </article>

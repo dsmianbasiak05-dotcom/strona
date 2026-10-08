@@ -5,11 +5,11 @@ import { getImageProps } from "next/image";
 import { useRef, type CSSProperties } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import type { Product } from "@/lib/commerce/types";
-import { isPurchasable, productImage, productSize } from "@/lib/commerce";
+import { productImage, productPrice, productSize } from "@/lib/commerce";
 import { formatMoney } from "@/lib/format";
 import { themeStyle } from "@/lib/theme";
 import { ButtonLink } from "@/components/ui/button";
-import { ComingSoonBadge } from "@/components/products/coming-soon-badge";
+import { StatusBadge } from "@/components/products/coming-soon-badge";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const LINES = ["Your hair.", "Your rules."];
@@ -23,7 +23,8 @@ const LINES = ["Your hair.", "Your rules."];
 export function Hero({ product }: { product: Product }) {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
-  const onSale = isPurchasable(product);
+  const size = productSize(product);
+  const price = productPrice(product);
   const wide = productImage(product, "set");
   const tall = productImage(product, "front");
 
@@ -73,10 +74,10 @@ export function Hero({ product }: { product: Product }) {
   const ctas = (
     <div className="grid gap-2 sm:grid-cols-2 lg:flex lg:gap-3">
       <ButtonLink href={`/product/${product.slug}`} size="lg" className="w-full lg:w-auto" arrow>
-        Discover {product.type}
+        Poznaj {product.type}
       </ButtonLink>
       <ButtonLink href="/about" size="lg" variant="secondary" className="w-full lg:w-auto lg:bg-paper/60 lg:backdrop-blur-sm">
-        Discover MONCRÉ
+        Poznaj MONCRÉ
       </ButtonLink>
     </div>
   );
@@ -85,9 +86,11 @@ export function Hero({ product }: { product: Product }) {
     <Link href={`/product/${product.slug}`} className="flex flex-wrap items-center gap-x-3 gap-y-2">
       <span className="label text-ink">
         <span aria-hidden className="mr-2 inline-block size-2.5 bg-product align-[-1px]" />
-        MONCRÉ {product.type} · {product.categoryLabel} · {productSize(product)} · {formatMoney(product.variants[0].price)}
+        MONCRÉ {product.type} · {product.categoryLabel}
+        {size && <> · {size}</>}
+        {price && <> · {formatMoney(price)}</>}
       </span>
-      {!onSale && <ComingSoonBadge />}
+      <StatusBadge product={product} />
     </Link>
   );
 
@@ -100,7 +103,7 @@ export function Hero({ product }: { product: Product }) {
     >
       {/* Tablet: headline above the image */}
       <div className="container-x hidden pt-8 pb-6 md:block lg:hidden">
-        <p className="label mb-4 text-graphite">MONCRÉ — Men&apos;s hair styling</p>
+        <p className="label mb-4 text-graphite">MONCRÉ — stylizacja męskich włosów</p>
         <div className="text-[13.5vw] leading-[0.84]">{headline}</div>
       </div>
 
@@ -110,10 +113,12 @@ export function Hero({ product }: { product: Product }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.1, ease }}
-          className="relative aspect-[3/4] w-full overflow-hidden bg-product-bg md:aspect-[16/9] lg:max-h-[calc(100svh-72px)] lg:min-h-[560px]"
+          className="relative aspect-[3/4] w-full overflow-hidden bg-product-bg [background-image:radial-gradient(ellipse_75%_70%_at_50%_45%,#ebeae6_0%,#e2e1dd_55%,#d6d6d1_100%)] md:aspect-[16/9] lg:max-h-[calc(100svh-72px)] lg:min-h-[560px]"
         >
           {art && (
-            <motion.div style={{ scale: imageScale }} className="absolute inset-0">
+            <motion.div style={{ scale: imageScale }} className="absolute inset-0 origin-[50%_62%]">
+              {/* ~10% smaller than full-bleed, edges feathered into the studio surface → more air around the product */}
+              <div className="absolute inset-0 scale-[0.9] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_52%,#000_74%,transparent_100%)]">
               <picture>
                 <source media="(min-width: 768px)" srcSet={art.wideSet} />
                 <img
@@ -131,6 +136,7 @@ export function Hero({ product }: { product: Product }) {
                   }
                 />
               </picture>
+              </div>
             </motion.div>
           )}
         </motion.div>
@@ -150,7 +156,7 @@ export function Hero({ product }: { product: Product }) {
                 transition={{ duration: 0.8, delay: 0.15 }}
                 className="label mb-4 text-ink/70"
               >
-                MONCRÉ — Men&apos;s hair styling
+                MONCRÉ — stylizacja męskich włosów
               </motion.p>
               <div className="whitespace-nowrap text-[min(8.8vw,9.4rem)] leading-[0.84]">{headline}</div>
             </div>
@@ -161,9 +167,6 @@ export function Hero({ product }: { product: Product }) {
               className="pointer-events-auto flex items-end justify-between gap-8"
             >
               <div>
-                <p className="mb-4 hidden max-w-[36ch] text-[15px] leading-snug text-ink xl:block">
-                  Professional styling products for everyday control.
-                </p>
                 {ctas}
               </div>
               <div className="hidden xl:block">{featured}</div>
@@ -175,10 +178,7 @@ export function Hero({ product }: { product: Product }) {
       {/* Below the stage: phone/tablet copy + actions; lg shows the product line */}
       <div className="container-x pt-6 pb-10 md:pt-8 md:pb-14 lg:pt-5 lg:pb-8 xl:hidden">
         <div className="lg:hidden">
-          <p className="text-[16px] leading-snug text-ink md:max-w-[40ch] md:text-lg">
-            Professional styling products for everyday control.
-          </p>
-          <div className="mt-4">{featured}</div>
+          <div>{featured}</div>
           <div className="mt-6">{ctas}</div>
         </div>
         <div className="hidden lg:block">{featured}</div>

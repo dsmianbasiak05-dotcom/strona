@@ -97,7 +97,7 @@ export function Header() {
           <ul className="flex items-center gap-9">
             <li>
               <Link href="/shop" className={cn("label link-underline inline-block py-2", isActive("/shop") && "bg-[length:100%_1px]")}>
-                Shop
+                Sklep
               </Link>
             </li>
             <li onMouseEnter={openMega} onFocus={openMega}>
@@ -108,17 +108,17 @@ export function Header() {
                 aria-controls="mega-menu"
                 onClick={() => setMegaOpen((v) => !v)}
               >
-                Products
+                Produkty
               </button>
             </li>
             <li>
               <Link href="/about" className={cn("label link-underline inline-block py-2", isActive("/about") && "bg-[length:100%_1px]")}>
-                About
+                O marce
               </Link>
             </li>
             <li>
               <Link href="/contact" className={cn("label link-underline inline-block py-2", isActive("/contact") && "bg-[length:100%_1px]")}>
-                Contact
+                Kontakt
               </Link>
             </li>
           </ul>
@@ -129,7 +129,7 @@ export function Header() {
         <div className="-mr-2 flex items-center justify-end gap-0.5">
           {!featuredOnSale && (
             <Link href="/#waitlist" className="label link-underline mr-4 hidden py-2 lg:inline-block">
-              Waitlist
+              Lista oczekujących
             </Link>
           )}
           <button type="button" className={iconBtn} aria-label="Szukaj" onClick={() => setSearchOpen(true)}>
@@ -205,9 +205,9 @@ export function Header() {
           >
             <div className="container-x grid grid-cols-12 gap-8 py-10">
               <div className="col-span-4 flex flex-col">
-                <p className="label mb-5 text-graphite">Products</p>
+                <p className="label mb-5 text-graphite">Produkty</p>
                 <ul className="space-y-3">
-                  {products.map((p) => (
+                  {products.filter((p) => !p.demo).map((p) => (
                     <li key={p.id}>
                       <Link href={`/product/${p.slug}`} className="group block">
                         <span className="display block text-5xl transition-colors duration-500 group-hover:text-ink-700">
@@ -223,7 +223,7 @@ export function Header() {
                   ))}
                 </ul>
                 <Link href="/shop" className="label link-underline mt-auto self-start pt-8">
-                  Shop all →
+                  Cały sklep →
                 </Link>
               </div>
               {featured && (

@@ -14,16 +14,16 @@ export function FavoritesView() {
 
   return (
     <>
-      <PageIntro size="sm" eyebrow="Saved for later" lines={["Favorites"]}>
+      <PageIntro size="sm" eyebrow="Zapisane" lines={["Ulubione."]}>
         Produkty, które zapisałeś. Przechowywane lokalnie w tej przeglądarce.
       </PageIntro>
       <div className="container-x pb-24 md:pb-32">
         {mounted && products.length === 0 ? (
           <div className="border-t border-ink/15 py-20 text-center">
-            <p className="display text-6xl md:text-8xl">No favorites yet.</p>
+            <p className="display text-6xl md:text-8xl">Brak ulubionych.</p>
             <p className="mt-4 text-graphite">Kliknij ♡ przy produkcie, żeby go zapisać.</p>
             <ButtonLink href="/shop" size="lg" className="mt-8" arrow>
-              Shop products
+              Przejdź do sklepu
             </ButtonLink>
           </div>
         ) : (

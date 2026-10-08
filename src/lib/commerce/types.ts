@@ -4,7 +4,7 @@
  * Shopify, WooCommerce, Supabase etc. without touching UI components.
  */
 
-export type ProductCategory = "clay" | "pomade" | "powder" | "spray" | "sets";
+export type ProductCategory = "clay" | "pomade" | "powder" | "spray" | "sets" | "demo";
 
 export type StyleKey = "matte" | "textured" | "volume" | "slick" | "natural";
 
@@ -54,11 +54,17 @@ export interface ProductTheme {
  * "coming_soon": shown with price, but cannot be added to cart — UI offers
  * the waitlist instead. Switch to "active" to open sales.
  */
-export type ProductStatus = "active" | "coming_soon";
+export type ProductStatus = "active" | "coming_soon" | "concept";
 
 export interface Product {
   id: string;
   status: ProductStatus;
+  /**
+   * DEMO / CONCEPT entry used only to test the layout and theme system.
+   * Never purchasable, never priced, excluded from home, search, sitemap
+   * and structured data. Shown with an explicit "DEMO / CONCEPT" label.
+   */
+  demo?: boolean;
   /** Position in the numbered line-up (No.1, No.2, …). */
   number: number;
   /** Human category label shown in UI, e.g. "Glinka do włosów". */
@@ -88,10 +94,8 @@ export interface Product {
   bestseller?: boolean;
   /** Hero / home spotlight product. First product is used when none is flagged. */
   featured?: boolean;
-  /** Short key/value facts shown on the product page (only brand-confirmed data). */
+  /** Key/value facts (Polish), only brand-confirmed data. Shown on cards, home and product page. */
   specs?: { label: string; value: string }[];
-  /** Brand-provided headline facts (EN), shown on the home page product section. */
-  highlights?: { label: string; value: string }[];
   /** Marks demo data that must be replaced before going live. */
   placeholder?: boolean;
 }

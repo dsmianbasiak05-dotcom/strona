@@ -5,6 +5,7 @@ import { getProductBySlug, getProducts, getRelatedProducts, isPurchasable } from
 import { siteConfig } from "@/config/site";
 import { ProductGallery } from "@/components/products/product-gallery";
 import { PurchasePanel } from "@/components/products/purchase-panel";
+import { DemoPanel } from "@/components/products/demo-panel";
 import { ProductCard } from "@/components/products/product-card";
 import { ProductBand } from "@/components/products/product-band";
 import { themeStyle } from "@/lib/theme";
@@ -13,7 +14,7 @@ import { RevealLines } from "@/components/ui/reveal";
 type Params = Promise<{ slug: string }>;
 
 export async function generateStaticParams() {
-  const products = await getProducts();
+  const products = await getProducts({ includeDemo: true });
   return products.map((p) => ({ slug: p.slug }));
 }
 
@@ -36,6 +37,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title,
     description: product.description,
     alternates: { canonical: `/product/${product.slug}` },
+    // Demo/concept entries must never be indexed as a real product.
+    ...(product.demo ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
       type: "website",
       url: `/product/${product.slug}`,
@@ -78,18 +81,20 @@ export default async function ProductPage({ params }: { params: Params }) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
-      { "@type": "ListItem", position: 2, name: "Shop", item: `${siteConfig.url}/shop` },
+      { "@type": "ListItem", position: 1, name: "Strona główna", item: siteConfig.url },
+      { "@type": "ListItem", position: 2, name: "Sklep", item: `${siteConfig.url}/shop` },
       { "@type": "ListItem", position: 3, name: product.name, item: `${siteConfig.url}/product/${product.slug}` },
     ],
   };
 
   return (
     <>
+      {!product.demo && (
       <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbLd]) }}
-      />
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbLd]) }}
+        />
+        )}
       <div style={themeStyle(product.theme)}>
       <article className="pt-14 md:pt-20 lg:pt-24">
         <div className="lg:container-x grid gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16">
@@ -97,7 +102,7 @@ export default async function ProductPage({ params }: { params: Params }) {
             <ProductGallery product={product} />
           </div>
           <div className="container-x pb-16 lg:col-span-5 lg:px-0! lg:pb-0">
-            <PurchasePanel product={product} />
+            {product.demo ? <DemoPanel product={product} /> : <PurchasePanel product={product} />}
           </div>
         </div>
 
@@ -123,10 +128,10 @@ export default async function ProductPage({ params }: { params: Params }) {
       <section aria-labelledby="related-title" className="container-x py-20 md:py-28">
         <div className="mb-10 flex items-end justify-between gap-6 md:mb-14">
           <div id="related-title">
-            <RevealLines lines={["Complete", "the look"]} className="display text-[14vw] md:text-8xl" />
+            <RevealLines lines={["Zobacz też."]} className="display text-[14vw] md:text-8xl" />
           </div>
           <Link href="/shop" className="label link-underline shrink-0">
-            View all →
+            Cały sklep →
           </Link>
         </div>
         <ul className="grid grid-cols-2 gap-x-3 gap-y-10 md:grid-cols-4 md:gap-x-5">

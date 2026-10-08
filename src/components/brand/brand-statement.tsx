@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform, type MotionValue } from "framer-motion
 import { Reveal } from "@/components/ui/reveal";
 import { ButtonLink } from "@/components/ui/button";
 
-const lines = [["Built", "for"], ["the", "way"], ["you", "wear", "it."]];
+const lines = [["Proste"], ["produkty."], ["Mocny"], ["efekt."]];
 const words = lines.flat();
 
 function Word({ children, progress, range }: { children: string; progress: MotionValue<number>; range: [number, number] }) {
@@ -29,11 +29,11 @@ export function BrandStatement() {
         <p className="label flex items-center gap-3 text-graphite lg:col-span-12">
           <span className="tabular-nums">02</span>
           <span className="inline-block h-px w-8 bg-current" aria-hidden />
-          The brand
+          Marka
         </p>
         <div ref={ref} className="lg:col-span-8">
           <h2 id="statement-title" className="display text-[16vw] leading-[0.9] md:text-[13vw] lg:text-[10.5vw] 2xl:text-[11rem]">
-            <span className="sr-only">Built for the way you wear it.</span>
+            <span className="sr-only">Proste produkty. Mocny efekt.</span>
             <span aria-hidden>
               {lines.map((line, li) => (
                 <span key={li} className="block">
@@ -53,11 +53,10 @@ export function BrandStatement() {
         </div>
         <Reveal className="flex flex-col justify-end gap-8 lg:col-span-4 lg:pb-4">
           <p className="max-w-[38ch] text-lg leading-relaxed md:text-xl">
-            MONCRÉ creates styling essentials designed for modern men&apos;s hair. Simple products. Strong results. No
-            unnecessary noise.
+            MONCRÉ tworzy kosmetyki do stylizacji męskich włosów. Bez zbędnych dodatków.
           </p>
           <ButtonLink href="/about" variant="secondary" className="self-start" arrow>
-            Our story
+            O marce
           </ButtonLink>
         </Reveal>
       </div>
