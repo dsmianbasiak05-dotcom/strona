@@ -2,15 +2,15 @@ import type { ReactNode } from "react";
 import { siteConfig } from "@/config/site";
 import { ButtonLink } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
-import { ProductVisual } from "@/components/product/product-visual";
+import Image from "next/image";
 import { StylePattern } from "./style-pattern";
 import { SectionHeading } from "./section-heading";
 import { cn } from "@/lib/utils";
 
 /**
  * ⚠️ PLACEHOLDER FEED
- * No real UGC yet. Tiles are brand-made compositions (packshots, type,
- * textures) that preview the feed's art direction — not customer photos.
+ * No real UGC yet. Tiles use official No.1 Matte Clay packshots, type and
+ * textures to preview the feed's art direction — not customer photos.
  * Replace with real posts (e.g. Instagram Graph API). Never add
  * fabricated testimonials, handles or follower counts here.
  */
@@ -22,34 +22,39 @@ interface Tile {
   content: ReactNode;
 }
 
+const shot = (name: string, alt: string, sizes: string) => (
+  <Image
+    src={`/images/products/matte-clay/${name}.png`}
+    alt={alt}
+    fill
+    sizes={sizes}
+    className="object-contain drop-shadow-[0_22px_22px_rgba(23,25,54,0.25)]"
+  />
+);
+
 const tiles: Tile[] = [
   {
     layout: "col-span-2 row-span-2",
-    className: "bg-navy-900 text-cream",
+    className: "bg-stone text-navy-900",
     content: (
       <>
-        <div aria-hidden className="absolute top-[44%] left-1/2 aspect-square w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-navy-800" />
-        <div className="absolute inset-[10%_18%_16%]">
-          <ProductVisual shape="jar" label="Matte Clay" size="100 ml" shadow={false} className="drop-shadow-[0_30px_30px_rgba(0,0,0,0.4)]" />
+        <div className="absolute inset-[10%_8%_30%]">
+          {shot("jar-front", "MONCRÉ No.1 Matte Clay — słoik", "(min-width: 768px) 46vw, 90vw")}
         </div>
         <p className="display absolute bottom-5 left-5 text-4xl leading-[0.9] md:bottom-7 md:left-7 md:text-6xl">
-          Your hair.
+          For daily
           <br />
-          Your rules.
+          chaos.
         </p>
       </>
     ),
   },
   {
-    className: "bg-stone",
-    content: (
-      <div className="absolute inset-[8%_22%]">
-        <ProductVisual shape="spray" label="Sea Salt Spray" size="200 ml" />
-      </div>
-    ),
+    className: "bg-cream",
+    content: <div className="absolute inset-[14%_10%]">{shot("box-side", "Pudełko MONCRÉ z monogramem M", "25vw")}</div>,
   },
   {
-    className: "bg-cream text-navy-900",
+    className: "bg-cream-dark text-navy-900",
     content: (
       <>
         <div className="absolute inset-0 opacity-60" aria-hidden>
@@ -60,12 +65,8 @@ const tiles: Tile[] = [
     ),
   },
   {
-    className: "bg-navy-700 text-cream",
-    content: (
-      <div className="absolute inset-[10%_24%]">
-        <ProductVisual shape="shaker" label="Texture Powder" size="20 g" shadow={false} className="drop-shadow-[0_24px_24px_rgba(0,0,0,0.35)]" />
-      </div>
-    ),
+    className: "bg-paper",
+    content: <div className="absolute inset-[14%_8%]">{shot("jar-side", "Słoik MONCRÉ No.1 Matte Clay — bok", "25vw")}</div>,
   },
   {
     className: "bg-navy-900 text-cream",

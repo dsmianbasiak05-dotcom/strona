@@ -4,7 +4,8 @@ import { PageIntro } from "@/components/ui/page-intro";
 import { Reveal, RevealLines } from "@/components/ui/reveal";
 import { ButtonLink } from "@/components/ui/button";
 import { Marquee } from "@/components/ui/marquee";
-import { ProductVisual } from "@/components/product/product-visual";
+import Link from "next/link";
+import { ProductMedia } from "@/components/product/product-media";
 
 export const metadata: Metadata = {
   title: "About — marka kosmetyków do stylizacji włosów dla mężczyzn",
@@ -36,10 +37,14 @@ export default async function AboutPage() {
             {products.map((p, i) => (
               <li key={p.id}>
                 <Reveal delay={i * 0.08}>
-                  <div className="aspect-[4/5]">
-                    <ProductVisual shape={p.packaging} label={p.type} size={p.variants[0].title} shadow={false} className="drop-shadow-[0_30px_30px_rgba(0,0,0,0.4)]" />
-                  </div>
-                  <p className="label mt-4 text-center text-cream/70">{p.type}</p>
+                  <Link href={`/product/${p.slug}`} className="group block">
+                    <div className="relative aspect-[4/5] bg-cream">
+                      <div className="absolute inset-[10%_8%] transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-[1.04]">
+                        <ProductMedia product={p} sizes="(min-width: 768px) 25vw, 50vw" />
+                      </div>
+                    </div>
+                    <p className="label mt-4 text-cream/80">{p.type}</p>
+                  </Link>
                 </Reveal>
               </li>
             ))}

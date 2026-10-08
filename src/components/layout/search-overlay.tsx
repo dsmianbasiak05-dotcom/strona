@@ -10,7 +10,7 @@ import { useDialog } from "@/hooks/use-dialog";
 import { products } from "@/data/products";
 import { filterProducts } from "@/lib/commerce";
 import { formatMoney } from "@/lib/format";
-import { ProductVisual } from "@/components/product/product-visual";
+import { ProductMedia } from "@/components/product/product-media";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const suggestions = ["Clay", "Pomade", "Powder", "Spray", "Volume", "Matte"];
@@ -112,8 +112,8 @@ export function SearchOverlay() {
                     <li key={p.id}>
                       <Link href={`/product/${p.slug}`} onClick={close} className="group block">
                         <div className="aspect-square overflow-hidden bg-cream p-4">
-                          <div className="h-full transition-transform duration-700 group-hover:scale-105">
-                            <ProductVisual shape={p.packaging} label={p.type} size={p.variants[0].title} />
+                          <div className="relative h-full transition-transform duration-700 group-hover:scale-105">
+                            <ProductMedia product={p} sizes="(min-width: 768px) 25vw, 50vw" />
                           </div>
                         </div>
                         <p className="mt-3 text-sm font-bold">{p.name.replace("MONCRÉ ", "")}</p>

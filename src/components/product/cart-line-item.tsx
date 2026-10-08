@@ -24,11 +24,13 @@ export function CartLineItem({ line, onNavigate }: { line: ResolvedLine; onNavig
       <Link
         href={`/product/${line.product.slug}`}
         onClick={onNavigate}
-        className="relative aspect-[4/5] w-24 shrink-0 overflow-hidden bg-cream p-2 md:w-28"
+        className="relative aspect-square w-24 shrink-0 overflow-hidden bg-cream md:w-28"
         tabIndex={-1}
         aria-hidden
       >
-        <ProductMedia product={line.product} sizes="112px" />
+        <div className="absolute inset-[8%]">
+          <ProductMedia product={line.product} compact sizes="112px" />
+        </div>
       </Link>
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-start justify-between gap-3">

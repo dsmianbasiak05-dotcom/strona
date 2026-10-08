@@ -8,9 +8,6 @@ export type ProductCategory = "clay" | "pomade" | "powder" | "spray" | "sets";
 
 export type StyleKey = "matte" | "textured" | "volume" | "slick" | "natural";
 
-/** Which packaging shape the placeholder visual should render. */
-export type PackagingShape = "jar" | "shaker" | "spray" | "set";
-
 export interface Money {
   /** Amount in minor units (grosze) to avoid floating point issues. */
   amount: number;
@@ -48,11 +45,11 @@ export interface Product {
   ingredients: string | null;
   variants: ProductVariant[];
   /**
-   * Real product photography. Empty until the brand delivers photos —
-   * UI then falls back to the illustrated packaging placeholder.
+   * Official product imagery (transparent packshots). images[0] is the
+   * primary view, images[1] the hover/alternate view. Empty = no photos
+   * yet — UI shows a neutral "packshot coming soon" tile.
    */
   images: ProductImage[];
-  packaging: PackagingShape;
   /** For sets: slugs of products included. */
   includes?: string[];
   bestseller?: boolean;

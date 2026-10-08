@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import type { PackagingShape, StyleKey } from "@/lib/commerce/types";
-import { ProductVisual } from "@/components/product/product-visual";
+import type { Product, StyleKey } from "@/lib/commerce/types";
+import { ProductMedia } from "@/components/product/product-media";
 import { cn } from "@/lib/utils";
 import { pluralProducts } from "@/lib/format";
 import { Reveal } from "@/components/ui/reveal";
@@ -16,14 +16,15 @@ interface StyleItem {
   label: string;
   line: string;
   count: number;
-  product?: { name: string; shape: PackagingShape; size: string };
+  product?: Product;
 }
 
 const tones: Record<StyleKey, { bg: string; fg: string; pattern: string; muted: string }> = {
-  matte: { bg: "bg-navy-900", fg: "text-cream", pattern: "#F4EEDC", muted: "text-cream/60" },
-  textured: { bg: "bg-cream", fg: "text-navy-900", pattern: "#171936", muted: "text-navy-900/60" },
-  volume: { bg: "bg-navy-800", fg: "text-cream", pattern: "#F4EEDC", muted: "text-cream/60" },
-  slick: { bg: "bg-stone", fg: "text-navy-900", pattern: "#171936", muted: "text-navy-900/60" },
+  // Light surfaces where a navy packshot appears (matte, textured).
+  matte: { bg: "bg-cream", fg: "text-navy-900", pattern: "#171936", muted: "text-navy-900/60" },
+  textured: { bg: "bg-stone", fg: "text-navy-900", pattern: "#171936", muted: "text-navy-900/60" },
+  volume: { bg: "bg-navy-900", fg: "text-cream", pattern: "#F4EEDC", muted: "text-cream/60" },
+  slick: { bg: "bg-cream-dark", fg: "text-navy-900", pattern: "#171936", muted: "text-navy-900/60" },
   natural: { bg: "bg-navy-700", fg: "text-cream", pattern: "#F4EEDC", muted: "text-cream/60" },
 };
 
@@ -91,17 +92,11 @@ export function ShopByStyle({ items }: { items: StyleItem[] }) {
                   <div
                     aria-hidden
                     className={cn(
-                      "absolute top-[14%] right-[8%] bottom-[24%] left-[30%] transition-all duration-[1000ms] ease-[var(--ease-premium)]",
+                      "absolute top-[18%] right-[6%] bottom-[30%] left-[26%] transition-all duration-[1000ms] ease-[var(--ease-premium)]",
                       isActive ? "translate-y-0 opacity-100 delay-150" : "translate-y-8 opacity-0",
                     )}
                   >
-                    <ProductVisual
-                      shape={item.product.shape}
-                      label={item.product.name}
-                      size={item.product.size}
-                      shadow={false}
-                      className="drop-shadow-[0_30px_30px_rgba(0,0,0,0.3)]"
-                    />
+                    <ProductMedia product={item.product} tone={tone.fg === "text-cream" ? "dark" : "light"} sizes="30vw" />
                   </div>
                 )}
 
@@ -112,7 +107,7 @@ export function ShopByStyle({ items }: { items: StyleItem[] }) {
                   )}
                 >
                   <p className="text-[15px] leading-snug">{item.line}</p>
-                  {item.product && <p className={cn("mt-1 text-[13px]", tone.muted)}>Key product: {item.product.name}</p>}
+                  {item.product && <p className={cn("mt-1 text-[13px]", tone.muted)}>Key product: {item.product.type}</p>}
                   <p className={cn("label mt-3", tone.muted)}>
                     {item.count} {pluralProducts(item.count)} — Shop →
                   </p>

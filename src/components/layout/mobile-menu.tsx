@@ -9,7 +9,7 @@ import { useDialog } from "@/hooks/use-dialog";
 import { Logo } from "@/components/ui/logo";
 import { siteConfig } from "@/config/site";
 import { products, styles } from "@/data/products";
-import { ProductVisual } from "@/components/product/product-visual";
+import { ProductMedia } from "@/components/product/product-media";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -94,8 +94,10 @@ export function MobileMenu() {
                   .map((p) => (
                     <li key={p.id}>
                       <Link href={`/product/${p.slug}`} onClick={close} className="block">
-                        <div className="aspect-[4/5] bg-navy-800 p-2">
-                          <ProductVisual shape={p.packaging} label={p.type} size={p.variants[0].title} shadow={false} />
+                        <div className="relative aspect-[4/5] bg-cream">
+                          <div className="absolute inset-[8%]">
+                            <ProductMedia product={p} compact sizes="25vw" />
+                          </div>
                         </div>
                         <p className="label mt-2 text-[9px] leading-tight text-cream/80">{p.type}</p>
                       </Link>

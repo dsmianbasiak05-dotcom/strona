@@ -1,9 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
-  AnimatePresence,
   motion,
   useMotionValue,
   useReducedMotion,
@@ -12,50 +12,37 @@ import {
   useTransform,
 } from "framer-motion";
 import type { Product } from "@/lib/commerce/types";
-import { lowestPrice } from "@/lib/commerce";
 import { formatMoney } from "@/lib/format";
-import { cn } from "@/lib/utils";
 import { ButtonLink } from "@/components/ui/button";
 import { RevealLines } from "@/components/ui/reveal";
-import { ProductVisual } from "@/components/product/product-visual";
+import { AddToCartButton } from "@/components/product/add-to-cart-button";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const SLIDE_MS = 5200;
-
-const shortName: Record<Product["category"], string> = {
-  clay: "Clay",
-  powder: "Powder",
-  pomade: "Pomade",
-  spray: "Spray",
-  sets: "Set",
-};
 
 /**
- * First screen of the brand. Left: the statement. Right: the line-up —
- * an auto-advancing product stage, so within seconds the visitor sees
- * what MONCRÉ sells (clay, powder, pomade, spray) and what it costs.
+ * First screen of the brand. Left: the statement. Right: a campaign still
+ * of No.1 Matte Clay built from the official packshots — box behind, jar
+ * in front, each on its own parallax depth.
  */
-export function Hero({ products }: { products: Product[] }) {
+export function Hero({ product }: { product: Product }) {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const product = products[active];
+  const [jar, box] = product.images;
+  const variant = product.variants[0];
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const typeY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "-14%"]);
-  const productY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "12%"]);
+  const stageY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "10%"]);
 
-  // Pointer parallax on the floating product (mouse only).
+  // Pointer parallax — two depths (mouse only).
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 60, damping: 18 });
   const sy = useSpring(my, { stiffness: 60, damping: 18 });
-  const rotate = useTransform(sx, [-1, 1], [-3, 3]);
-  const tx = useTransform(sx, [-1, 1], [-14, 14]);
-  const ty = useTransform(sy, [-1, 1], [-10, 10]);
-
-  const next = () => setActive((i) => (i + 1) % products.length);
+  const jarX = useTransform(sx, [-1, 1], [-16, 16]);
+  const jarY = useTransform(sy, [-1, 1], [-10, 10]);
+  const boxX = useTransform(sx, [-1, 1], [8, -8]);
+  const boxY = useTransform(sy, [-1, 1], [5, -5]);
 
   return (
     <section ref={ref} aria-label="MONCRÉ — men's hair styling" className="relative overflow-hidden pt-16 md:pt-20">
@@ -108,124 +95,84 @@ export function Hero({ products }: { products: Product[] }) {
           </motion.div>
         </motion.div>
 
-        {/* Product stage */}
+        {/* Campaign stage — official packshots */}
         <motion.div
           initial={{ clipPath: "inset(100% 0 0 0)" }}
           animate={{ clipPath: "inset(0% 0 0 0)" }}
           transition={{ duration: 1.3, ease, delay: 0.1 }}
-          className="grain grain-light relative flex aspect-[4/5] flex-col overflow-hidden bg-navy-900 text-cream sm:aspect-[4/3] lg:col-span-5 lg:aspect-auto lg:min-h-[600px]"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => {
-            setPaused(false);
-            mx.set(0);
-            my.set(0);
-          }}
-          onFocusCapture={() => setPaused(true)}
-          onBlurCapture={() => setPaused(false)}
+          className="grain relative flex aspect-[4/5] flex-col overflow-hidden bg-stone sm:aspect-[4/3] lg:col-span-5 lg:aspect-auto lg:min-h-[600px]"
           onPointerMove={(e) => {
             if (reduce || e.pointerType !== "mouse") return;
             const r = e.currentTarget.getBoundingClientRect();
             mx.set(((e.clientX - r.left) / r.width) * 2 - 1);
             my.set(((e.clientY - r.top) / r.height) * 2 - 1);
           }}
+          onPointerLeave={() => {
+            mx.set(0);
+            my.set(0);
+          }}
         >
-          {/* Stage */}
-          <div aria-hidden className="absolute top-[46%] left-1/2 aspect-square w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-navy-800" />
-          <div aria-hidden className="absolute top-[46%] left-1/2 aspect-square w-[60%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cream/10" />
-
-          <div className="relative flex items-start justify-between p-5 md:p-7">
-            <div className="h-4 overflow-hidden">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.p
-                  key={product.id}
-                  initial={{ y: "100%" }}
-                  animate={{ y: "0%" }}
-                  exit={{ y: "-100%" }}
-                  transition={{ duration: 0.6, ease }}
-                  className="label text-cream/75"
-                >
-                  {product.type}
-                </motion.p>
-              </AnimatePresence>
-            </div>
-            <p className="label text-cream/75 tabular-nums">
-              0{active + 1} / 0{products.length}
-            </p>
+          <div className="relative z-10 flex items-start justify-between p-5 md:p-7">
+            <p className="label text-navy-900">{product.type}</p>
+            <p className="label text-navy-900/60">{variant.title}</p>
           </div>
 
-          <motion.div style={{ y: productY }} className="relative flex-1">
-            <motion.div style={{ x: tx, y: ty, rotate }} className="absolute inset-[6%_14%]">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 40, scale: 0.94 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -40, scale: 0.96 }}
-                  transition={{ duration: 0.9, ease }}
-                  className="absolute inset-0"
-                >
-                  <Link href={`/product/${product.slug}`} tabIndex={-1} aria-hidden className="block h-full w-full">
-                    <ProductVisual
-                      shape={product.packaging}
-                      label={product.type}
-                      size={product.variants[0].title}
-                      shadow={false}
-                      className="drop-shadow-[0_40px_40px_rgba(0,0,0,0.38)]"
-                    />
-                  </Link>
-                </motion.div>
-              </AnimatePresence>
-            </motion.div>
+          <motion.div style={{ y: stageY }} className="relative flex-1">
+            {box && (
+              <motion.div
+                style={{ x: boxX, y: boxY }}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1.2, ease, delay: 0.5 }}
+                className="absolute top-[2%] right-[4%] h-[52%] w-[62%]"
+              >
+                <Image
+                  src={box.src}
+                  alt={box.alt}
+                  fill
+                  loading="eager"
+                  fetchPriority="high"
+                  sizes="(min-width: 1024px) 26vw, 60vw"
+                  className="object-contain drop-shadow-[0_24px_24px_rgba(23,25,54,0.25)]"
+                />
+              </motion.div>
+            )}
+            {jar && (
+              <motion.div
+                style={{ x: jarX, y: jarY }}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, ease, delay: 0.35 }}
+                className="absolute bottom-[4%] left-[4%] h-[62%] w-[78%]"
+              >
+                <Link href={`/product/${product.slug}`} tabIndex={-1} aria-hidden className="relative block h-full w-full">
+                  <Image
+                    src={jar.src}
+                    alt={jar.alt}
+                    fill
+                    loading="eager"
+                    fetchPriority="high"
+                    sizes="(min-width: 1024px) 34vw, 80vw"
+                    className="object-contain drop-shadow-[0_34px_30px_rgba(23,25,54,0.35)]"
+                  />
+                </Link>
+              </motion.div>
+            )}
           </motion.div>
 
-          <div className="relative flex items-end justify-between gap-4 px-5 pb-4 md:px-7 md:pb-5">
-            <p className="text-sm text-cream/70">
-              od <span className="font-semibold text-cream tabular-nums">{formatMoney(lowestPrice(product))}</span>
-            </p>
-            <Link href={`/product/${product.slug}`} className="label link-underline text-cream">
-              View product →
-            </Link>
-          </div>
-
-          {/* Line-up tabs with progress */}
-          <div role="tablist" aria-label="Produkty MONCRÉ" className="relative grid grid-cols-4 border-t border-cream/12">
-            {products.map((p, i) => {
-              const isActive = i === active;
-              return (
-                <button
-                  key={p.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  aria-label={p.name}
-                  onClick={() => setActive(i)}
-                  className={cn(
-                    "label relative h-12 text-[10px] transition-colors md:h-14 md:text-[11px]",
-                    isActive ? "text-cream" : "text-cream/45 hover:text-cream/80",
-                    i > 0 && "border-l border-cream/12",
-                  )}
-                >
-                  {shortName[p.category]}
-                  <span className="absolute inset-x-0 top-0 h-[2px] bg-cream/10" aria-hidden>
-                    {isActive && (
-                      <span
-                        key={`${active}-${reduce}`}
-                        onAnimationEnd={next}
-                        className="block h-full origin-left bg-cream"
-                        style={
-                          reduce
-                            ? undefined
-                            : {
-                                animation: `hero-progress ${SLIDE_MS}ms linear forwards`,
-                                animationPlayState: paused ? "paused" : "running",
-                              }
-                        }
-                      />
-                    )}
-                  </span>
-                </button>
-              );
-            })}
+          <div className="relative z-10 flex items-end justify-between gap-4 border-t border-navy-900/10 p-5 md:p-7">
+            <div>
+              <p className="display text-3xl leading-none text-navy-900 md:text-4xl">For daily chaos.</p>
+              <p className="mt-2 text-sm text-navy-900/70">
+                {variant.title} · <span className="font-semibold text-navy-900 tabular-nums">{formatMoney(variant.price)}</span>
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-col items-end gap-3">
+              <AddToCartButton product={product} size="sm" label="Add to cart" className="hidden sm:inline-flex" />
+              <Link href={`/product/${product.slug}`} className="label link-underline text-navy-900">
+                View product →
+              </Link>
+            </div>
           </div>
         </motion.div>
       </div>

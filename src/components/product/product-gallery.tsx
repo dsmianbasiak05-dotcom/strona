@@ -1,42 +1,23 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import type { Product } from "@/lib/commerce/types";
 import { cn } from "@/lib/utils";
 import { ProductMedia } from "./product-media";
 
 /**
- * Desktop: vertical editorial stack. Mobile: swipeable snap carousel.
- * Frames are placeholders until `product.images` is filled.
+ * Desktop: editorial grid (first view large). Mobile: swipeable carousel.
+ * Every frame uses the same cream surface so the official packshots read
+ * as one consistent shoot.
  */
 export function ProductGallery({ product }: { product: Product }) {
   const [index, setIndex] = useState(0);
-  const railRef = useRef<HTMLUListElement>(null);
-
-  const frames = [
-    { key: "front", bg: "bg-cream", node: <ProductMedia product={product} priority sizes="(min-width: 1024px) 58vw, 100vw" /> },
-    { key: "detail", bg: "bg-stone", node: <ProductMedia product={product} view="detail" sizes="(min-width: 1024px) 58vw, 100vw" /> },
-    {
-      key: "campaign",
-      bg: "bg-navy-900 grain grain-light",
-      node: (
-        <div className="relative h-full w-full">
-          <div className="absolute top-1/2 left-1/2 aspect-square w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-navy-800" />
-          <ProductMedia
-            product={product}
-            shadow={false}
-            sizes="(min-width: 1024px) 29vw, 100vw"
-            className="relative drop-shadow-[0_40px_40px_rgba(0,0,0,0.4)]"
-          />
-        </div>
-      ),
-    },
-  ];
+  const count = Math.max(1, product.images.length);
+  const frames = Array.from({ length: count }, (_, i) => i);
 
   return (
     <div>
       <ul
-        ref={railRef}
         aria-label="Galeria produktu"
         onScroll={(e) => {
           const el = e.currentTarget;
@@ -44,34 +25,39 @@ export function ProductGallery({ product }: { product: Product }) {
         }}
         className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto lg:grid lg:snap-none lg:grid-cols-2 lg:gap-3 lg:overflow-visible"
       >
-        {frames.map((f, i) => (
+        {frames.map((i) => (
           <li
-            key={f.key}
+            key={i}
             className={cn(
-              "relative aspect-[4/5] w-full shrink-0 snap-center overflow-hidden",
-              f.bg,
-              i === 0 && "lg:col-span-2 lg:aspect-[5/4]",
+              "relative aspect-square w-full shrink-0 snap-center overflow-hidden bg-cream",
+              i === 0 && "lg:col-span-2 lg:aspect-[16/11]",
+              count % 2 === 0 && i === count - 1 && "lg:col-span-2 lg:aspect-[16/9]",
             )}
           >
-            <div className={cn("absolute inset-0", i === 0 ? "p-[6%] lg:p-[8%]" : "p-[6%]")}>{f.node}</div>
+            <div className={cn("absolute", i === 0 ? "inset-[10%_8%] lg:inset-[12%_14%]" : "inset-[12%_10%]")}>
+              <ProductMedia
+                product={product}
+                index={i}
+                priority={i === 0}
+                sizes={i === 0 ? "(min-width: 1024px) 58vw, 100vw" : "(min-width: 1024px) 29vw, 100vw"}
+              />
+            </div>
           </li>
         ))}
       </ul>
 
-      {/* Mobile pager */}
-      <div className="container-x mt-3 flex items-center justify-between lg:hidden">
-        <div className="flex gap-1.5" aria-hidden>
-          {frames.map((f, i) => (
-            <span
-              key={f.key}
-              className={cn("h-[2px] w-6 transition-colors", i === index ? "bg-navy-900" : "bg-navy-900/20")}
-            />
-          ))}
+      {count > 1 && (
+        <div className="container-x mt-3 flex items-center justify-between lg:hidden">
+          <div className="flex gap-1.5" aria-hidden>
+            {frames.map((i) => (
+              <span key={i} className={cn("h-[2px] w-6 transition-colors", i === index ? "bg-navy-900" : "bg-navy-900/20")} />
+            ))}
+          </div>
+          <span className="label text-navy-500 tabular-nums">
+            {index + 1} / {count}
+          </span>
         </div>
-        <span className="label text-navy-500 tabular-nums">
-          {index + 1} / {frames.length}
-        </span>
-      </div>
+      )}
     </div>
   );
 }

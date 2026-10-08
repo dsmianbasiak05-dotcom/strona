@@ -2,8 +2,10 @@ import type { Product, ProductCategory, StyleKey } from "@/lib/commerce/types";
 
 /**
  * ⚠️ PLACEHOLDER CATALOG
- * Names follow the brief; prices, sizes, copy and usage notes are DEMO
- * content. Nothing here is a verified claim about product performance
+ * Only No.1 Matte Clay has official imagery and pack copy so far. Other
+ * products: names follow the brief; prices, sizes, copy and usage notes
+ * are DEMO content and they have no images (UI shows a neutral
+ * "packshot coming soon" tile — never an invented pack). Nothing here is a verified claim about product performance
  * or formulation. Replace with data from the brand / commerce backend.
  */
 
@@ -13,30 +15,30 @@ export const products: Product[] = [
   {
     id: "p_matte_clay",
     slug: "matte-clay",
-    name: "MONCRÉ Matte Clay",
-    type: "Matte Clay",
+    name: "MONCRÉ No.1 Matte Clay",
+    type: "No.1 Matte Clay",
     category: "clay",
     styles: ["matte", "textured"],
-    tagline: "Matowe wykończenie. Twoje zasady.",
+    // Copy below marked "packaging" is taken from the official pack renders.
+    tagline: "For daily chaos.", // packaging
     description:
-      "Glinka do włosów stworzona z myślą o fryzurach z matowym wykończeniem i wyraźną teksturą. Do codziennej stylizacji — od crop po quiff.",
-    details: [
-      "Efekt: matowy, teksturowany",
-      "Do krótkich i średnich włosów",
-      "Pojemność wg wariantu",
-    ],
-    howToUse: [
-      "Nabierz niewielką ilość i rozgrzej w dłoniach.",
-      "Wmasuj w suche lub lekko wilgotne włosy, od nasady po końce.",
-      "Uformuj fryzurę palcami lub grzebieniem.",
-    ],
+      "Glinka do włosów z matowym wykończeniem — pierwszy produkt MONCRÉ. Do codziennej stylizacji krótkich i średnich fryzur.",
+    details: ["Wykończenie: matowe (Finish: Matte)", "Do codziennej stylizacji", "Opakowanie: słoik + pudełko"],
+    // packaging: "Rozetrzyj niewielką ilość w dłoniach i wmasuj w suche włosy. Ułóż palcami."
+    howToUse: ["Rozetrzyj niewielką ilość w dłoniach.", "Wmasuj w suche włosy.", "Ułóż palcami."],
+    // INCI on the render is still a template ("[SKŁAD INCI OD PRODUCENTA…]") — not published.
     ingredients: null,
     variants: [
-      { id: "v_matte_clay_100", title: "100 ml", price: pln(79), available: true },
-      { id: "v_matte_clay_50", title: "50 ml", price: pln(49), available: true },
+      // Net weight shown on the pack mockup as "[75] g" (bracketed = to confirm). Price is a placeholder.
+      { id: "v_matte_clay_75", title: "75 g", price: pln(79), available: true },
     ],
-    images: [],
-    packaging: "jar",
+    images: [
+      { src: "/images/products/matte-clay/jar-front.png", alt: "MONCRÉ No.1 Matte Clay — słoik, przód", width: 724, height: 572 },
+      { src: "/images/products/matte-clay/box-front.png", alt: "MONCRÉ No.1 Matte Clay — pudełko, przód", width: 868, height: 658 },
+      { src: "/images/products/matte-clay/jar-side.png", alt: "MONCRÉ No.1 Matte Clay — słoik, bok z opisem i sposobem użycia", width: 724, height: 572 },
+      { src: "/images/products/matte-clay/box-side.png", alt: "MONCRÉ No.1 Matte Clay — pudełko z monogramem M", width: 870, height: 648 },
+      { src: "/images/products/matte-clay/box-back.png", alt: "MONCRÉ No.1 Matte Clay — pudełko, tył ze składem i sposobem użycia", width: 1050, height: 708 },
+    ],
     bestseller: true,
     placeholder: true,
   },
@@ -63,7 +65,6 @@ export const products: Product[] = [
     ingredients: null,
     variants: [{ id: "v_texture_powder_20", title: "20 g", price: pln(59), available: true }],
     images: [],
-    packaging: "shaker",
     bestseller: true,
     placeholder: true,
   },
@@ -89,7 +90,6 @@ export const products: Product[] = [
       { id: "v_pomade_50", title: "50 ml", price: pln(45), available: true },
     ],
     images: [],
-    packaging: "jar",
     bestseller: true,
     placeholder: true,
   },
@@ -112,7 +112,6 @@ export const products: Product[] = [
     ingredients: null,
     variants: [{ id: "v_sea_salt_200", title: "200 ml", price: pln(65), available: true }],
     images: [],
-    packaging: "spray",
     bestseller: true,
     placeholder: true,
   },
@@ -124,8 +123,8 @@ export const products: Product[] = [
     category: "sets",
     styles: ["matte", "textured", "natural"],
     tagline: "Codzienna rutyna w dwóch krokach.",
-    description: "Zestaw Matte Clay i Sea Salt Spray — baza i wykończenie w jednym pudełku.",
-    details: ["Zawiera: Matte Clay 100 ml, Sea Salt Spray 200 ml"],
+    description: "Zestaw No.1 Matte Clay i Sea Salt Spray — baza i wykończenie w jednym pudełku.",
+    details: ["Zawiera: No.1 Matte Clay 75 g, Sea Salt Spray 200 ml"],
     howToUse: [
       "Spryskaj wilgotne włosy Sea Salt Spray i wysusz.",
       "Wykończ fryzurę niewielką ilością Matte Clay.",
@@ -133,7 +132,6 @@ export const products: Product[] = [
     ingredients: null,
     variants: [{ id: "v_set_daily", title: "Zestaw", price: pln(129), available: true }],
     images: [],
-    packaging: "set",
     includes: ["matte-clay", "sea-salt-spray"],
     placeholder: true,
   },
@@ -154,7 +152,6 @@ export const products: Product[] = [
     ingredients: null,
     variants: [{ id: "v_set_volume", title: "Zestaw", price: pln(109), available: true }],
     images: [],
-    packaging: "set",
     includes: ["texture-powder", "sea-salt-spray"],
     placeholder: true,
   },
@@ -167,12 +164,11 @@ export const products: Product[] = [
     styles: ["matte", "textured", "volume", "slick", "natural"],
     tagline: "Cała linia. Każdy styl.",
     description: "Wszystkie cztery produkty MONCRÉ w jednym zestawie. Dla tych, którzy lubią mieć wybór.",
-    details: ["Zawiera: Matte Clay, Texture Powder, Pomade, Sea Salt Spray"],
+    details: ["Zawiera: No.1 Matte Clay, Texture Powder, Pomade, Sea Salt Spray"],
     howToUse: ["Dobierz produkt do fryzury — sprawdź sekcję What's your style?"],
     ingredients: null,
     variants: [{ id: "v_set_essentials", title: "Zestaw", price: pln(239), available: true }],
     images: [],
-    packaging: "set",
     includes: ["matte-clay", "texture-powder", "pomade", "sea-salt-spray"],
     placeholder: true,
   },

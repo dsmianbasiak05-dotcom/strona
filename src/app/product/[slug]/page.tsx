@@ -35,7 +35,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title,
     description: product.description,
     alternates: { canonical: `/product/${product.slug}` },
-    openGraph: { type: "website", url: `/product/${product.slug}`, title, description: product.description },
+    openGraph: {
+      type: "website",
+      url: `/product/${product.slug}`,
+      title,
+      description: product.description,
+      images: product.images.slice(0, 1).map((img) => ({ url: img.src, width: img.width, height: img.height, alt: img.alt })),
+    },
   };
 }
 
@@ -56,6 +62,7 @@ export default async function ProductPage({ params }: { params: Params }) {
     brand: { "@type": "Brand", name: siteConfig.name },
     category: categorySeo[product.category],
     url: `${siteConfig.url}/product/${product.slug}`,
+    image: product.images.map((img) => `${siteConfig.url}${img.src}`),
     offers: product.variants.map((v) => ({
       "@type": "Offer",
       sku: v.id,

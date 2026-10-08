@@ -164,8 +164,8 @@ export function CheckoutView() {
     <ul className="space-y-4">
       {lines.map((l) => (
         <li key={l.variantId} className="flex items-center gap-4">
-          <div className="relative aspect-[4/5] w-16 shrink-0 bg-paper p-1">
-            <ProductMedia product={l.product} sizes="64px" />
+          <div className="relative aspect-square w-16 shrink-0 bg-paper">
+            <ProductMedia product={l.product} compact sizes="64px" />
             <span className="absolute -top-2 -right-2 grid size-5 place-items-center rounded-full bg-navy-900 text-[10px] font-bold text-cream">
               {l.quantity}
             </span>

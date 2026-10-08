@@ -29,6 +29,7 @@ export function ProductCard({
   sizes?: string;
 }) {
   const multiPrice = product.variants.length > 1;
+  const hasAlt = product.images.length > 1;
 
   return (
     <article className={cn("group relative flex h-full flex-col", className)}>
@@ -40,15 +41,20 @@ export function ProductCard({
           tabIndex={-1}
         >
           {/* Primary image */}
-          <div className="absolute inset-0 p-[9%] transition-[transform,opacity] duration-[900ms] ease-[var(--ease-premium)] group-hover:scale-[1.04] md:group-hover:opacity-0">
+          <div
+            className={cn(
+              "absolute inset-[10%_8%] transition-[transform,opacity] duration-[900ms] ease-[var(--ease-premium)] group-hover:scale-[1.04]",
+              hasAlt && "md:group-hover:opacity-0",
+            )}
+          >
             <ProductMedia product={product} priority={priority} sizes={sizes} />
           </div>
-          {/* Hover image: detail crop on stone background */}
-          <div className="absolute inset-0 hidden bg-stone opacity-0 transition-opacity duration-[900ms] ease-[var(--ease-premium)] group-hover:opacity-100 md:block">
-            <div className="absolute inset-0 scale-[1.08] transition-transform duration-[1200ms] ease-[var(--ease-premium)] group-hover:scale-100">
-              <ProductMedia product={product} view="detail" sizes={sizes} />
+          {/* Hover image: second official view (e.g. the box) on the same surface */}
+          {hasAlt && (
+            <div className="absolute inset-[10%_8%] hidden scale-[0.96] opacity-0 transition-[transform,opacity] duration-[900ms] ease-[var(--ease-premium)] group-hover:scale-100 group-hover:opacity-100 md:block">
+              <ProductMedia product={product} view="alt" sizes={sizes} />
             </div>
-          </div>
+          )}
         </Link>
 
         <span className="label pointer-events-none absolute top-4 left-4 text-[10px] text-navy-900/70">

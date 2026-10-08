@@ -40,12 +40,19 @@ src/
 
 | Co | Gdzie |
 |---|---|
-| Zdjęcia produktów | `product.images` w `src/data/products.ts` — gdy są puste, renderowana jest ilustracja SVG opakowania (`product-visual.tsx`). |
-| Ceny, pojemności, opisy, sposób użycia, skład INCI | `src/data/products.ts` (żadne właściwości nie są podane jako fakty). |
-| Logo | `src/components/ui/logo.tsx` — obecnie wordmark złożony fontem Anton; podmienić na plik SVG. |
-| Zdjęcia stylów / community | `style-pattern.tsx`, `community.tsx` — abstrakcyjne wzory, oznaczone „Photo placeholder”. |
+| Zdjęcia produktów | Oficjalne packshoty ma tylko **No.1 Matte Clay** (`public/images/products/matte-clay/`). Pozostałe produkty mają pusty `product.images` → neutralny kafel „Packshot coming soon” (nigdy wymyślone opakowanie). Nowe zdjęcia: dodać PNG z przezroczystym tłem do `images` produktu. |
+| Ceny, opisy, skład INCI | `src/data/products.ts`. Dla Matte Clay copy z opakowania („For daily chaos”, sposób użycia); gramatura `75 g` jest na makiecie w nawiasie (do potwierdzenia), INCI to wciąż szablon. |
+| Logo | `src/components/ui/logo.tsx` — wordmark złożony fontem Anton. Opakowanie używa innego kroju (szeryf blokowy) — podmienić na oficjalny plik SVG. |
+| Community | `community.tsx` — oficjalne packshoty + tekstury jako podgląd feedu; brak prawdziwych zdjęć UGC. |
 | E-mail, social, progi dostawy | `src/config/site.ts` |
 | Regulamin, polityka prywatności, cookies | sekcje na `/contact` |
+
+## Zdjęcia produktów — pipeline
+
+Packshoty Matte Clay powstały z dostarczonych renderów: usunięcie neutralnego szarego tła studia
+(maska na podstawie chromatyczności — piksele opakowania nie są modyfikowane), rozdzielenie słoika i pudełka,
+przycięcie i jednolite skalowanie 2× (bez zmiany proporcji). Wyświetlane zawsze z `object-contain`.
+Rendery mają ok. 360 px szczegółu na produkt — do większych formatów (hero, kampanie) potrzebne są pliki ≥ 2000 px.
 
 ## Integracje (przygotowana architektura)
 
