@@ -9,7 +9,7 @@ import { useCartDetails } from "@/hooks/use-cart-details";
 import { useDialog } from "@/hooks/use-dialog";
 import { formatMoney } from "@/lib/format";
 import { ButtonLink } from "@/components/ui/button";
-import { CartLineItem } from "@/components/product/cart-line-item";
+import { CartLineItem } from "@/components/products/cart-line-item";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -25,7 +25,7 @@ export function CartDrawer() {
       {isOpen && (
         <div className="fixed inset-0 z-[70]">
           <motion.div
-            className="absolute inset-0 bg-navy-950/40 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-ink/40 backdrop-blur-[2px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -44,14 +44,14 @@ export function CartDrawer() {
             exit={{ x: "100%" }}
             transition={{ duration: 0.6, ease }}
           >
-            <div className="flex h-16 items-center justify-between border-b border-navy-900/10 px-5 md:h-20 md:px-8">
+            <div className="flex h-16 items-center justify-between border-b border-ink/10 px-5 md:h-20 md:px-8">
               <p className="display text-3xl">
-                Cart <span className="align-top text-base text-navy-500">({count})</span>
+                Cart <span className="align-top text-base text-graphite">({count})</span>
               </p>
               <button
                 type="button"
                 onClick={close}
-                className="-mr-2 grid size-10 place-items-center rounded-full hover:bg-navy-900/6"
+                className="-mr-2 grid size-10 place-items-center rounded-full hover:bg-ink/6"
                 aria-label="Zamknij koszyk"
               >
                 <X className="size-5" strokeWidth={1.6} />
@@ -65,14 +65,14 @@ export function CartDrawer() {
                   <br />
                   here yet.
                 </p>
-                <p className="max-w-[28ch] text-sm text-navy-500">Twój koszyk jest pusty. Zacznij od naszych essentials.</p>
+                <p className="max-w-[28ch] text-sm text-graphite">Twój koszyk jest pusty. Zacznij od naszych essentials.</p>
                 <ButtonLink href="/shop" onClick={close} arrow>
                   Shop products
                 </ButtonLink>
               </div>
             ) : (
               <>
-                <ul className="flex-1 divide-y divide-navy-900/10 overflow-y-auto px-5 md:px-8">
+                <ul className="flex-1 divide-y divide-ink/10 overflow-y-auto px-5 md:px-8">
                   <AnimatePresence initial={false}>
                     {lines.map((line) => (
                       <motion.li
@@ -88,12 +88,12 @@ export function CartDrawer() {
                     ))}
                   </AnimatePresence>
                 </ul>
-                <div className="border-t border-navy-900/10 px-5 pt-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-8 md:pb-8">
+                <div className="border-t border-ink/10 px-5 pt-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-8 md:pb-8">
                   <div className="flex items-baseline justify-between">
                     <span className="label">Subtotal</span>
                     <span className="text-lg font-bold tabular-nums">{formatMoney(subtotal)}</span>
                   </div>
-                  <p className="mt-1 text-xs text-navy-500">Koszt dostawy: do ustalenia.</p>
+                  <p className="mt-1 text-xs text-graphite">Koszt dostawy: do ustalenia.</p>
                   <div className="mt-5 grid gap-2">
                     <ButtonLink href="/checkout" onClick={close} size="lg" className="w-full" arrow>
                       Checkout
@@ -101,7 +101,7 @@ export function CartDrawer() {
                     <Link
                       href="/cart"
                       onClick={close}
-                      className="label link-underline mx-auto py-3 text-navy-900/80"
+                      className="label link-underline mx-auto py-3 text-ink/80"
                     >
                       View cart
                     </Link>

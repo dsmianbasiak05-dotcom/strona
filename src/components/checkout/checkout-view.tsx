@@ -11,7 +11,8 @@ import { formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { paymentProvider, type CheckoutCustomer, type PaymentMethod } from "@/lib/commerce/checkout";
 import { Button, ButtonLink } from "@/components/ui/button";
-import { ProductMedia } from "@/components/product/product-media";
+import { ProductMedia } from "@/components/products/product-media";
+import { themeStyle } from "@/lib/theme";
 import { SummaryRows } from "./order-summary";
 
 type Errors = Partial<Record<keyof CheckoutCustomer | "terms", string>>;
@@ -54,7 +55,7 @@ function Field({
 }: { id: keyof CheckoutCustomer; label: string; error?: string; className?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div className={className}>
-      <label htmlFor={id} className="label mb-2 block text-[10px] text-navy-900/70">
+      <label htmlFor={id} className="label mb-2 block text-[10px] text-ink/70">
         {label}
       </label>
       <input
@@ -63,8 +64,8 @@ function Field({
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-error` : undefined}
         className={cn(
-          "h-12 w-full border bg-paper px-4 text-[15px] transition-colors focus:border-navy-900 focus:outline-none",
-          error ? "border-error" : "border-navy-900/20",
+          "h-12 w-full border bg-paper px-4 text-[15px] transition-colors focus:border-ink focus:outline-none",
+          error ? "border-error" : "border-ink/20",
         )}
         {...props}
       />
@@ -79,9 +80,9 @@ function Field({
 
 function Step({ n, title, children }: { n: string; title: string; children: ReactNode }) {
   return (
-    <section aria-labelledby={`step-${n}`} className="border-t border-navy-900/15 py-8 md:py-10">
+    <section aria-labelledby={`step-${n}`} className="border-t border-ink/15 py-8 md:py-10">
       <h2 id={`step-${n}`} className="mb-6 flex items-baseline gap-4">
-        <span className="label text-navy-500 tabular-nums">{n}</span>
+        <span className="label text-graphite tabular-nums">{n}</span>
         <span className="display text-4xl md:text-5xl">{title}</span>
       </h2>
       {children}
@@ -140,7 +141,7 @@ export function CheckoutView() {
   if (orderId) {
     return (
       <div className="container-x flex min-h-[80vh] flex-col items-start justify-center pt-28 pb-20">
-        <p className="label text-navy-500">Order {orderId}</p>
+        <p className="label text-graphite">Order {orderId}</p>
         <h1 className="display mt-4 text-[18vw] md:text-[10rem]">Thank you.</h1>
         <p className="mt-6 max-w-[44ch] text-lg leading-relaxed">
           To było zamówienie testowe — płatność nie została pobrana. Po podłączeniu bramki płatności (Przelewy24, PayU,
@@ -168,15 +169,15 @@ export function CheckoutView() {
     <ul className="space-y-4">
       {lines.map((l) => (
         <li key={l.variantId} className="flex items-center gap-4">
-          <div className="relative aspect-square w-16 shrink-0 bg-paper">
+          <div style={themeStyle(l.product.theme)} className="relative aspect-square w-16 shrink-0 bg-product-bg">
             <ProductMedia product={l.product} compact sizes="64px" />
-            <span className="absolute -top-2 -right-2 grid size-5 place-items-center rounded-full bg-navy-900 text-[10px] font-bold text-cream">
+            <span className="absolute -top-2 -right-2 grid size-5 place-items-center rounded-full bg-ink text-[10px] font-bold text-bone">
               {l.quantity}
             </span>
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-bold">{l.product.name.replace("MONCRÉ ", "")}</p>
-            <p className="text-xs text-navy-500 tabular-nums">
+            <p className="text-xs text-graphite tabular-nums">
               {l.product.variants.length > 1 ? `${l.variant.title} · ` : ""}
               {l.quantity} × {formatMoney(l.variant.price)}
             </p>
@@ -190,7 +191,7 @@ export function CheckoutView() {
   return (
     <div className="pt-14 md:pt-20">
       {/* Mobile collapsible summary */}
-      <div className="border-b border-navy-900/10 bg-cream lg:hidden">
+      <div className="border-b border-ink/10 bg-bone lg:hidden">
         <button
           type="button"
           onClick={() => setSummaryOpen((v) => !v)}
@@ -225,7 +226,7 @@ export function CheckoutView() {
         <form noValidate onSubmit={onSubmit} className="pt-8 lg:col-span-7 lg:pt-16">
           <div className="mb-8 flex items-end justify-between">
             <h1 className="display text-7xl md:text-8xl">Checkout</h1>
-            <p className="label inline-flex items-center gap-1.5 pb-2 text-navy-500">
+            <p className="label inline-flex items-center gap-1.5 pb-2 text-graphite">
               <Lock className="size-3.5" /> Secure
             </p>
           </div>
@@ -247,9 +248,9 @@ export function CheckoutView() {
             </div>
 
             <fieldset className="mt-8">
-              <legend className="label mb-3 text-[10px] text-navy-900/70">Metoda dostawy</legend>
+              <legend className="label mb-3 text-[10px] text-ink/70">Metoda dostawy</legend>
               {shippingOptions.length === 0 ? (
-                <p className="border border-navy-900/20 bg-cream/60 p-4 text-sm">{SHIPPING_TBA}</p>
+                <p className="border border-ink/20 bg-bone/60 p-4 text-sm">{SHIPPING_TBA}</p>
               ) : (
                 <div className="grid gap-2">
                   {shippingOptions.map((o) => (
@@ -257,13 +258,13 @@ export function CheckoutView() {
                       key={o.id}
                       className={cn(
                         "flex cursor-pointer items-center gap-4 border p-4 transition-colors has-[:focus-visible]:outline-2",
-                        shippingId === o.id ? "border-navy-900 bg-cream/60" : "border-navy-900/20 hover:border-navy-900/50",
+                        shippingId === o.id ? "border-ink bg-bone/60" : "border-ink/20 hover:border-ink/50",
                       )}
                     >
-                      <input type="radio" name="shipping" value={o.id} checked={shippingId === o.id} onChange={() => setShippingId(o.id)} className="size-4 accent-navy-900" />
+                      <input type="radio" name="shipping" value={o.id} checked={shippingId === o.id} onChange={() => setShippingId(o.id)} className="size-4 accent-ink" />
                       <span className="flex-1">
                         <span className="block text-[15px] font-semibold">{o.label}</span>
-                        <span className="block text-xs text-navy-500">{o.eta}</span>
+                        <span className="block text-xs text-graphite">{o.eta}</span>
                       </span>
                       <span className="text-sm tabular-nums">{formatMoney(o.price)}</span>
                     </label>
@@ -282,16 +283,16 @@ export function CheckoutView() {
                     key={m.id}
                     className={cn(
                       "flex cursor-pointer flex-col gap-1 border p-4 transition-colors has-[:focus-visible]:outline-2",
-                      payment === m.id ? "border-navy-900 bg-cream/60" : "border-navy-900/20 hover:border-navy-900/50",
+                      payment === m.id ? "border-ink bg-bone/60" : "border-ink/20 hover:border-ink/50",
                     )}
                   >
                     <input type="radio" name="payment" value={m.id} checked={payment === m.id} onChange={() => setPayment(m.id)} className="sr-only" />
                     <span className="label">{m.label}</span>
-                    <span className="text-xs text-navy-500">{m.note}</span>
+                    <span className="text-xs text-graphite">{m.note}</span>
                   </label>
                 ))}
               </div>
-              <p className="mt-3 text-xs text-navy-500">
+              <p className="mt-3 text-xs text-graphite">
                 Tryb demonstracyjny — płatność nie zostanie pobrana. Integracja z bramką płatności w przygotowaniu.
               </p>
             </fieldset>
@@ -307,7 +308,7 @@ export function CheckoutView() {
                 }}
                 aria-invalid={!!errors.terms}
                 aria-describedby={errors.terms ? "terms-error" : undefined}
-                className="mt-0.5 size-4 accent-navy-900"
+                className="mt-0.5 size-4 accent-ink"
               />
               <span>
                 Akceptuję{" "}
@@ -334,7 +335,7 @@ export function CheckoutView() {
         </form>
 
         <aside className="hidden lg:col-span-5 lg:block">
-          <div className="sticky top-24 mt-16 bg-cream p-8">
+          <div className="sticky top-24 mt-16 bg-bone p-8">
             <h2 className="display mb-8 text-4xl">Your order</h2>
             {summaryList}
             <div className="mt-8">

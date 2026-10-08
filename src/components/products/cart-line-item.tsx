@@ -6,6 +6,7 @@ import { useCart, CART_MAX_QTY } from "@/store/cart";
 import { formatMoney } from "@/lib/format";
 import { QuantityStepper } from "@/components/ui/quantity-stepper";
 import { ProductMedia } from "./product-media";
+import { themeStyle } from "@/lib/theme";
 
 export interface ResolvedLine {
   variantId: string;
@@ -24,11 +25,12 @@ export function CartLineItem({ line, onNavigate }: { line: ResolvedLine; onNavig
       <Link
         href={`/product/${line.product.slug}`}
         onClick={onNavigate}
-        className="relative aspect-square w-24 shrink-0 overflow-hidden bg-cream md:w-28"
+        style={themeStyle(line.product.theme)}
+        className="relative aspect-square w-24 shrink-0 overflow-hidden bg-product-bg md:w-28"
         tabIndex={-1}
         aria-hidden
       >
-        <div className="absolute inset-[8%]">
+        <div className="absolute inset-0">
           <ProductMedia product={line.product} compact sizes="112px" />
         </div>
       </Link>
@@ -42,7 +44,7 @@ export function CartLineItem({ line, onNavigate }: { line: ResolvedLine; onNavig
             >
               {line.product.name.replace("MONCRÉ ", "")}
             </Link>
-            <p className="mt-0.5 text-[13px] text-navy-500 tabular-nums">
+            <p className="mt-0.5 text-[13px] text-graphite tabular-nums">
               {line.product.variants.length > 1 ? `${line.variant.title} · ` : ""}
               {formatMoney(line.variant.price)} / szt.
             </p>
@@ -61,7 +63,7 @@ export function CartLineItem({ line, onNavigate }: { line: ResolvedLine; onNavig
           <button
             type="button"
             onClick={() => remove(line.variantId)}
-            className="label link-underline py-2 text-[10px] text-navy-500 hover:text-navy-900"
+            className="label link-underline py-2 text-[10px] text-graphite hover:text-ink"
           >
             Remove
           </button>

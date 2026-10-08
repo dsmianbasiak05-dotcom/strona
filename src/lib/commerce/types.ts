@@ -22,11 +22,32 @@ export interface ProductVariant {
   available: boolean;
 }
 
+/** What job an image does in a layout — components pick images by role. */
+export type ImageRole = "front" | "set" | "packaging" | "back" | "lid";
+
 export interface ProductImage {
   src: string;
   alt: string;
   width: number;
   height: number;
+  role: ImageRole;
+  /** CSS object-position keeping the pack fully in frame when cropped. */
+  focus?: string;
+}
+
+/**
+ * A product's own palette. Used as an ACCENT (product page, product
+ * blocks, image surfaces) — never as the site palette.
+ */
+export interface ProductTheme {
+  /** Dominant pack colour (blocks, product-page bands). */
+  primary: string;
+  /** Colour printed on the primary (type on product blocks). */
+  secondary: string;
+  /** Small accents: rules, swatches, highlights. */
+  accent: string;
+  /** Neutral surface behind the product imagery. */
+  background: string;
 }
 
 /**
@@ -38,6 +59,11 @@ export type ProductStatus = "active" | "coming_soon";
 export interface Product {
   id: string;
   status: ProductStatus;
+  /** Position in the numbered line-up (No.1, No.2, …). */
+  number: number;
+  /** Human category label shown in UI, e.g. "Glinka do włosów". */
+  categoryLabel: string;
+  theme: ProductTheme;
   slug: string;
   name: string;
   /** Short display name, e.g. "No.1" */
@@ -60,6 +86,8 @@ export interface Product {
   /** For sets: slugs of products included. */
   includes?: string[];
   bestseller?: boolean;
+  /** Hero / home spotlight product. First product is used when none is flagged. */
+  featured?: boolean;
   /** Short key/value facts shown on the product page (only brand-confirmed data). */
   specs?: { label: string; value: string }[];
   /** Brand-provided headline facts (EN), shown on the home page product section. */

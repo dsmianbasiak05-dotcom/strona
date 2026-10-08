@@ -6,7 +6,7 @@ import { ChevronDown, Search, X } from "lucide-react";
 import type { Product, ProductCategory, SortKey } from "@/lib/commerce/types";
 import { filterProducts } from "@/lib/commerce";
 import { categories } from "@/data/products";
-import { ProductCard } from "@/components/product/product-card";
+import { ProductCard } from "@/components/products/product-card";
 import { cn } from "@/lib/utils";
 import { pluralProducts } from "@/lib/format";
 
@@ -55,7 +55,7 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
   return (
     <>
       {/* Toolbar */}
-      <div className="sticky top-14 z-30 border-y border-navy-900/10 bg-paper/92 backdrop-blur-xl md:top-16">
+      <div className="sticky top-14 z-30 border-y border-ink/10 bg-paper/92 backdrop-blur-xl md:top-16">
         <div className="container-x flex flex-col gap-0 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
           <div
             role="tablist"
@@ -73,7 +73,7 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
                   onClick={() => setCategory(c.key)}
                   className={cn(
                     "label relative h-14 shrink-0 px-3 transition-colors md:px-4",
-                    active ? "text-navy-900" : "text-navy-900/45 hover:text-navy-900",
+                    active ? "text-ink" : "text-ink/45 hover:text-ink",
                   )}
                 >
                   {c.label}
@@ -81,7 +81,7 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
                   {active && (
                     <motion.span
                       layoutId="cat-underline"
-                      className="absolute inset-x-3 bottom-0 h-[2px] bg-navy-900 md:inset-x-4"
+                      className="absolute inset-x-3 bottom-0 h-[2px] bg-ink md:inset-x-4"
                       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     />
                   )}
@@ -90,16 +90,16 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
             })}
           </div>
 
-          <div className="flex items-center gap-3 border-t border-navy-900/10 py-2.5 lg:border-0 lg:py-0">
-            <label className="flex h-10 flex-1 items-center gap-2 border-b border-navy-900/25 focus-within:border-navy-900 lg:w-56 lg:flex-none">
-              <Search className="size-4 shrink-0 text-navy-500" strokeWidth={1.8} />
+          <div className="flex items-center gap-3 border-t border-ink/10 py-2.5 lg:border-0 lg:py-0">
+            <label className="flex h-10 flex-1 items-center gap-2 border-b border-ink/25 focus-within:border-ink lg:w-56 lg:flex-none">
+              <Search className="size-4 shrink-0 text-graphite" strokeWidth={1.8} />
               <span className="sr-only">Szukaj w sklepie</span>
               <input
                 type="search"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="Search"
-                className="h-full w-full min-w-0 bg-transparent text-sm placeholder:text-navy-900/40 focus:outline-none"
+                className="h-full w-full min-w-0 bg-transparent text-sm placeholder:text-ink/40 focus:outline-none"
               />
             </label>
             <label className="relative flex h-10 items-center">
@@ -129,13 +129,13 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
               setCategory("all");
               setQ("");
             }}
-            className="label inline-flex h-9 items-center gap-1.5 text-navy-500 hover:text-navy-900"
+            className="label inline-flex h-9 items-center gap-1.5 text-graphite hover:text-ink"
           >
             <X className="size-3.5" /> Clear filters
           </button>
         )}
 
-        <p className="mt-6 text-sm text-navy-500" aria-live="polite">
+        <p className="mt-6 text-sm text-graphite" aria-live="polite">
           {results.length} {pluralProducts(results.length)}
           {q.trim() && <> · „{q.trim()}”</>}
         </p>
@@ -143,7 +143,7 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
         {results.length === 0 ? (
           <div className="py-24 text-center">
             <p className="display text-6xl md:text-8xl">No match.</p>
-            <p className="mt-4 text-navy-500">Spróbuj innego filtra lub wyczyść wyszukiwanie.</p>
+            <p className="mt-4 text-graphite">Spróbuj innego filtra lub wyczyść wyszukiwanie.</p>
           </div>
         ) : (
           <motion.ul layout className="mt-6 grid grid-cols-2 gap-x-3 gap-y-10 md:grid-cols-3 md:gap-x-5 md:gap-y-14 lg:grid-cols-4">

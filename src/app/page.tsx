@@ -1,17 +1,22 @@
 import { notFound } from "next/navigation";
 import { Hero } from "@/components/home/hero";
-import { No1Section } from "@/components/home/no1-section";
-import { BrandStatement } from "@/components/home/brand-statement";
+import { LineupSection } from "@/components/home/lineup-section";
 import { ProductVisuals } from "@/components/home/product-visuals";
-import { DailyChaos } from "@/components/home/daily-chaos";
 import { WaitlistSection } from "@/components/home/waitlist-section";
-import { Marquee } from "@/components/ui/marquee";
-import { getProducts } from "@/lib/commerce";
+import { BrandStatement } from "@/components/brand/brand-statement";
+import { DailyChaos } from "@/components/brand/daily-chaos";
+import { Marquee } from "@/components/brand/marquee";
+import { getFeaturedProduct, getProducts } from "@/lib/commerce";
 import { siteConfig } from "@/config/site";
 
+/**
+ * Home = the BRAND first (campaign hero, statements on brand surfaces),
+ * products second (line-up driven by data). The featured product only
+ * colours its own blocks.
+ */
 export default async function HomePage() {
-  const [product] = await getProducts();
-  if (!product) notFound();
+  const [products, featured] = await Promise.all([getProducts(), getFeaturedProduct()]);
+  if (!featured) notFound();
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -24,17 +29,17 @@ export default async function HomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
-      <Hero product={product} />
+      <Hero product={featured} />
       <Marquee
-        items={["MONCRÉ No.1", "For daily chaos", "Coming soon"]}
-        duration={36}
-        className="display bg-navy-900 py-3.5 text-[2rem] leading-none text-cream md:py-5 md:text-[3.5rem]"
+        items={["MONCRÉ", "Your hair. Your rules.", "For daily chaos."]}
+        duration={38}
+        className="display bg-ink py-3.5 text-[2rem] leading-none text-bone md:py-5 md:text-[3.5rem]"
       />
-      <No1Section product={product} />
+      <LineupSection featured={featured} products={products} />
       <BrandStatement />
-      <ProductVisuals />
-      <DailyChaos />
-      <WaitlistSection product={product} />
+      <ProductVisuals product={featured} />
+      <DailyChaos product={featured} />
+      <WaitlistSection product={featured} />
     </>
   );
 }

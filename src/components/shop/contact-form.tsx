@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const input =
-  "w-full border-b border-navy-900/25 bg-transparent py-3 text-lg transition-colors placeholder:text-navy-900/35 focus:border-navy-900 focus:outline-none";
+  "w-full border-b border-ink/25 bg-transparent py-3 text-lg transition-colors placeholder:text-ink/35 focus:border-ink focus:outline-none";
 
 /** Mock contact form — connect to an API route / form service later. */
 export function ContactForm() {
@@ -12,9 +12,9 @@ export function ContactForm() {
 
   if (sent) {
     return (
-      <div role="status" className="border-t border-navy-900/15 pt-10">
+      <div role="status" className="border-t border-ink/15 pt-10">
         <p className="display text-6xl">Message sent.</p>
-        <p className="mt-4 text-navy-500">Dzięki! (Tryb demonstracyjny — wiadomość nie została wysłana.)</p>
+        <p className="mt-4 text-graphite">Dzięki! (Tryb demonstracyjny — wiadomość nie została wysłana.)</p>
       </div>
     );
   }
@@ -28,15 +28,15 @@ export function ContactForm() {
       }}
     >
       <div>
-        <label htmlFor="c-name" className="label text-navy-500">Imię</label>
+        <label htmlFor="c-name" className="label text-graphite">Imię</label>
         <input id="c-name" name="name" required autoComplete="name" className={input} />
       </div>
       <div>
-        <label htmlFor="c-email" className="label text-navy-500">Email</label>
+        <label htmlFor="c-email" className="label text-graphite">Email</label>
         <input id="c-email" name="email" type="email" required autoComplete="email" className={input} />
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor="c-topic" className="label text-navy-500">Temat</label>
+        <label htmlFor="c-topic" className="label text-graphite">Temat</label>
         <select id="c-topic" name="topic" className={`${input} cursor-pointer`}>
           <option>Produkty</option>
           <option>Zamówienie</option>
@@ -45,7 +45,7 @@ export function ContactForm() {
         </select>
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor="c-msg" className="label text-navy-500">Wiadomość</label>
+        <label htmlFor="c-msg" className="label text-graphite">Wiadomość</label>
         <textarea id="c-msg" name="message" required rows={5} className={`${input} resize-none`} />
       </div>
       <Button type="submit" size="lg" className="sm:col-span-2 sm:justify-self-start" arrow>

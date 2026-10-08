@@ -9,11 +9,11 @@ const base =
   "group/btn relative inline-flex items-center justify-center gap-3 overflow-hidden label whitespace-nowrap transition-colors duration-500 ease-[var(--ease-premium)] disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-offset-4";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-navy-900 text-cream hover:bg-navy-700",
-  secondary: "border border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-cream",
-  light: "bg-cream text-navy-900 hover:bg-paper",
-  "outline-light": "border border-cream/50 text-cream hover:bg-cream hover:text-navy-900 hover:border-cream",
-  ghost: "text-navy-900 hover:text-navy-700 px-0!",
+  primary: "bg-ink text-bone hover:bg-ink-700",
+  secondary: "border border-ink text-ink hover:bg-ink hover:text-bone",
+  light: "bg-bone text-ink hover:bg-paper",
+  "outline-light": "border border-bone/50 text-bone hover:bg-bone hover:text-ink hover:border-bone",
+  ghost: "text-ink hover:text-ink-700 px-0!",
 };
 
 const sizes: Record<Size, string> = {

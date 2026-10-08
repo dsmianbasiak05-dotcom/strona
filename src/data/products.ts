@@ -13,6 +13,15 @@ export const products: Product[] = [
     id: "p_moncre_no1",
     // Not on sale yet — flip to "active" (and keep the variant available) to open sales.
     status: "coming_soon",
+    number: 1,
+    categoryLabel: "Glinka do włosów",
+    // No.1 pack palette, sampled from the official renders.
+    theme: {
+      primary: "#262944", // navy body
+      secondary: "#f4eedc", // cream print
+      accent: "#3c4062", // lighter navy of the lid
+      background: "#e4e3df", // studio surface of the renders
+    },
     slug: "no-1",
     name: "MONCRÉ No.1",
     type: "No.1",
@@ -47,14 +56,16 @@ export const products: Product[] = [
     // INCI not provided yet — not published.
     ingredients: null,
     variants: [{ id: "v_moncre_no1_75ml", title: "75 ml", price: pln(85), available: true }],
+    // Official renders (2000 px). Never altered — only framed via `focus`.
     images: [
-      { src: "/images/products/matte-clay/jar-front.png", alt: "MONCRÉ No.1 — słoik, przód", width: 724, height: 572 },
-      { src: "/images/products/matte-clay/box-front.png", alt: "MONCRÉ No.1 — pudełko, przód", width: 868, height: 658 },
-      { src: "/images/products/matte-clay/jar-side.png", alt: "MONCRÉ No.1 — słoik, bok z opisem i sposobem użycia", width: 724, height: 572 },
-      { src: "/images/products/matte-clay/box-side.png", alt: "MONCRÉ No.1 — pudełko z monogramem M", width: 870, height: 648 },
-      { src: "/images/products/matte-clay/box-back.png", alt: "MONCRÉ No.1 — pudełko, tył ze składem i sposobem użycia", width: 1050, height: 708 },
+      { role: "front", src: "/images/products/no-1/jar-front.jpg", alt: "MONCRÉ No.1 — słoik, przód", width: 2000, height: 2000, focus: "50% 53%" },
+      { role: "set", src: "/images/products/no-1/set.jpg", alt: "MONCRÉ No.1 — słoik i pudełko", width: 2000, height: 1125, focus: "50% 50%" },
+      { role: "packaging", src: "/images/products/no-1/box.jpg", alt: "MONCRÉ No.1 — pudełko", width: 2000, height: 2000, focus: "50% 55%" },
+      { role: "back", src: "/images/products/no-1/jar-back.jpg", alt: "MONCRÉ No.1 — tył słoika ze składem i sposobem użycia", width: 2000, height: 2000, focus: "50% 53%" },
+      { role: "lid", src: "/images/products/no-1/lid.jpg", alt: "MONCRÉ No.1 — wieczko z monogramem M", width: 2000, height: 2000, focus: "50% 50%" },
     ],
     bestseller: true,
+    featured: true,
   },
 ];
 

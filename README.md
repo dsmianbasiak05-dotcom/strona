@@ -28,13 +28,23 @@ src/
   store/                  # Zustand: koszyk i ulubione (localStorage), stan UI
 ```
 
-## Design system
+## System marki i produktów
 
-- **Kolory** (`src/app/globals.css`, `@theme`): navy `#171936`/`#202342`, cream `#F4EEDC`, paper `#F7F6F1`, stone `#D9D9D6`.
-  Domyślne tło jest jasne (paper), navy pojawia się w akcentach — bez „przesadzonej czerni”.
-- **Typografia**: Anton (display, nagłówki) + Manrope (tekst użytkowy). Klasy `.display` i `.label`.
-- **Ruch**: jedna krzywa `cubic-bezier(.22,1,.36,1)`, maskowane wejścia linii nagłówków, parallax, scroll-scenes.
-  `MotionConfig reducedMotion="user"` + globalna reguła CSS respektują `prefers-reduced-motion`.
+**Marka (stała dla wszystkich produktów)** — `src/app/globals.css`:
+- kolory marki: `ink`, `ink-800/700`, `graphite`, `paper`, `bone`, `stone` (neutralne — strona nie przejmuje koloru produktu),
+- typografia: Anton (display) + Space Mono (tekst, nawiązuje do drobnego druku na opakowaniu),
+- rytm: `container-x` (szerokość + marginesy), `section-y` (pionowe odstępy sekcji), ostre krawędzie (brak zaokrągleń kart),
+- komponenty marki: `src/components/brand/` (logo, nagłówki sekcji, pasek, „Built for the way you wear it”, „For daily chaos.”).
+
+**Produkt (akcent)** — `product.theme = { primary, secondary, accent, background }` w `src/data/products.ts`.
+`themeStyle(theme)` (`src/lib/theme.ts`) ustawia zmienne `--p-*` na elemencie, a potomkowie używają klas
+`bg-product`, `text-product-secondary`, `bg-product-bg`, `border-product-accent`. Bez motywu — neutralne kolory marki.
+
+**Zdjęcia według roli** — `product.images[].role`: `front`, `set`, `packaging`, `back`, `lid` (+ `focus` = kadrowanie).
+Komponenty wybierają zdjęcie po roli (`productImage()`), więc nowy produkt z innym zestawem ujęć nie wymaga zmian w UI.
+
+**Dodanie No.2:** nowy obiekt w `products` (number, theme, images z rolami, status). Sklep od 2 produktów
+automatycznie pokazuje siatkę z filtrami; strona główna pokazuje produkt `featured` + pozostałe karty.
 
 ## Placeholdery — do podmiany przed startem
 

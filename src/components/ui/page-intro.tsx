@@ -27,7 +27,7 @@ export function PageIntro({
         className,
       )}
     >
-      <p className="label mb-5 flex items-center gap-3 text-navy-500">
+      <p className="label mb-5 flex items-center gap-3 text-graphite">
         <span className="inline-block h-px w-8 bg-current" aria-hidden />
         {eyebrow}
       </p>
@@ -42,7 +42,7 @@ export function PageIntro({
             size === "lg" ? "text-[17vw] md:text-[11vw] xl:text-[10rem]" : "text-[15vw] md:text-[7vw] xl:text-[6.5rem]",
           )}
         />
-        {children && <div className="max-w-[40ch] text-[15px] leading-relaxed text-navy-900/75 md:pb-3">{children}</div>}
+        {children && <div className="max-w-[40ch] text-[15px] leading-relaxed text-ink/75 md:pb-3">{children}</div>}
       </div>
     </header>
   );

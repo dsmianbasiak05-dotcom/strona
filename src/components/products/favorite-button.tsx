@@ -30,7 +30,7 @@ export function FavoriteButton({
       aria-pressed={active}
       aria-label={active ? `Usuń ${productName} z ulubionych` : `Dodaj ${productName} do ulubionych`}
       className={cn(
-        "grid size-10 place-items-center rounded-full text-navy-900 transition-colors hover:bg-navy-900/5",
+        "grid size-10 place-items-center rounded-full text-ink transition-colors hover:bg-ink/5",
         className,
       )}
     >
@@ -41,7 +41,7 @@ export function FavoriteButton({
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className="grid place-items-center"
       >
-        <Heart className={cn("size-[18px]", active && "fill-navy-900")} strokeWidth={1.6} />
+        <Heart className={cn("size-[18px]", active && "fill-ink")} strokeWidth={1.6} />
       </motion.span>
     </button>
   );

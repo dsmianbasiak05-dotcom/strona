@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Manrope } from "next/font/google";
+import { Anton, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
 import { Providers } from "@/components/layout/providers";
@@ -16,9 +16,11 @@ const anton = Anton({
   display: "swap",
 });
 
-const manrope = Manrope({
+// Monospace echoes the small print on MONCRÉ packaging ("FOR DAILY CHAOS").
+const spaceMono = Space_Mono({
+  weight: ["400", "700"],
   subsets: ["latin", "latin-ext"],
-  variable: "--font-manrope",
+  variable: "--font-space-mono",
   display: "swap",
 });
 
@@ -54,14 +56,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F7F6F1",
+  themeColor: "#F7F6F2",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pl" className={`${anton.variable} ${manrope.variable}`}>
+    <html lang="pl" className={`${anton.variable} ${spaceMono.variable}`}>
       <body className="min-h-dvh overflow-x-clip">
         <Providers>
           <Header />

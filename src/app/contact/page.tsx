@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { siteConfig, SHIPPING_TBA } from "@/config/site";
 import { PageIntro } from "@/components/ui/page-intro";
 import { ContactForm } from "@/components/shop/contact-form";
-import { Accordion } from "@/components/product/accordion";
+import { Accordion } from "@/components/products/accordion";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -37,13 +37,13 @@ export default function ContactPage() {
         </div>
         <aside className="space-y-10 lg:col-span-4 lg:col-start-9">
           <div>
-            <h2 className="label mb-3 text-navy-500">Email</h2>
+            <h2 className="label mb-3 text-graphite">Email</h2>
             <a href={`mailto:${siteConfig.email}`} className="display link-underline text-4xl">
               {siteConfig.email}
             </a>
           </div>
           <div>
-            <h2 className="label mb-3 text-navy-500">Social</h2>
+            <h2 className="label mb-3 text-graphite">Social</h2>
             <ul className="space-y-1 text-lg">
               <li><a href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer" className="link-underline">Instagram</a></li>
               <li><a href={siteConfig.social.tiktok} target="_blank" rel="noopener noreferrer" className="link-underline">TikTok</a></li>
@@ -52,7 +52,7 @@ export default function ContactPage() {
         </aside>
       </div>
 
-      <section className="bg-cream py-20 md:py-28">
+      <section className="bg-bone py-20 md:py-28">
         <div className="container-x grid gap-16 lg:grid-cols-2">
           <div id="faq" className="scroll-mt-24">
             <h2 className="display mb-8 text-6xl md:text-7xl">FAQ</h2>
@@ -61,16 +61,16 @@ export default function ContactPage() {
           <div className="space-y-10">
             <div id="shipping" className="scroll-mt-24">
               <h2 className="display text-4xl">Shipping</h2>
-              <p className="mt-4 text-[15px] text-navy-900/80">{SHIPPING_TBA}</p>
+              <p className="mt-4 text-[15px] text-ink/80">{SHIPPING_TBA}</p>
             </div>
             <div id="returns" className="scroll-mt-24">
               <h2 className="display text-4xl">Returns</h2>
-              <p className="mt-4 text-[15px] text-navy-900/80">{SHIPPING_TBA}</p>
+              <p className="mt-4 text-[15px] text-ink/80">{SHIPPING_TBA}</p>
             </div>
             {legal.map((l) => (
               <div key={l.id} id={l.id} className="scroll-mt-24">
                 <h2 className="display text-4xl">{l.title}</h2>
-                <p className="mt-4 text-[15px] text-navy-900/60">Dokument w przygotowaniu.</p>
+                <p className="mt-4 text-[15px] text-ink/60">Dokument w przygotowaniu.</p>
               </div>
             ))}
           </div>

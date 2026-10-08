@@ -10,7 +10,8 @@ import { useDialog } from "@/hooks/use-dialog";
 import { products } from "@/data/products";
 import { filterProducts } from "@/lib/commerce";
 import { formatMoney } from "@/lib/format";
-import { ProductMedia } from "@/components/product/product-media";
+import { ProductMedia } from "@/components/products/product-media";
+import { themeStyle } from "@/lib/theme";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const suggestions = ["No.1", "Glinka", "Clay"];
@@ -34,7 +35,7 @@ export function SearchOverlay() {
       {open && (
         <div className="fixed inset-0 z-[75]">
           <motion.div
-            className="absolute inset-0 bg-navy-950/40 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-ink/40 backdrop-blur-[2px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -54,11 +55,11 @@ export function SearchOverlay() {
           >
             <div className="container-x pt-5 pb-10 md:pt-8 md:pb-14">
               <div className="flex items-center justify-between">
-                <p className="label text-navy-500">Search MONCRÉ</p>
+                <p className="label text-graphite">Search MONCRÉ</p>
                 <button
                   type="button"
                   onClick={close}
-                  className="-mr-2 grid size-10 place-items-center rounded-full hover:bg-navy-900/6"
+                  className="-mr-2 grid size-10 place-items-center rounded-full hover:bg-ink/6"
                   aria-label="Zamknij wyszukiwarkę"
                 >
                   <X className="size-5" strokeWidth={1.6} />
@@ -66,7 +67,7 @@ export function SearchOverlay() {
               </div>
               <form
                 role="search"
-                className="mt-4 flex items-center border-b-2 border-navy-900"
+                className="mt-4 flex items-center border-b-2 border-ink"
                 onSubmit={(e) => {
                   e.preventDefault();
                   close();
@@ -84,7 +85,7 @@ export function SearchOverlay() {
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="What are you looking for?"
                   autoComplete="off"
-                  className="display h-20 w-full min-w-0 bg-transparent text-4xl placeholder:text-navy-900/25 focus:outline-none md:h-28 md:text-7xl"
+                  className="display h-20 w-full min-w-0 bg-transparent text-4xl placeholder:text-ink/25 focus:outline-none md:h-28 md:text-7xl"
                 />
                 <button type="submit" aria-label="Szukaj" className="grid size-12 shrink-0 place-items-center">
                   <ArrowRight className="size-7" strokeWidth={1.4} />
@@ -98,26 +99,26 @@ export function SearchOverlay() {
                       key={s}
                       type="button"
                       onClick={() => setQuery(s)}
-                      className="label h-9 border border-navy-900/20 px-4 transition-colors hover:border-navy-900 hover:bg-navy-900 hover:text-cream"
+                      className="label h-9 border border-ink/20 px-4 transition-colors hover:border-ink hover:bg-ink hover:text-bone"
                     >
                       {s}
                     </button>
                   ))}
                 </div>
               ) : results.length === 0 ? (
-                <p className="mt-8 text-navy-500">Brak wyników dla „{query}”.</p>
+                <p className="mt-8 text-graphite">Brak wyników dla „{query}”.</p>
               ) : (
                 <ul className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4" aria-live="polite">
                   {results.map((p) => (
                     <li key={p.id}>
                       <Link href={`/product/${p.slug}`} onClick={close} className="group block">
-                        <div className="aspect-square overflow-hidden bg-cream p-4">
+                        <div style={themeStyle(p.theme)} className="aspect-square overflow-hidden bg-product-bg">
                           <div className="relative h-full transition-transform duration-700 group-hover:scale-105">
                             <ProductMedia product={p} sizes="(min-width: 768px) 25vw, 50vw" />
                           </div>
                         </div>
                         <p className="mt-3 text-sm font-bold">{p.name.replace("MONCRÉ ", "")}</p>
-                        <p className="text-sm text-navy-500 tabular-nums">{formatMoney(p.variants[0].price)}</p>
+                        <p className="text-sm text-graphite tabular-nums">{formatMoney(p.variants[0].price)}</p>
                       </Link>
                     </li>
                   ))}

@@ -44,19 +44,19 @@ export function PurchasePanel({ product }: { product: Product }) {
 
   return (
     <div className="lg:sticky lg:top-24">
-      <nav aria-label="Breadcrumb" className="label text-[10px] text-navy-500">
+      <nav aria-label="Breadcrumb" className="label text-[10px] text-graphite">
         <ol className="flex flex-wrap items-center gap-2">
           <li>
-            <Link href="/" className="hover:text-navy-900">Home</Link>
+            <Link href="/" className="hover:text-ink">Home</Link>
           </li>
           <li aria-hidden>/</li>
           <li>
-            <Link href={`/shop?category=${product.category}`} className="hover:text-navy-900">
+            <Link href={`/shop?category=${product.category}`} className="hover:text-ink">
               {product.category}
             </Link>
           </li>
           <li aria-hidden>/</li>
-          <li aria-current="page" className="text-navy-900">
+          <li aria-current="page" className="text-ink">
             {product.type}
           </li>
         </ol>
@@ -64,17 +64,17 @@ export function PurchasePanel({ product }: { product: Product }) {
 
       <div className="mt-5 flex items-start justify-between gap-4">
         <h1 className="display text-[15vw] leading-[0.9] sm:text-7xl xl:text-[5.75rem]">
-          <span className="label mb-3 block text-navy-500">MONCRÉ</span>
+          <span className="label mb-3 block text-graphite">MONCRÉ</span>
           {product.name.replace("MONCRÉ ", "")}
         </h1>
-        <FavoriteButton productId={product.id} productName={product.name} className="mt-1 shrink-0 border border-navy-900/15" />
+        <FavoriteButton productId={product.id} productName={product.name} className="mt-1 shrink-0 border border-ink/15" />
       </div>
 
       {product.specs?.find((sp) => sp.label === "Rodzaj") && (
-        <p className="mt-3 text-[15px] text-navy-500">{product.specs.find((sp) => sp.label === "Rodzaj")?.value}</p>
+        <p className="mt-3 text-[15px] text-graphite">{product.specs.find((sp) => sp.label === "Rodzaj")?.value}</p>
       )}
       <p className="mt-5 text-lg font-semibold">{product.tagline}</p>
-      <p className="mt-2 max-w-[48ch] text-[15px] leading-relaxed text-navy-900/75">{product.description}</p>
+      <p className="mt-2 max-w-[48ch] text-[15px] leading-relaxed text-ink/75">{product.description}</p>
 
       <div className="mt-6 flex items-center gap-4">
         <p className="text-2xl font-bold tabular-nums" aria-live="polite">
@@ -82,13 +82,13 @@ export function PurchasePanel({ product }: { product: Product }) {
         </p>
         {!onSale && <ComingSoonBadge />}
       </div>
-      <p className="mt-1 text-xs text-navy-500">Cena brutto (zawiera VAT).</p>
+      <p className="mt-1 text-xs text-graphite">Cena brutto (zawiera VAT).</p>
 
       {product.specs && product.specs.length > 0 && (
-        <dl className="mt-7 grid grid-cols-2 border-t border-navy-900/15">
+        <dl className="mt-7 grid grid-cols-2 border-t border-ink/15">
           {product.specs.map((spec) => (
-            <div key={spec.label} className="border-b border-navy-900/15 py-3 odd:pr-4">
-              <dt className="label text-[10px] text-navy-500">{spec.label}</dt>
+            <div key={spec.label} className="border-b border-ink/15 py-3 odd:pr-4">
+              <dt className="label text-[10px] text-graphite">{spec.label}</dt>
               <dd className="mt-1 text-[15px] font-semibold">{spec.value}</dd>
             </div>
           ))}
@@ -104,7 +104,7 @@ export function PurchasePanel({ product }: { product: Product }) {
                 key={v.id}
                 className={cn(
                   "label flex h-12 min-w-20 cursor-pointer items-center justify-center border px-5 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2",
-                  v.id === variantId ? "border-navy-900 bg-navy-900 text-cream" : "border-navy-900/20 hover:border-navy-900",
+                  v.id === variantId ? "border-ink bg-ink text-bone" : "border-ink/20 hover:border-ink",
                   !v.available && "pointer-events-none opacity-40 line-through",
                 )}
               >
@@ -133,12 +133,12 @@ export function PurchasePanel({ product }: { product: Product }) {
           </Button>
         </div>
       ) : (
-        <div ref={ctaRef} className="mt-7 bg-cream p-5 md:p-6">
+        <div ref={ctaRef} className="mt-7 bg-product p-5 text-product-secondary md:p-6">
           <p className="display text-4xl leading-none md:text-5xl">Coming soon.</p>
-          <p className="mt-3 max-w-[44ch] text-[15px] leading-relaxed text-navy-900/80">
+          <p className="mt-3 max-w-[44ch] text-[15px] leading-relaxed text-product-secondary/80">
             {product.name} nie jest jeszcze dostępny w sprzedaży. Zapisz się na listę — damy znać jako pierwszym.
           </p>
-          <WaitlistForm id="waitlist" productName={product.name} className="mt-5" />
+          <WaitlistForm id="waitlist" productName={product.name} tone="product" className="mt-5" />
         </div>
       )}
 
@@ -166,7 +166,7 @@ export function PurchasePanel({ product }: { product: Product }) {
                 <ol className="space-y-2">
                   {product.howToUse.map((step, i) => (
                     <li key={step} className="flex gap-3">
-                      <span className="label pt-1 text-navy-500 tabular-nums">0{i + 1}</span>
+                      <span className="label pt-1 text-graphite tabular-nums">0{i + 1}</span>
                       {step}
                     </li>
                   ))}
@@ -195,12 +195,12 @@ export function PurchasePanel({ product }: { product: Product }) {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 bottom-0 z-40 border-t border-navy-900/10 bg-paper/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden"
+            className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-paper/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden"
           >
             <div className="flex items-center gap-3">
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-bold">{product.name.replace("MONCRÉ ", "")}</p>
-                <p className="text-sm text-navy-500 tabular-nums">
+                <p className="text-sm text-graphite tabular-nums">
                   {product.variants.length > 1 && `${variant.title} · `}
                   {formatMoney(variant.price)}
                 </p>

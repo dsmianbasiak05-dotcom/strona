@@ -21,12 +21,12 @@ export function QuantityStepper({
   className?: string;
 }) {
   const btn = cn(
-    "grid place-items-center transition-colors hover:bg-navy-900/6 disabled:opacity-30",
+    "grid place-items-center transition-colors hover:bg-ink/6 disabled:opacity-30",
     size === "sm" ? "size-8" : "size-12",
   );
   return (
     <div
-      className={cn("inline-flex items-center border border-navy-900/20", className)}
+      className={cn("inline-flex items-center border border-ink/20", className)}
       role="group"
       aria-label={label}
     >

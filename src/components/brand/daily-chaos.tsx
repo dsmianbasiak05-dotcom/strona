@@ -3,15 +3,19 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { renders } from "@/data/media";
+import type { Product } from "@/lib/commerce/types";
+import { productImage } from "@/lib/commerce";
 import { RevealLines } from "@/components/ui/reveal";
 
 /**
- * The line printed on the pack, used as a brand statement. The lid render
- * is masked to its circular edge (the studio background is clipped, the
- * render itself is untouched) and turns slightly with scroll.
+ * "For daily chaos." — the line printed on MONCRÉ packs, used as a BRAND
+ * statement on the brand's ink surface. If the given product has a `lid`
+ * render it is shown masked to its circular edge (studio background
+ * clipped, render untouched) and turns slightly with scroll.
  */
-export function DailyChaos() {
+export function DailyChaos({ product }: { product?: Product }) {
+  const lid = product ? productImage(product, "lid") : undefined;
+  const hasLid = lid?.role === "lid";
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -21,14 +25,14 @@ export function DailyChaos() {
     <section
       ref={ref}
       aria-labelledby="chaos-title"
-      className="grain grain-light relative overflow-hidden bg-navy-900 py-20 text-cream md:py-28 lg:py-36"
+      className="section-y grain grain-light relative overflow-hidden bg-ink text-bone"
     >
       <div className="container-x grid items-center gap-12 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <p className="label flex items-center gap-3 text-cream/55">
+          <p className="label flex items-center gap-3 text-bone/55">
             <span className="tabular-nums">04</span>
             <span className="inline-block h-px w-8 bg-current" aria-hidden />
-            Printed on the pack
+            MONCRÉ
           </p>
           <div id="chaos-title" className="mt-6">
             <RevealLines
@@ -38,11 +42,12 @@ export function DailyChaos() {
             />
           </div>
         </div>
+        {hasLid && lid && (
         <div className="mx-auto w-[72%] max-w-[520px] lg:col-span-5 lg:w-full">
           <motion.div style={{ rotate }} className="relative aspect-square">
             <Image
-              src={renders.lid.src}
-              alt={renders.lid.alt}
+              src={lid.src}
+              alt={lid.alt}
               fill
               sizes="(min-width: 1024px) 36vw, 72vw"
               quality={85}
@@ -50,6 +55,7 @@ export function DailyChaos() {
             />
           </motion.div>
         </div>
+        )}
       </div>
     </section>
   );

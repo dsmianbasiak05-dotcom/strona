@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   MONCRÉ — design tokens
-   Navy + cream palette taken from the packaging. Off-white is the
-   default canvas so the brand never feels heavy or "all black".
+   MONCRÉ — BRAND tokens (constant for every product)
+   Neutral by design: ink + paper/bone/stone. A product's own palette
+   never becomes the site palette — it is applied as an accent through
+   the PRODUCT tokens below, scoped per product (see lib/theme.ts).
 ------------------------------------------------------------------- */
 @theme {
-  --color-navy-950: #101229;
-  --color-navy-900: #171936;
-  --color-navy-800: #202342;
-  --color-navy-700: #2d3157;
-  --color-navy-500: #5a5e80;
-  --color-cream: #f4eedc;
-  --color-cream-dark: #e9e1c9;
-  --color-paper: #f7f6f1;
-  --color-stone: #d9d9d6;
-  --color-stone-dark: #b9b9b4;
+  --color-ink: #141416;
+  --color-ink-800: #232327;
+  --color-ink-700: #34343a;
+  --color-graphite: #66666c;
+  --color-bone: #ece9e2;
+  --color-bone-dark: #e1ddd3;
+  --color-paper: #f7f6f2;
+  --color-stone: #d9d8d3;
+  --color-stone-dark: #b9b8b2;
   --color-error: #a3312a;
 
   --font-display: var(--font-anton), "Impact", "Arial Narrow", sans-serif;
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-space-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -29,6 +29,20 @@
     from { transform: translate3d(0, 0, 0); }
     to { transform: translate3d(-50%, 0, 0); }
   }
+}
+
+/* ------------------------------------------------------------------
+   PRODUCT tokens — set per product via inline CSS variables
+   (--p-primary, --p-secondary, --p-accent, --p-background) on a scope
+   element. Defaults fall back to brand neutrals, so components render
+   correctly outside a product scope. Utilities: bg-product,
+   text-product-secondary, border-product-accent, bg-product-bg, …
+------------------------------------------------------------------- */
+@theme inline {
+  --color-product: var(--p-primary, var(--color-ink));
+  --color-product-secondary: var(--p-secondary, var(--color-paper));
+  --color-product-accent: var(--p-accent, var(--color-graphite));
+  --color-product-bg: var(--p-background, var(--color-bone));
 }
 
 @layer base {
@@ -41,13 +55,13 @@
 
   body {
     background: var(--color-paper);
-    color: var(--color-navy-900);
+    color: var(--color-ink);
     font-family: var(--font-sans);
   }
 
   ::selection {
-    background: var(--color-navy-900);
-    color: var(--color-cream);
+    background: var(--color-ink);
+    color: var(--color-paper);
   }
 
   :focus-visible {
@@ -64,6 +78,17 @@
   select,
   textarea {
     font: inherit;
+  }
+}
+
+/* Vertical rhythm for page sections — one scale for the whole brand. */
+@utility section-y {
+  padding-block: 4.5rem;
+  @media (min-width: 768px) {
+    padding-block: 6.5rem;
+  }
+  @media (min-width: 1280px) {
+    padding-block: 8.5rem;
   }
 }
 
@@ -95,7 +120,7 @@
     font-family: var(--font-sans);
     font-size: 0.6875rem;
     font-weight: 700;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     line-height: 1.2;
   }

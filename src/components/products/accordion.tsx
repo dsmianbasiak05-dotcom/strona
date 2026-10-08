@@ -10,13 +10,13 @@ export function Accordion({ items }: { items: { title: string; content: ReactNod
   const baseId = useId();
 
   return (
-    <div className="border-t border-navy-900/15">
+    <div className="border-t border-ink/15">
       {items.map((item, i) => {
         const isOpen = open === i;
         const panelId = `${baseId}-panel-${i}`;
         const buttonId = `${baseId}-button-${i}`;
         return (
-          <div key={item.title} className="border-b border-navy-900/15">
+          <div key={item.title} className="border-b border-ink/15">
             <h3>
               <button
                 id={buttonId}
@@ -45,7 +45,7 @@ export function Accordion({ items }: { items: { title: string; content: ReactNod
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   className="overflow-hidden"
                 >
-                  <div className="pb-6 text-[15px] leading-relaxed text-navy-900/80">{item.content}</div>
+                  <div className="pb-6 text-[15px] leading-relaxed text-ink/80">{item.content}</div>
                 </motion.div>
               )}
             </AnimatePresence>

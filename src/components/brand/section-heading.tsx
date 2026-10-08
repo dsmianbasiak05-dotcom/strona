@@ -23,7 +23,7 @@ export function SectionHeading({
   return (
     <div className={cn("flex flex-col gap-6 md:flex-row md:items-end md:justify-between", className)}>
       <div>
-        <p className={cn("label mb-5 flex items-center gap-3", tone === "dark" ? "text-navy-500" : "text-cream/55")}>
+        <p className={cn("label mb-5 flex items-center gap-3", tone === "dark" ? "text-graphite" : "text-bone/55")}>
           <span className="tabular-nums">{index}</span>
           <span className="inline-block h-px w-8 bg-current" aria-hidden />
           {eyebrow}

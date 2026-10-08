@@ -3,9 +3,8 @@ import { getProducts } from "@/lib/commerce";
 import { PageIntro } from "@/components/ui/page-intro";
 import { Reveal, RevealLines } from "@/components/ui/reveal";
 import { ButtonLink } from "@/components/ui/button";
-import { Marquee } from "@/components/ui/marquee";
-import Link from "next/link";
-import { ProductMedia } from "@/components/product/product-media";
+import { Marquee } from "@/components/brand/marquee";
+import { ProductLineup } from "@/components/products/product-lineup";
 
 export const metadata: Metadata = {
   title: "About — marka kosmetyków do stylizacji włosów dla mężczyzn",
@@ -22,7 +21,7 @@ const principles = [
 ];
 
 export default async function AboutPage() {
-  const [product] = await getProducts();
+  const products = await getProducts();
 
   return (
     <>
@@ -30,37 +29,15 @@ export default async function AboutPage() {
         MONCRÉ to polska marka kosmetyków do stylizacji męskich włosów. Robimy mniej, ale lepiej.
       </PageIntro>
 
-      {product && (
-        <section className="grain grain-light relative overflow-hidden bg-navy-900 py-20 text-cream md:py-32" aria-labelledby="first-title">
-          <div className="container-x grid gap-10 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-4">
-              <p className="label text-cream/55">The first one</p>
-              <h2 id="first-title" className="display mt-4 text-7xl leading-[0.9] md:text-8xl">
-                {product.type}
-              </h2>
-              <p className="mt-4 text-lg text-cream/80">{product.tagline}</p>
-              <Link href={`/product/${product.slug}`} className="label link-underline mt-8 inline-block">
-                View product →
-              </Link>
-            </div>
-            <ul className="grid grid-cols-2 gap-3 lg:col-span-8">
-              {[0, 1].map((i) => (
-                <li key={i}>
-                  <Reveal delay={i * 0.08}>
-                    <Link href={`/product/${product.slug}`} className="group block" tabIndex={i === 0 ? 0 : -1}>
-                      <div className="relative aspect-[4/3] bg-cream">
-                        <div className="absolute inset-[12%] transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-[1.04]">
-                          <ProductMedia product={product} index={i} sizes="(min-width: 1024px) 30vw, 50vw" />
-                        </div>
-                      </div>
-                    </Link>
-                  </Reveal>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
+      <section aria-labelledby="lineup-title" className="section-y border-t border-ink/10">
+        <div className="container-x">
+          <p id="lineup-title" className="label mb-10 flex items-center gap-3 text-graphite md:mb-14">
+            <span className="inline-block h-px w-8 bg-current" aria-hidden />
+            The line-up
+          </p>
+          <ProductLineup products={products} />
+        </div>
+      </section>
 
       <section className="container-x grid gap-12 py-20 md:py-32 lg:grid-cols-12" aria-labelledby="manifesto-title">
         <div className="lg:col-span-7">
@@ -73,7 +50,7 @@ export default async function AboutPage() {
             Fryzura to pierwsza rzecz, którą widać. Mówi o Tobie więcej niż buty, kurtka czy zegarek. Dlatego nie powinna
             zależeć od skomplikowanej rutyny.
           </p>
-          <p className="text-navy-900/75">
+          <p className="text-ink/75">
             Zaczynamy od jednego produktu: MONCRÉ No.1 — glinki do włosów o efekcie mat + tekstura. Wkrótce w
             sprzedaży.
           </p>
@@ -83,21 +60,21 @@ export default async function AboutPage() {
         </Reveal>
       </section>
 
-      <section className="bg-cream py-20 md:py-28" aria-label="Zasady marki">
+      <section className="bg-bone py-20 md:py-28" aria-label="Zasady marki">
         <ol className="container-x grid gap-10 md:grid-cols-3 md:gap-8">
           {principles.map((p, i) => (
             <li key={p.k}>
-              <Reveal delay={i * 0.08} className="border-t border-navy-900/20 pt-6">
-                <p className="label text-navy-500 tabular-nums">0{i + 1}</p>
+              <Reveal delay={i * 0.08} className="border-t border-ink/20 pt-6">
+                <p className="label text-graphite tabular-nums">0{i + 1}</p>
                 <h3 className="display mt-4 text-6xl md:text-7xl">{p.k}.</h3>
-                <p className="mt-4 max-w-[34ch] text-[15px] leading-relaxed text-navy-900/75">{p.t}</p>
+                <p className="mt-4 max-w-[34ch] text-[15px] leading-relaxed text-ink/75">{p.t}</p>
               </Reveal>
             </li>
           ))}
         </ol>
       </section>
 
-      <Marquee items={["Simple products", "Strong results", "No unnecessary noise"]} className="display bg-navy-900 py-5 text-5xl leading-none text-cream md:text-7xl" />
+      <Marquee items={["Simple products", "Strong results", "No unnecessary noise"]} className="display bg-ink py-5 text-5xl leading-none text-bone md:text-7xl" />
     </>
   );
 }

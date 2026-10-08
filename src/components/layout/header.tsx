@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Menu, Search, ShoppingBag, User } from "lucide-react";
-import { Logo } from "@/components/ui/logo";
+import { Logo } from "@/components/brand/logo";
 import { useCart } from "@/store/cart";
 import { useFavorites } from "@/store/favorites";
 import { useUI } from "@/store/ui";
@@ -18,10 +18,11 @@ import { isPurchasable } from "@/lib/commerce";
 
 const featured = products[0];
 const featuredOnSale = featured ? isPurchasable(featured) : true;
-import { ProductMedia } from "@/components/product/product-media";
+import { ProductMedia } from "@/components/products/product-media";
+import { themeStyle } from "@/lib/theme";
 
 const iconBtn =
-  "relative grid size-10 place-items-center rounded-full transition-colors hover:bg-navy-900/6";
+  "relative grid size-10 place-items-center rounded-full transition-colors hover:bg-ink/6";
 
 export function Header() {
   const pathname = usePathname();
@@ -68,14 +69,14 @@ export function Header() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500",
         scrolled || megaOpen
-          ? "border-b border-navy-900/10 bg-paper"
+          ? "border-b border-ink/10 bg-paper"
           : "border-b border-transparent bg-transparent",
       )}
       onMouseLeave={scheduleCloseMega}
     >
       <a
         href="#main"
-        className="label sr-only z-50 bg-navy-900 px-4 py-3 text-cream focus:not-sr-only focus:absolute focus:top-2 focus:left-2"
+        className="label sr-only z-50 bg-ink px-4 py-3 text-bone focus:not-sr-only focus:absolute focus:top-2 focus:left-2"
       >
         Przejdź do treści
       </a>
@@ -144,7 +145,7 @@ export function Header() {
           >
             <Heart className="size-[18px]" strokeWidth={1.5} />
             {mounted && favCount > 0 && (
-              <span className="absolute top-2 right-2 size-1.5 rounded-full bg-navy-900" aria-hidden />
+              <span className="absolute top-2 right-2 size-1.5 rounded-full bg-ink" aria-hidden />
             )}
           </Link>
           <button
@@ -170,7 +171,7 @@ export function Header() {
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.4, opacity: 0 }}
                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute top-0.5 right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-navy-900 px-1 text-[10px] font-bold text-cream tabular-nums"
+                  className="absolute top-0.5 right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-ink px-1 text-[10px] font-bold text-bone tabular-nums"
                   aria-hidden
                 >
                   {count}
@@ -200,21 +201,21 @@ export function Header() {
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             onMouseEnter={openMega}
             onKeyDown={(e) => e.key === "Escape" && setMegaOpen(false)}
-            className="absolute inset-x-0 top-full hidden border-b border-navy-900/10 bg-paper lg:block"
+            className="absolute inset-x-0 top-full hidden border-b border-ink/10 bg-paper lg:block"
           >
             <div className="container-x grid grid-cols-12 gap-8 py-10">
               <div className="col-span-4 flex flex-col">
-                <p className="label mb-5 text-navy-500">Products</p>
+                <p className="label mb-5 text-graphite">Products</p>
                 <ul className="space-y-3">
                   {products.map((p) => (
                     <li key={p.id}>
                       <Link href={`/product/${p.slug}`} className="group block">
-                        <span className="display block text-5xl transition-colors duration-500 group-hover:text-navy-700">
+                        <span className="display block text-5xl transition-colors duration-500 group-hover:text-ink-700">
                           {p.type}
                         </span>
-                        <span className="mt-2 block text-sm text-navy-500">
+                        <span className="mt-2 block text-sm text-graphite">
                           {p.specs?.find((s) => s.label === "Rodzaj")?.value ?? p.tagline} ·{" "}
-                          <span className="text-navy-900 tabular-nums">{formatMoney(p.variants[0].price)}</span>
+                          <span className="text-ink tabular-nums">{formatMoney(p.variants[0].price)}</span>
                           {!isPurchasable(p) && " · Coming soon"}
                         </span>
                       </Link>
@@ -230,9 +231,9 @@ export function Header() {
                   {[0, 1].map((i) => (
                     <li key={i}>
                       <Link href={`/product/${featured.slug}`} className="group block" tabIndex={-1} aria-hidden>
-                        <div className="relative aspect-[16/10] overflow-hidden bg-cream transition-colors duration-500 group-hover:bg-cream-dark">
-                          <div className="absolute inset-[12%] transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-105">
-                            <ProductMedia product={featured} index={i} sizes="30vw" />
+                        <div style={themeStyle(featured.theme)} className="relative aspect-[16/10] overflow-hidden bg-product-bg">
+                          <div className="absolute inset-0 transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-105">
+                            <ProductMedia product={featured} role={i === 0 ? "set" : "packaging"} sizes="30vw" />
                           </div>
                         </div>
                       </Link>

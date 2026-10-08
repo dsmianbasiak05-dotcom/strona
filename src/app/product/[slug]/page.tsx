@@ -3,10 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getProducts, getRelatedProducts, isPurchasable } from "@/lib/commerce";
 import { siteConfig } from "@/config/site";
-import { ProductGallery } from "@/components/product/product-gallery";
-import { PurchasePanel } from "@/components/product/purchase-panel";
-import { ProductCard } from "@/components/product/product-card";
-import { Marquee } from "@/components/ui/marquee";
+import { ProductGallery } from "@/components/products/product-gallery";
+import { PurchasePanel } from "@/components/products/purchase-panel";
+import { ProductCard } from "@/components/products/product-card";
+import { ProductBand } from "@/components/products/product-band";
+import { themeStyle } from "@/lib/theme";
 import { RevealLines } from "@/components/ui/reveal";
 
 type Params = Promise<{ slug: string }>;
@@ -89,6 +90,7 @@ export default async function ProductPage({ params }: { params: Params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbLd]) }}
       />
+      <div style={themeStyle(product.theme)}>
       <article className="pt-14 md:pt-20 lg:pt-24">
         <div className="lg:container-x grid gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16">
           <div className="lg:col-span-7">
@@ -101,7 +103,7 @@ export default async function ProductPage({ params }: { params: Params }) {
 
         {included.length > 0 && (
           <section aria-labelledby="included-title" className="container-x mt-20 md:mt-28">
-            <h2 id="included-title" className="label mb-6 text-navy-500">
+            <h2 id="included-title" className="label mb-6 text-graphite">
               W zestawie
             </h2>
             <ul className="grid grid-cols-2 gap-x-3 gap-y-10 md:grid-cols-4 md:gap-x-5">
@@ -115,11 +117,7 @@ export default async function ProductPage({ params }: { params: Params }) {
         )}
       </article>
 
-      <Marquee
-        items={["MONCRÉ", product.type, "Style with purpose"]}
-        duration={34}
-        className="display mt-20 border-y border-navy-900/10 py-5 text-5xl leading-none md:mt-32 md:text-7xl"
-      />
+      <ProductBand product={product} />
 
       {related.length > 0 ? (
       <section aria-labelledby="related-title" className="container-x py-20 md:py-28">
@@ -142,6 +140,7 @@ export default async function ProductPage({ params }: { params: Params }) {
       ) : (
         <div className="h-20 md:h-28" aria-hidden />
       )}
+      </div>
     </>
   );
 }

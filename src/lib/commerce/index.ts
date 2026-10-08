@@ -1,5 +1,5 @@
 import { products } from "@/data/products";
-import type { Product, ProductCategory, SortKey, StyleKey } from "./types";
+import type { ImageRole, Product, ProductCategory, ProductImage, SortKey, StyleKey } from "./types";
 
 /**
  * Commerce data access layer.
@@ -18,6 +18,11 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
   return products.find((p) => p.slug === slug);
 }
 
+/** The product the home page leads with (data-driven, not hard-coded). */
+export async function getFeaturedProduct(): Promise<Product | undefined> {
+  return products.find((p) => p.featured) ?? products[0];
+}
+
 export async function getBestsellers(limit = 4): Promise<Product[]> {
   return products.filter((p) => p.bestseller).slice(0, limit);
 }
@@ -34,6 +39,16 @@ export async function getRelatedProducts(product: Product, limit = 4): Promise<P
 /** Synchronous lookup for client-side stores (cart, favorites). */
 export function getProductById(id: string): Product | undefined {
   return products.find((p) => p.id === id);
+}
+
+/** Pick an image by its job in the layout; falls back to the first image. */
+export function productImage(product: Product, role: ImageRole): ProductImage | undefined {
+  return product.images.find((img) => img.role === role) ?? product.images[0];
+}
+
+/** Display size: the single variant's title, or a count when several. */
+export function productSize(product: Product): string {
+  return product.variants.length === 1 ? product.variants[0].title : `${product.variants.length} warianty`;
 }
 
 /** Single switch for "can this be bought right now?" */
