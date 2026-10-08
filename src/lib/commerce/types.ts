@@ -62,6 +62,8 @@ export interface Product {
   bestseller?: boolean;
   /** Short key/value facts shown on the product page (only brand-confirmed data). */
   specs?: { label: string; value: string }[];
+  /** Brand-provided headline facts (EN), shown on the home page product section. */
+  highlights?: { label: string; value: string }[];
   /** Marks demo data that must be replaced before going live. */
   placeholder?: boolean;
 }

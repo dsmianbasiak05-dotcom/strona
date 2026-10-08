@@ -32,7 +32,7 @@ export function BrandStatement() {
           The brand
         </p>
         <div ref={ref} className="lg:col-span-8">
-          <h2 id="statement-title" className="display text-[19vw] leading-[0.9] md:text-[13vw] lg:text-[10.5vw] 2xl:text-[11rem]">
+          <h2 id="statement-title" className="display text-[16vw] leading-[0.9] md:text-[13vw] lg:text-[10.5vw] 2xl:text-[11rem]">
             <span className="sr-only">Built for the way you wear it.</span>
             <span aria-hidden>
               {lines.map((line, li) => (

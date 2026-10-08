@@ -17,6 +17,7 @@ import { products } from "@/data/products";
 import { isPurchasable } from "@/lib/commerce";
 
 const featured = products[0];
+const featuredOnSale = featured ? isPurchasable(featured) : true;
 import { ProductMedia } from "@/components/product/product-media";
 
 const iconBtn =
@@ -82,17 +83,17 @@ export function Header() {
       <div
         className={cn(
           "container-x grid grid-cols-[1fr_auto_1fr] items-center transition-[height] duration-500 ease-[var(--ease-premium)]",
-          scrolled ? "h-14 md:h-16" : "h-16 md:h-20",
+          scrolled ? "h-14 md:h-16" : "h-14 md:h-[72px]",
         )}
       >
         {/* Left — logo */}
         <div className="flex items-center">
-          <Logo className={cn("transition-[font-size] duration-500", scrolled ? "md:text-[1.6rem]" : "md:text-[1.9rem]")} />
+          <Logo className={cn("transition-[font-size] duration-500", scrolled ? "text-[1.45rem] md:text-[1.5rem]" : "text-[1.45rem] md:text-[1.75rem]")} />
         </div>
 
         {/* Center — desktop nav */}
         <nav aria-label="Główna nawigacja" className="hidden lg:block">
-          <ul className="flex items-center gap-10">
+          <ul className="flex items-center gap-9">
             <li>
               <Link href="/shop" className={cn("label link-underline inline-block py-2", isActive("/shop") && "bg-[length:100%_1px]")}>
                 Shop
@@ -124,19 +125,24 @@ export function Header() {
         <div className="lg:hidden" />
 
         {/* Right — actions */}
-        <div className="-mr-2 flex items-center justify-end gap-0.5 md:gap-1">
+        <div className="-mr-2 flex items-center justify-end gap-0.5">
+          {!featuredOnSale && (
+            <Link href="/#waitlist" className="label link-underline mr-4 hidden py-2 lg:inline-block">
+              Waitlist
+            </Link>
+          )}
           <button type="button" className={iconBtn} aria-label="Szukaj" onClick={() => setSearchOpen(true)}>
-            <Search className="size-[19px]" strokeWidth={1.6} />
+            <Search className="size-[18px]" strokeWidth={1.5} />
           </button>
           <Link href="/account" className={cn(iconBtn, "hidden lg:grid")} aria-label="Konto">
-            <User className="size-[19px]" strokeWidth={1.6} />
+            <User className="size-[18px]" strokeWidth={1.5} />
           </Link>
           <Link
             href="/favorites"
             className={cn(iconBtn, "hidden lg:grid")}
             aria-label={`Ulubione${mounted && favCount ? ` (${favCount})` : ""}`}
           >
-            <Heart className="size-[19px]" strokeWidth={1.6} />
+            <Heart className="size-[18px]" strokeWidth={1.5} />
             {mounted && favCount > 0 && (
               <span className="absolute top-2 right-2 size-1.5 rounded-full bg-navy-900" aria-hidden />
             )}
@@ -154,7 +160,7 @@ export function Header() {
               transition={{ type: "spring", stiffness: 500, damping: 14 }}
               className="grid place-items-center"
             >
-              <ShoppingBag className="size-[19px]" strokeWidth={1.6} />
+              <ShoppingBag className="size-[18px]" strokeWidth={1.5} />
             </motion.span>
             <AnimatePresence>
               {count > 0 && (
@@ -178,7 +184,7 @@ export function Header() {
             aria-label="Otwórz menu"
             onClick={() => setMenuOpen(true)}
           >
-            <Menu className="size-[21px]" strokeWidth={1.6} />
+            <Menu className="size-5" strokeWidth={1.5} />
           </button>
         </div>
       </div>

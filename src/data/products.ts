@@ -21,6 +21,13 @@ export const products: Product[] = [
     tagline: "For daily chaos.", // printed on the pack
     description:
       "MONCRÉ No.1 — glinka do włosów. Efekt mat + tekstura, utrwalenie średnie do mocnego. Do wszystkich rodzajów włosów.",
+    // Exactly as provided by the brand.
+    highlights: [
+      { label: "Type", value: "Matte clay" },
+      { label: "Effect", value: "Mat + texture" },
+      { label: "Hold", value: "Medium to strong hold" },
+      { label: "Size", value: "75 ml" },
+    ],
     specs: [
       { label: "Rodzaj", value: "Glinka do włosów" },
       { label: "Efekt", value: "Mat + tekstura" },

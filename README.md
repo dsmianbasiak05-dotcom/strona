@@ -51,7 +51,12 @@ src/
 | E-mail, social, progi dostawy | `src/config/site.ts` |
 | Regulamin, polityka prywatności, cookies | sekcje na `/contact` |
 
-## Zdjęcia produktów — pipeline
+## Zdjęcia produktów
+
+- `public/images/products/no-1/*.jpg` — oficjalne rendery 2000 px (zestaw, słoik przód/tył, wieczko, pudełko), używane bez zmian; kadrowane wyłącznie przez CSS `object-fit`. Lista i opisy w `src/data/media.ts`. Strona główna korzysta z tych plików.
+- `public/images/products/matte-clay/*.png` — wcześniejsze packshoty z przezroczystym tłem (karty, galeria produktu, koszyk).
+
+## Zdjęcia produktów — pipeline (packshoty PNG)
 
 Packshoty MONCRÉ No.1 powstały z dostarczonych renderów: usunięcie neutralnego szarego tła studia
 (maska na podstawie chromatyczności — piksele opakowania nie są modyfikowane), rozdzielenie słoika i pudełka,

@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     formats: ["image/avif", "image/webp"],
+    // 85 for the official product renders (fine label typography).
+    qualities: [75, 85],
   },
   async redirects() {
     // Product was renamed from "No.1 Matte Clay" to "MONCRÉ No.1".

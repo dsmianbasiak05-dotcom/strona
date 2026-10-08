@@ -1,20 +1,17 @@
 import { notFound } from "next/navigation";
 import { Hero } from "@/components/home/hero";
-import { Essentials } from "@/components/home/essentials";
+import { No1Section } from "@/components/home/no1-section";
 import { BrandStatement } from "@/components/home/brand-statement";
-import { ProductShowcase } from "@/components/home/product-showcase";
-import { WhyMoncre } from "@/components/home/why-moncre";
-import { Community } from "@/components/home/community";
-import { Newsletter } from "@/components/home/newsletter";
+import { ProductVisuals } from "@/components/home/product-visuals";
+import { DailyChaos } from "@/components/home/daily-chaos";
+import { WaitlistSection } from "@/components/home/waitlist-section";
 import { Marquee } from "@/components/ui/marquee";
 import { getProducts } from "@/lib/commerce";
 import { siteConfig } from "@/config/site";
 
-const marqueeItems = ["MONCRÉ", "Style with purpose", "Built for your look"];
-
 export default async function HomePage() {
-  const [featured] = await getProducts();
-  if (!featured) notFound();
+  const [product] = await getProducts();
+  if (!product) notFound();
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -27,17 +24,17 @@ export default async function HomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
-      <Hero product={featured} />
+      <Hero product={product} />
       <Marquee
-        items={marqueeItems}
-        className="display bg-navy-900 py-4 text-[2.4rem] leading-none text-cream md:py-6 md:text-[4.5rem]"
+        items={["MONCRÉ No.1", "For daily chaos", "Coming soon"]}
+        duration={36}
+        className="display bg-navy-900 py-3.5 text-[2rem] leading-none text-cream md:py-5 md:text-[3.5rem]"
       />
-      <Essentials product={featured} />
+      <No1Section product={product} />
       <BrandStatement />
-      <ProductShowcase product={featured} />
-      <WhyMoncre />
-      <Community />
-      <Newsletter />
+      <ProductVisuals />
+      <DailyChaos />
+      <WaitlistSection product={product} />
     </>
   );
 }
