@@ -129,7 +129,7 @@ export function Header() {
         {/* Right — actions */}
         <div className="-mr-2 flex items-center justify-end gap-0.5">
           {!featuredOnSale && (
-            <Link href="/#waitlist" className="label link-underline mr-4 hidden py-2 lg:inline-block">
+            <Link href="/#waitlist" className="label link-underline mr-4 hidden py-2 xl:inline-block">
               Lista oczekujących
             </Link>
           )}
