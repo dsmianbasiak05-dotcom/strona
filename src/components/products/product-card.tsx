@@ -35,19 +35,14 @@ export function ProductCard({
   const price = productPrice(product);
   const size = productSize(product);
   const multiPrice = product.variants.length > 1;
-  const hasAlt = product.images.some((i) => i.role === "packaging");
   const href = `/product/${product.slug}`;
   const feature = variant === "feature";
 
   const media = (
     <div className={cn("relative overflow-hidden bg-product-bg", feature ? "aspect-[5/4] lg:col-span-7" : "aspect-[4/5]")}>
+      {/* One opaque image per card — no cross-fade layering (avoids ghosting). */}
       <Link href={href} className="absolute inset-0 block" aria-label={product.name} tabIndex={-1}>
-        <div
-          className={cn(
-            "absolute inset-0 transition-[transform,opacity] duration-[900ms] ease-[var(--ease-premium)] group-hover:scale-[1.035]",
-            hasAlt && "md:group-hover:opacity-0",
-          )}
-        >
+        <div className="absolute inset-0 transition-transform duration-[900ms] ease-[var(--ease-premium)] group-hover:scale-[1.035]">
           <ProductMedia
             product={product}
             role="front"
@@ -55,11 +50,6 @@ export function ProductCard({
             sizes={sizes ?? (feature ? "(min-width: 1024px) 56vw, 100vw" : "(min-width: 1024px) 33vw, 50vw")}
           />
         </div>
-        {hasAlt && (
-          <div className="absolute inset-0 hidden scale-[1.04] opacity-0 transition-[transform,opacity] duration-[900ms] ease-[var(--ease-premium)] group-hover:scale-100 group-hover:opacity-100 md:block">
-            <ProductMedia product={product} role="packaging" sizes={sizes ?? "(min-width: 1024px) 33vw, 50vw"} />
-          </div>
-        )}
       </Link>
 
       {/* Product accent: a hairline in the product's own colour */}

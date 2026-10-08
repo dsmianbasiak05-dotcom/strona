@@ -66,8 +66,8 @@ export const products: Product[] = [
   // ⚠️ DEMO / CONCEPT — NOT A MONCRÉ PRODUCT.
   // Exists only to show how the shop handles a second product with a
   // different palette (espresso). No price, no properties, no claims.
-  // Image: mock-up of the No.1 jar geometry recoloured to espresso, with all
-  // print (logo, No.1, slogans) removed — not a real or planned pack.
+  // Image: the No.1 jar render recoloured to espresso (MONCRÉ print kept,
+  // "No.1 matte clay" removed) — a colourway concept, not a real or planned pack.
   // To remove: delete this entry and /public/images/products/demo-espresso.
   // ─────────────────────────────────────────────────────────────────────
   {
@@ -98,9 +98,9 @@ export const products: Product[] = [
       {
         role: "front",
         // Mock-up made from the No.1 jar render (scripts/make-demo-espresso.py):
-        // same geometry/lighting, all print removed, navy → espresso.
-        src: "/images/products/demo-espresso/jar-front.jpg",
-        alt: "DEMO / CONCEPT — słoik w kolorze espresso, bez nadruku (wizualizacja systemu kolorów)",
+        // same jar, lighting and MONCRÉ print; navy → espresso; "No.1" line removed.
+        src: "/images/products/demo-espresso/jar-front-espresso.jpg",
+        alt: "DEMO / CONCEPT — słoik MONCRÉ w wariancie kolorystycznym espresso (wizualizacja systemu kolorów)",
         width: 2000,
         height: 2000,
         focus: "50% 52%",

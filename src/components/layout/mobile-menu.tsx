@@ -8,11 +8,13 @@ import { useUI } from "@/store/ui";
 import { useDialog } from "@/hooks/use-dialog";
 import { Logo } from "@/components/brand/logo";
 import { siteConfig } from "@/config/site";
-import { products } from "@/data/products";
 import { formatMoney } from "@/lib/format";
-import { isPurchasable } from "@/lib/commerce";
+import { isPurchasable, listProducts, productPrice } from "@/lib/commerce";
 import { ProductMedia } from "@/components/products/product-media";
 import { themeStyle } from "@/lib/theme";
+
+// Same source as the shop listing — new products appear here automatically.
+const menuProducts = listProducts({ includeDemo: true });
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -91,7 +93,9 @@ export function MobileMenu() {
             >
               <p className="label mb-4 text-bone/50">Produkty</p>
               <ul className="space-y-2">
-                {products.filter((p) => !p.demo).map((p) => (
+                {menuProducts.map((p) => {
+                  const price = productPrice(p);
+                  return (
                   <li key={p.id}>
                     <Link href={`/product/${p.slug}`} onClick={close} className="flex items-center gap-4">
                       <div style={themeStyle(p.theme)} className="relative aspect-[4/3] w-28 shrink-0 overflow-hidden bg-product-bg">
@@ -102,13 +106,18 @@ export function MobileMenu() {
                       <div className="min-w-0">
                         <p className="display text-3xl leading-none">{p.type}</p>
                         <p className="mt-2 text-sm text-bone/70 tabular-nums">
-                          {formatMoney(p.variants[0].price)}
-                          {!isPurchasable(p) && " · Coming soon"}
+                          {p.demo ? "Demo / Concept" : (
+                            <>
+                              {price && formatMoney(price)}
+                              {!isPurchasable(p) && " · Coming soon"}
+                            </>
+                          )}
                         </p>
                       </div>
                     </Link>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             </motion.div>
 

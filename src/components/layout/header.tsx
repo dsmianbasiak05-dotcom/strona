@@ -13,13 +13,14 @@ import { useMounted } from "@/hooks/use-mounted";
 import { useCartDetails } from "@/hooks/use-cart-details";
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/lib/format";
-import { products } from "@/data/products";
-import { isPurchasable } from "@/lib/commerce";
+import { isPurchasable, listProducts, productPrice } from "@/lib/commerce";
 
-const featured = products[0];
-const featuredOnSale = featured ? isPurchasable(featured) : true;
+// Same source as the shop listing — new products appear in the menu automatically.
+const menuProducts = listProducts({ includeDemo: true });
+const featuredOnSale = listProducts().some((p) => isPurchasable(p)) || listProducts().length === 0;
 import { ProductMedia } from "@/components/products/product-media";
 import { themeStyle } from "@/lib/theme";
+import { StatusBadge } from "@/components/products/coming-soon-badge";
 
 const iconBtn =
   "relative grid size-10 place-items-center rounded-full transition-colors hover:bg-ink/6";
@@ -207,40 +208,48 @@ export function Header() {
               <div className="col-span-4 flex flex-col">
                 <p className="label mb-5 text-graphite">Produkty</p>
                 <ul className="space-y-3">
-                  {products.filter((p) => !p.demo).map((p) => (
-                    <li key={p.id}>
-                      <Link href={`/product/${p.slug}`} className="group block">
-                        <span className="display block text-5xl transition-colors duration-500 group-hover:text-ink-700">
-                          {p.type}
-                        </span>
-                        <span className="mt-2 block text-sm text-graphite">
-                          {p.specs?.find((s) => s.label === "Rodzaj")?.value ?? p.tagline} ·{" "}
-                          <span className="text-ink tabular-nums">{formatMoney(p.variants[0].price)}</span>
-                          {!isPurchasable(p) && " · Coming soon"}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
+                  {menuProducts.map((p) => {
+                    const price = productPrice(p);
+                    return (
+                      <li key={p.id}>
+                        <Link href={`/product/${p.slug}`} className="group block">
+                          <span className="display block text-5xl transition-colors duration-500 group-hover:text-ink-700">
+                            {p.type}
+                          </span>
+                          <span className="mt-2 block text-sm text-graphite">
+                            {p.categoryLabel}
+                            {price && (
+                              <>
+                                {" · "}
+                                <span className="text-ink tabular-nums">{formatMoney(price)}</span>
+                              </>
+                            )}
+                            {p.demo ? " · Demo / Concept" : !isPurchasable(p) && " · Coming soon"}
+                          </span>
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
                 <Link href="/shop" className="label link-underline mt-auto self-start pt-8">
                   Cały sklep →
                 </Link>
               </div>
-              {featured && (
-                <ul className="col-span-8 grid grid-cols-2 gap-4">
-                  {[0, 1].map((i) => (
-                    <li key={i}>
-                      <Link href={`/product/${featured.slug}`} className="group block" tabIndex={-1} aria-hidden>
-                        <div style={themeStyle(featured.theme)} className="relative aspect-[16/10] overflow-hidden bg-product-bg">
-                          <div className="absolute inset-0 transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-105">
-                            <ProductMedia product={featured} role={i === 0 ? "set" : "packaging"} sizes="30vw" />
-                          </div>
+              <ul className="col-span-8 grid grid-cols-2 gap-4">
+                {menuProducts.slice(0, 2).map((p) => (
+                  <li key={p.id}>
+                    <Link href={`/product/${p.slug}`} className="group block" tabIndex={-1} aria-hidden>
+                      <div style={themeStyle(p.theme)} className="relative aspect-[16/10] overflow-hidden bg-product-bg">
+                        <div className="absolute inset-0 transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-105">
+                          <ProductMedia product={p} role="front" sizes="30vw" />
                         </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
+                        <span aria-hidden className="absolute inset-x-0 bottom-0 h-1 bg-product" />
+                        <StatusBadge product={p} className="absolute top-3 left-3" />
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </motion.div>
         )}

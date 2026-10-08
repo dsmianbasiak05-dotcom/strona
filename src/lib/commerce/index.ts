@@ -14,7 +14,15 @@ import type { ImageRole, Money, Product, ProductCategory, ProductImage, SortKey,
  * Catalogue. Demo/concept entries are only included where explicitly asked
  * (the shop listing) — real-product surfaces never show them.
  */
-export async function getProducts({ includeDemo = false }: { includeDemo?: boolean } = {}): Promise<Product[]> {
+export async function getProducts(options: { includeDemo?: boolean } = {}): Promise<Product[]> {
+  return listProducts(options);
+}
+
+/**
+ * Synchronous form of getProducts for client UI (menus). Shop and menus use
+ * the same source, so any new product shows up everywhere at once.
+ */
+export function listProducts({ includeDemo = false }: { includeDemo?: boolean } = {}): Product[] {
   return includeDemo ? products : products.filter((p) => !p.demo);
 }
 
