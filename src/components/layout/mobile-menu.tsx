@@ -1,0 +1,138 @@
+"use client";
+
+import Link from "next/link";
+import { useRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
+import { useUI } from "@/store/ui";
+import { useDialog } from "@/hooks/use-dialog";
+import { Logo } from "@/components/ui/logo";
+import { siteConfig } from "@/config/site";
+import { styles } from "@/data/products";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const primary = [
+  { href: "/shop", label: "Shop" },
+  { href: "/shop?category=sets", label: "Sets" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
+const secondary = [
+  { href: "/account", label: "Account" },
+  { href: "/favorites", label: "Favorites" },
+  { href: "/cart", label: "Cart" },
+];
+
+export function MobileMenu() {
+  const open = useUI((s) => s.menuOpen);
+  const setOpen = useUI((s) => s.setMenuOpen);
+  const ref = useRef<HTMLDivElement>(null);
+  const close = () => setOpen(false);
+  useDialog(open, close, ref);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          ref={ref}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
+          className="fixed inset-0 z-[80] flex flex-col overflow-y-auto bg-navy-900 text-cream lg:hidden"
+          initial={{ clipPath: "inset(0 0 100% 0)" }}
+          animate={{ clipPath: "inset(0 0 0% 0)" }}
+          exit={{ clipPath: "inset(0 0 100% 0)" }}
+          transition={{ duration: 0.7, ease }}
+        >
+          <div className="container-x flex h-16 shrink-0 items-center justify-between">
+            <Logo href="/" />
+            <button
+              type="button"
+              onClick={close}
+              className="-mr-2 grid size-10 place-items-center rounded-full hover:bg-cream/10"
+              aria-label="Zamknij menu"
+            >
+              <X className="size-6" strokeWidth={1.5} />
+            </button>
+          </div>
+
+          <nav aria-label="Menu mobilne" className="container-x flex flex-1 flex-col pt-6 pb-8">
+            <ul>
+              {primary.map((item, i) => (
+                <li key={item.href} className="overflow-hidden border-b border-cream/12">
+                  <motion.div
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.8, ease, delay: 0.2 + i * 0.06 }}
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={close}
+                      className="display flex items-center justify-between py-3 text-[15vw] leading-[0.95] sm:text-7xl"
+                    >
+                      {item.label}
+                      <span className="text-base text-cream/40">0{i + 1}</span>
+                    </Link>
+                  </motion.div>
+                </li>
+              ))}
+            </ul>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.55, duration: 0.6 }}
+              className="mt-10"
+            >
+              <p className="label mb-4 text-cream/50">Shop by style</p>
+              <ul className="flex flex-wrap gap-2">
+                {styles.map((s) => (
+                  <li key={s.key}>
+                    <Link
+                      href={`/shop?style=${s.key}`}
+                      onClick={close}
+                      className="label inline-flex h-10 items-center border border-cream/25 px-4 transition-colors hover:bg-cream hover:text-navy-900"
+                    >
+                      {s.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.65, duration: 0.6 }}
+              className="mt-auto flex items-end justify-between gap-6 pt-12"
+            >
+              <ul className="space-y-3">
+                {secondary.map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href} onClick={close} className="label link-underline">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <ul className="space-y-3 text-right">
+                <li>
+                  <a href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer" className="label link-underline">
+                    Instagram
+                  </a>
+                </li>
+                <li>
+                  <a href={siteConfig.social.tiktok} target="_blank" rel="noopener noreferrer" className="label link-underline">
+                    TikTok
+                  </a>
+                </li>
+              </ul>
+            </motion.div>
+          </nav>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
