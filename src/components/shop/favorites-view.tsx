@@ -14,7 +14,7 @@ export function FavoritesView() {
 
   return (
     <>
-      <PageIntro eyebrow="Saved for later" lines={["Favorites"]}>
+      <PageIntro size="sm" eyebrow="Saved for later" lines={["Favorites"]}>
         Produkty, które zapisałeś. Przechowywane lokalnie w tej przeglądarce.
       </PageIntro>
       <div className="container-x pb-24 md:pb-32">

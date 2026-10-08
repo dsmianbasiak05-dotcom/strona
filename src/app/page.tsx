@@ -20,10 +20,24 @@ export default async function HomePage() {
     getProductBySlug("matte-clay"),
   ]);
 
-  const styleItems = styles.map((s) => ({
-    ...s,
-    count: all.filter((p) => p.styles.includes(s.key)).length,
-  }));
+  // Key product per style — shown inside the expanded style panel.
+  const keyProduct: Record<string, string> = {
+    matte: "matte-clay",
+    textured: "texture-powder",
+    volume: "sea-salt-spray",
+    slick: "pomade",
+    natural: "sea-salt-spray",
+  };
+  const styleItems = styles.map((s) => {
+    const key = all.find((p) => p.slug === keyProduct[s.key]);
+    return {
+      ...s,
+      count: all.filter((p) => p.styles.includes(s.key)).length,
+      product: key
+        ? { name: key.type, shape: key.packaging, size: key.variants[0].title }
+        : undefined,
+    };
+  });
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -36,7 +50,7 @@ export default async function HomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
-      <Hero />
+      <Hero products={bestsellers} />
       <Marquee
         items={marqueeItems}
         className="display bg-navy-900 py-4 text-[2.4rem] leading-none text-cream md:py-6 md:text-[4.5rem]"

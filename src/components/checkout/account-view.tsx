@@ -20,7 +20,7 @@ export function AccountView() {
 
   return (
     <>
-      <PageIntro eyebrow="Account" lines={mode === "login" ? ["Welcome", "back."] : ["Join", "MONCRÉ."]} key={mode} />
+      <PageIntro size="sm" eyebrow="Account" lines={mode === "login" ? ["Welcome", "back."] : ["Join", "MONCRÉ."]} key={mode} />
       <div className="container-x grid gap-16 pb-24 md:pb-32 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <div role="tablist" aria-label="Logowanie lub rejestracja" className="flex border-b border-navy-900/15">

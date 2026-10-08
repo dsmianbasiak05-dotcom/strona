@@ -7,7 +7,6 @@ import { ProductVisual } from "@/components/product/product-visual";
 import { AddToCartButton } from "@/components/product/add-to-cart-button";
 import { ButtonLink } from "@/components/ui/button";
 import { formatMoney } from "@/lib/format";
-import { lowestPrice } from "@/lib/commerce";
 
 function Step({
   progress,
@@ -77,7 +76,7 @@ export function ProductShowcase({ product }: { product: Product }) {
   }
 
   return (
-    <section ref={ref} aria-labelledby="showcase-title" className="relative h-[260vh] bg-navy-900 text-cream md:h-[300vh]">
+    <section ref={ref} aria-labelledby="showcase-title" className="relative h-[220vh] bg-navy-900 text-cream md:h-[300vh]">
       <div className="grain grain-light sticky top-0 flex h-[100svh] flex-col overflow-hidden">
         <div className="container-x flex items-start justify-between pt-20 md:pt-28">
           <p className="label flex items-center gap-3 text-cream/55">
@@ -128,7 +127,7 @@ export function ProductShowcase({ product }: { product: Product }) {
           className="absolute inset-x-4 bottom-6 md:inset-x-auto md:right-12 md:bottom-12"
         >
           <div className="grid grid-cols-[1fr_auto] items-center gap-2 md:flex md:gap-3">
-            <AddToCartButton product={product} variant="light" size="md" className="md:h-16 md:px-10" label={`Add — ${formatMoney(lowestPrice(product))}`} />
+            <AddToCartButton product={product} variant="light" size="md" className="md:h-16 md:px-10" label={`Add ${product.variants[0].title} — ${formatMoney(product.variants[0].price)}`} />
             <ButtonLink href={`/product/${product.slug}`} variant="outline-light" size="md" className="md:h-16 md:px-10">
               Details
             </ButtonLink>

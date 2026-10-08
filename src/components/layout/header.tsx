@@ -12,6 +12,7 @@ import { useUI } from "@/store/ui";
 import { useMounted } from "@/hooks/use-mounted";
 import { useCartDetails } from "@/hooks/use-cart-details";
 import { cn } from "@/lib/utils";
+import { formatMoney } from "@/lib/format";
 import { products, styles } from "@/data/products";
 import { ProductVisual } from "@/components/product/product-visual";
 
@@ -63,7 +64,7 @@ export function Header() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500",
         scrolled || megaOpen
-          ? "border-b border-navy-900/10 bg-paper/88 backdrop-blur-xl"
+          ? "border-b border-navy-900/10 bg-paper"
           : "border-b border-transparent bg-transparent",
       )}
       onMouseLeave={scheduleCloseMega}
@@ -214,12 +215,15 @@ export function Header() {
                   .map((p) => (
                     <li key={p.id}>
                       <Link href={`/product/${p.slug}`} className="group block">
-                        <div className="aspect-[4/5] overflow-hidden bg-cream p-6">
+                        <div className="aspect-square overflow-hidden bg-cream p-[12%] transition-colors duration-500 group-hover:bg-cream-dark">
                           <div className="h-full w-full transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-105">
                             <ProductVisual shape={p.packaging} label={p.type} size={p.variants[0].title} />
                           </div>
                         </div>
-                        <p className="label mt-3">{p.type}</p>
+                        <div className="mt-3 flex items-baseline justify-between gap-2">
+                          <p className="label">{p.type}</p>
+                          <p className="text-sm text-navy-500 tabular-nums">{formatMoney(p.variants[0].price)}</p>
+                        </div>
                       </Link>
                     </li>
                   ))}

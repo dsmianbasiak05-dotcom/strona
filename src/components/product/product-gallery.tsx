@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import type { Product } from "@/lib/commerce/types";
 import { cn } from "@/lib/utils";
 import { ProductMedia } from "./product-media";
-import { ProductVisual } from "./product-visual";
 
 /**
  * Desktop: vertical editorial stack. Mobile: swipeable snap carousel.
@@ -23,11 +22,10 @@ export function ProductGallery({ product }: { product: Product }) {
       node: (
         <div className="relative h-full w-full">
           <div className="absolute top-1/2 left-1/2 aspect-square w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-navy-800" />
-          <ProductVisual
-            shape={product.packaging}
-            label={product.type.split("—")[0].trim()}
-            size={product.variants[0]?.title}
+          <ProductMedia
+            product={product}
             shadow={false}
+            sizes="(min-width: 1024px) 29vw, 100vw"
             className="relative drop-shadow-[0_40px_40px_rgba(0,0,0,0.4)]"
           />
         </div>

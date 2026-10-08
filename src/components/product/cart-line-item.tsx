@@ -40,8 +40,8 @@ export function CartLineItem({ line, onNavigate }: { line: ResolvedLine; onNavig
             >
               {line.product.name.replace("MONCRÉ ", "")}
             </Link>
-            <p className="mt-0.5 text-[13px] text-navy-500">
-              {line.product.type} · {line.variant.title}
+            <p className="mt-0.5 text-[13px] text-navy-500 first-letter:uppercase">
+              {line.product.category === "sets" ? line.product.type.replace("Set — ", "Set · ") : line.variant.title}
             </p>
           </div>
           <p className="shrink-0 text-[15px] font-semibold tabular-nums">{formatMoney(line.total)}</p>

@@ -31,7 +31,7 @@ export function ProductCard({
   const multiPrice = product.variants.length > 1;
 
   return (
-    <article className={cn("group relative flex flex-col", className)}>
+    <article className={cn("group relative flex h-full flex-col", className)}>
       <div className="relative aspect-[4/5] overflow-hidden bg-cream">
         <Link
           href={`/product/${product.slug}`}
@@ -40,7 +40,7 @@ export function ProductCard({
           tabIndex={-1}
         >
           {/* Primary image */}
-          <div className="absolute inset-0 p-[5%] transition-[transform,opacity] duration-[900ms] ease-[var(--ease-premium)] group-hover:scale-[1.04] md:group-hover:opacity-0">
+          <div className="absolute inset-0 p-[9%] transition-[transform,opacity] duration-[900ms] ease-[var(--ease-premium)] group-hover:scale-[1.04] md:group-hover:opacity-0">
             <ProductMedia product={product} priority={priority} sizes={sizes} />
           </div>
           {/* Hover image: detail crop on stone background */}
@@ -85,13 +85,9 @@ export function ProductCard({
           <p className="mt-3 max-w-[34ch] text-sm leading-relaxed text-navy-900/75">{product.tagline}</p>
         )}
         {/* Mobile: explicit add button (no hover on touch) */}
-        <AddToCartButton
-          product={product}
-          size="sm"
-          variant="secondary"
-          className="mt-4 w-full md:hidden"
-          label="Add to cart"
-        />
+        <div className="mt-auto pt-4 md:hidden">
+          <AddToCartButton product={product} size="sm" variant="secondary" className="w-full" label="Add to cart" />
+        </div>
       </div>
     </article>
   );

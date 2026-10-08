@@ -13,7 +13,7 @@ export function CartView() {
 
   return (
     <>
-      <PageIntro eyebrow={mounted ? `${count} items` : "Your bag"} lines={["Your cart"]} />
+      <PageIntro size="sm" eyebrow={mounted ? `${count} items` : "Your bag"} lines={["Your cart"]} />
       <div className="container-x pb-24 md:pb-32">
         {mounted && lines.length === 0 ? (
           <div className="border-t border-navy-900/15 py-20 text-center">
@@ -25,7 +25,7 @@ export function CartView() {
           </div>
         ) : (
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <ul className="divide-y divide-navy-900/15 border-y border-navy-900/15 lg:col-span-8">
+            <ul className="divide-y divide-navy-900/15 self-start border-y border-navy-900/15 lg:col-span-8">
               <AnimatePresence initial={false}>
                 {lines.map((line) => (
                   <motion.li key={line.variantId} layout exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.4 }}>

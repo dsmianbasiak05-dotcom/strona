@@ -8,7 +8,8 @@ import { useUI } from "@/store/ui";
 import { useDialog } from "@/hooks/use-dialog";
 import { Logo } from "@/components/ui/logo";
 import { siteConfig } from "@/config/site";
-import { styles } from "@/data/products";
+import { products, styles } from "@/data/products";
+import { ProductVisual } from "@/components/product/product-visual";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -58,7 +59,7 @@ export function MobileMenu() {
             </button>
           </div>
 
-          <nav aria-label="Menu mobilne" className="container-x flex flex-1 flex-col pt-6 pb-8">
+          <nav aria-label="Menu mobilne" className="container-x flex flex-1 flex-col pt-2 pb-8">
             <ul>
               {primary.map((item, i) => (
                 <li key={item.href} className="overflow-hidden border-b border-cream/12">
@@ -70,7 +71,7 @@ export function MobileMenu() {
                     <Link
                       href={item.href}
                       onClick={close}
-                      className="display flex items-center justify-between py-3 text-[15vw] leading-[0.95] sm:text-7xl"
+                      className="display flex items-center justify-between py-2.5 text-[13vw] leading-[0.95] sm:text-7xl"
                     >
                       {item.label}
                       <span className="text-base text-cream/40">0{i + 1}</span>
@@ -81,10 +82,33 @@ export function MobileMenu() {
             </ul>
 
             <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.6 }}
+              className="mt-8"
+            >
+              <p className="label mb-4 text-cream/50">Products</p>
+              <ul className="grid grid-cols-4 gap-2">
+                {products
+                  .filter((p) => p.category !== "sets")
+                  .map((p) => (
+                    <li key={p.id}>
+                      <Link href={`/product/${p.slug}`} onClick={close} className="block">
+                        <div className="aspect-[4/5] bg-navy-800 p-2">
+                          <ProductVisual shape={p.packaging} label={p.type} size={p.variants[0].title} shadow={false} />
+                        </div>
+                        <p className="label mt-2 text-[9px] leading-tight text-cream/80">{p.type}</p>
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </motion.div>
+
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.55, duration: 0.6 }}
-              className="mt-10"
+              className="mt-8"
             >
               <p className="label mb-4 text-cream/50">Shop by style</p>
               <ul className="flex flex-wrap gap-2">

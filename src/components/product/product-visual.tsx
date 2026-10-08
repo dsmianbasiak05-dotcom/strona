@@ -18,6 +18,14 @@ interface ProductVisualProps {
   className?: string;
   /** Hide the ground shadow (e.g. on dark backgrounds). */
   shadow?: boolean;
+  /** For sets: the packaging that is actually inside the box. */
+  items?: SetItem[];
+}
+
+export interface SetItem {
+  shape: Exclude<PackagingShape, "set">;
+  label: string;
+  size?: string;
 }
 
 const NAVY = "#171936";
@@ -148,7 +156,48 @@ interface GroupProps {
   s?: number;
 }
 
-const shadowY: Record<PackagingShape, number> = { jar: 352, shaker: 392, spray: 420, set: 410 };
+const ShapeMap = { jar: Jar, shaker: Shaker, spray: Spray } as const;
+
+/** Arranges the set's real contents: tall pieces at the back, jars in front. */
+function SetComposition({ id, items, label, size }: { id: string; items?: SetItem[]; label: string; size?: string }) {
+  const list: SetItem[] = items?.length
+    ? items
+    : [
+        { shape: "spray", label: "Sea Salt Spray", size: "200 ml" },
+        { shape: "jar", label, size },
+      ];
+  const order = { spray: 0, shaker: 1, jar: 2 };
+  const sorted = [...list].sort((a, b) => order[a.shape] - order[b.shape]);
+
+  // Slots tuned so all bases sit on the same ground line (~y 398).
+  const slots2 = {
+    spray: [{ x: 270, y: 40, s: 0.86 }],
+    shaker: [{ x: 152, y: 66, s: 0.82 }],
+    jar: [{ x: 150, y: 88, s: 0.8 }],
+  };
+  const slots4 = {
+    spray: [{ x: 258, y: 18, s: 0.82 }],
+    shaker: [{ x: 150, y: 44, s: 0.8 }],
+    jar: [
+      { x: 122, y: 206, s: 0.5 },
+      { x: 284, y: 206, s: 0.5 },
+    ],
+  };
+  const slots = sorted.length > 2 ? slots4 : slots2;
+  const used = { spray: 0, shaker: 0, jar: 0 };
+
+  return (
+    <>
+      {sorted.map((item, i) => {
+        const pos = slots[item.shape][used[item.shape]++] ?? slots[item.shape][0];
+        const Shape = ShapeMap[item.shape];
+        return <Shape key={i} id={id} label={item.label} size={item.size} x={pos.x} y={pos.y} s={pos.s} />;
+      })}
+    </>
+  );
+}
+
+const shadowY: Record<PackagingShape, number> = { jar: 352, shaker: 392, spray: 420, set: 398 };
 
 export function ProductVisual({
   shape,
@@ -157,21 +206,26 @@ export function ProductVisual({
   view = "front",
   className,
   shadow = true,
+  items,
 }: ProductVisualProps) {
   const rawId = useId();
   const id = `pv${rawId.replace(/[^a-zA-Z0-9]/g, "")}`;
 
   // Detail view = tight crop on the label, like a macro shot.
-  const viewBox =
-    view === "detail"
-      ? shape === "spray"
-        ? "120 150 160 200"
-        : shape === "shaker"
-          ? "120 185 160 200"
-          : shape === "set"
-            ? "60 200 200 250"
-            : "70 150 260 325"
-      : "0 0 400 500";
+  // Front view is framed per shape (packshot crop); detail = macro on the label.
+  const frontBox: Record<PackagingShape, string> = {
+    jar: "40 60 320 400",
+    shaker: "56 70 288 360",
+    spray: "40 50 320 400",
+    set: "0 0 400 500",
+  };
+  const detailBox: Record<PackagingShape, string> = {
+    jar: "70 150 260 325",
+    shaker: "120 185 160 200",
+    spray: "120 150 160 200",
+    set: "60 200 200 250",
+  };
+  const viewBox = view === "detail" ? detailBox[shape] : frontBox[shape];
 
   return (
     <svg
@@ -183,20 +237,14 @@ export function ProductVisual({
     >
       <Shading id={id} />
       {shadow && (
-        <ellipse cx="200" cy={shadowY[shape]} rx={shape === "jar" || shape === "set" ? 170 : 110} ry="22" fill={`url(#${id}-shadow)`} />
+        <ellipse cx="200" cy={shadowY[shape]} rx={shape === "set" ? 170 : shape === "jar" ? 150 : 100} ry="22" fill={`url(#${id}-shadow)`} />
       )}
 
       {/* Offsets keep each shape optically centred in the 4:5 frame. */}
       {shape === "jar" && <Jar id={id} label={label} size={size} y={-46} />}
       {shape === "shaker" && <Shaker id={id} label={label} size={size} y={-16} />}
       {shape === "spray" && <Spray id={id} label={label} size={size} y={4} />}
-      {shape === "set" && (
-        <>
-          <Spray id={id} label="Sea Salt Spray" size="200 ml" x={262} y={40} s={0.86} />
-          <Shaker id={id} label="Texture Powder" size="20 g" x={318} y={124} s={0.7} />
-          <Jar id={id} label={label} size={size} x={150} y={88} s={0.78} />
-        </>
-      )}
+      {shape === "set" && <SetComposition id={id} items={items} label={label} size={size} />}
     </svg>
   );
 }

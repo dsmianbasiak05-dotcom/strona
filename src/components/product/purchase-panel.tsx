@@ -59,8 +59,8 @@ export function PurchasePanel({ product }: { product: Product }) {
       </nav>
 
       <div className="mt-5 flex items-start justify-between gap-4">
-        <h1 className="display text-[15vw] leading-[0.86] sm:text-7xl xl:text-8xl">
-          <span className="block text-[0.32em] leading-none tracking-[0.02em] text-navy-500">MONCRÉ</span>
+        <h1 className="display text-[15vw] leading-[0.9] sm:text-7xl xl:text-[5.75rem]">
+          <span className="label mb-3 block text-navy-500">MONCRÉ</span>
           {product.name.replace("MONCRÉ ", "")}
         </h1>
         <FavoriteButton productId={product.id} productName={product.name} className="mt-1 shrink-0 border border-navy-900/15" />

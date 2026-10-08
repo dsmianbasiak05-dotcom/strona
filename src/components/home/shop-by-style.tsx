@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import type { StyleKey } from "@/lib/commerce/types";
+import type { PackagingShape, StyleKey } from "@/lib/commerce/types";
+import { ProductVisual } from "@/components/product/product-visual";
 import { cn } from "@/lib/utils";
 import { pluralProducts } from "@/lib/format";
 import { Reveal } from "@/components/ui/reveal";
@@ -15,6 +16,7 @@ interface StyleItem {
   label: string;
   line: string;
   count: number;
+  product?: { name: string; shape: PackagingShape; size: string };
 }
 
 const tones: Record<StyleKey, { bg: string; fg: string; pattern: string; muted: string }> = {
@@ -85,13 +87,32 @@ export function ShopByStyle({ items }: { items: StyleItem[] }) {
                   {item.label}
                 </span>
 
+                {item.product && (
+                  <div
+                    aria-hidden
+                    className={cn(
+                      "absolute top-[14%] right-[8%] bottom-[24%] left-[30%] transition-all duration-[1000ms] ease-[var(--ease-premium)]",
+                      isActive ? "translate-y-0 opacity-100 delay-150" : "translate-y-8 opacity-0",
+                    )}
+                  >
+                    <ProductVisual
+                      shape={item.product.shape}
+                      label={item.product.name}
+                      size={item.product.size}
+                      shadow={false}
+                      className="drop-shadow-[0_30px_30px_rgba(0,0,0,0.3)]"
+                    />
+                  </div>
+                )}
+
                 <div
                   className={cn(
-                    "absolute right-6 bottom-6 max-w-[24ch] text-right transition-all duration-700 ease-[var(--ease-premium)]",
+                    "absolute right-6 bottom-6 max-w-[30ch] text-right transition-all duration-700 ease-[var(--ease-premium)]",
                     isActive ? "translate-y-0 opacity-100 delay-200" : "translate-y-4 opacity-0",
                   )}
                 >
                   <p className="text-[15px] leading-snug">{item.line}</p>
+                  {item.product && <p className={cn("mt-1 text-[13px]", tone.muted)}>Key product: {item.product.name}</p>}
                   <p className={cn("label mt-3", tone.muted)}>
                     {item.count} {pluralProducts(item.count)} — Shop →
                   </p>
@@ -116,7 +137,9 @@ export function ShopByStyle({ items }: { items: StyleItem[] }) {
                       tone.fg,
                     )}
                   >
-                    <StylePattern style={item.key} color={tone.pattern} />
+                    <div className="absolute inset-0 opacity-50" aria-hidden>
+                      <StylePattern style={item.key} color={tone.pattern} />
+                    </div>
                     <span className="label absolute top-5 left-5 tabular-nums">0{i + 1}</span>
                     <span className="relative">
                       <span className="display block text-6xl leading-[0.85]">{item.label}</span>
