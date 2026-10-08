@@ -60,7 +60,7 @@ const tiles: Tile[] = [
         <div className="absolute inset-0 opacity-60" aria-hidden>
           <StylePattern style="textured" color="#171936" />
         </div>
-        <p className="display absolute bottom-4 left-4 text-4xl md:text-5xl">Textured</p>
+        <p className="display absolute bottom-4 left-4 text-4xl md:text-5xl">No.1</p>
       </>
     ),
   },
@@ -75,7 +75,7 @@ const tiles: Tile[] = [
         <div className="absolute inset-0 opacity-40" aria-hidden>
           <StylePattern style="slick" color="#F4EEDC" />
         </div>
-        <p className="display absolute bottom-4 left-4 text-4xl md:text-5xl">Slick</p>
+        <p className="display absolute bottom-4 left-4 text-4xl md:text-5xl">MONCRÉ</p>
       </>
     ),
   },
@@ -87,7 +87,7 @@ export function Community() {
       <div className="container-x">
         <SectionHeading
           id="community-title"
-          index="06"
+          index="05"
           eyebrow={`Community — ${siteConfig.social.handle}`}
           lines={["The MONCRÉ", "look"]}
           aside={

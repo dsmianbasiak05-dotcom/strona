@@ -8,14 +8,14 @@ import { useUI } from "@/store/ui";
 import { useDialog } from "@/hooks/use-dialog";
 import { Logo } from "@/components/ui/logo";
 import { siteConfig } from "@/config/site";
-import { products, styles } from "@/data/products";
+import { products } from "@/data/products";
+import { formatMoney } from "@/lib/format";
 import { ProductMedia } from "@/components/product/product-media";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const primary = [
   { href: "/shop", label: "Shop" },
-  { href: "/shop?category=sets", label: "Sets" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -88,40 +88,19 @@ export function MobileMenu() {
               className="mt-8"
             >
               <p className="label mb-4 text-cream/50">Products</p>
-              <ul className="grid grid-cols-4 gap-2">
-                {products
-                  .filter((p) => p.category !== "sets")
-                  .map((p) => (
-                    <li key={p.id}>
-                      <Link href={`/product/${p.slug}`} onClick={close} className="block">
-                        <div className="relative aspect-[4/5] bg-cream">
-                          <div className="absolute inset-[8%]">
-                            <ProductMedia product={p} compact sizes="25vw" />
-                          </div>
+              <ul className="space-y-2">
+                {products.map((p) => (
+                  <li key={p.id}>
+                    <Link href={`/product/${p.slug}`} onClick={close} className="flex items-center gap-4">
+                      <div className="relative aspect-[4/3] w-28 shrink-0 bg-cream">
+                        <div className="absolute inset-[10%]">
+                          <ProductMedia product={p} compact sizes="112px" />
                         </div>
-                        <p className="label mt-2 text-[9px] leading-tight text-cream/80">{p.type}</p>
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.55, duration: 0.6 }}
-              className="mt-8"
-            >
-              <p className="label mb-4 text-cream/50">Shop by style</p>
-              <ul className="flex flex-wrap gap-2">
-                {styles.map((s) => (
-                  <li key={s.key}>
-                    <Link
-                      href={`/shop?style=${s.key}`}
-                      onClick={close}
-                      className="label inline-flex h-10 items-center border border-cream/25 px-4 transition-colors hover:bg-cream hover:text-navy-900"
-                    >
-                      {s.label}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="display text-3xl leading-none">{p.type}</p>
+                        <p className="mt-2 text-sm text-cream/70 tabular-nums">{formatMoney(p.variants[0].price)}</p>
+                      </div>
                     </Link>
                   </li>
                 ))}

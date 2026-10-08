@@ -16,7 +16,7 @@ const points = [
   },
   {
     title: "No unnecessary noise",
-    text: "Cztery produkty. Pięć efektów. Zero zbędnych obietnic.",
+    text: "Jeden produkt. Zero zbędnych obietnic.",
   },
 ];
 
@@ -24,7 +24,7 @@ export function WhyMoncre() {
   return (
     <section aria-labelledby="why-title" className="py-20 md:py-32">
       <div className="container-x">
-        <SectionHeading id="why-title" index="05" eyebrow="Why MONCRÉ" lines={["No noise.", "Just results."]} />
+        <SectionHeading id="why-title" index="04" eyebrow="Why MONCRÉ" lines={["No noise.", "Just results."]} />
 
         <ol className="mt-12 border-t border-navy-900/15 md:mt-20">
           {points.map((p, i) => (

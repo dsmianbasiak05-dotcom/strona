@@ -27,7 +27,7 @@ export function BrandStatement() {
     <section aria-labelledby="statement-title" className="bg-cream py-24 md:py-40">
       <div className="container-x grid gap-12 lg:grid-cols-12 lg:gap-8">
         <p className="label flex items-center gap-3 text-navy-500 lg:col-span-12">
-          <span className="tabular-nums">03</span>
+          <span className="tabular-nums">02</span>
           <span className="inline-block h-px w-8 bg-current" aria-hidden />
           The brand
         </p>

@@ -66,7 +66,7 @@ export default async function ProductPage({ params }: { params: Params }) {
     offers: product.variants.map((v) => ({
       "@type": "Offer",
       sku: v.id,
-      name: `${product.name} ${v.title}`,
+      name: product.variants.length > 1 ? `${product.name} ${v.title}` : product.name,
       price: (v.price.amount / 100).toFixed(2),
       priceCurrency: v.price.currency,
       availability: v.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
@@ -120,6 +120,7 @@ export default async function ProductPage({ params }: { params: Params }) {
         className="display mt-20 border-y border-navy-900/10 py-5 text-5xl leading-none md:mt-32 md:text-7xl"
       />
 
+      {related.length > 0 ? (
       <section aria-labelledby="related-title" className="container-x py-20 md:py-28">
         <div className="mb-10 flex items-end justify-between gap-6 md:mb-14">
           <div id="related-title">
@@ -137,6 +138,9 @@ export default async function ProductPage({ params }: { params: Params }) {
           ))}
         </ul>
       </section>
+      ) : (
+        <div className="h-20 md:h-28" aria-hidden />
+      )}
     </>
   );
 }

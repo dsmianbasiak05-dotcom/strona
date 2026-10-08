@@ -172,7 +172,10 @@ export function CheckoutView() {
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-bold">{l.product.name.replace("MONCRÉ ", "")}</p>
-            <p className="text-xs text-navy-500">{l.variant.title}</p>
+            <p className="text-xs text-navy-500 tabular-nums">
+              {l.product.variants.length > 1 ? `${l.variant.title} · ` : ""}
+              {l.quantity} × {formatMoney(l.variant.price)}
+            </p>
           </div>
           <p className="text-sm tabular-nums">{formatMoney(l.total)}</p>
         </li>

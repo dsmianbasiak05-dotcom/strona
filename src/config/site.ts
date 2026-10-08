@@ -9,7 +9,7 @@ export const siteConfig = {
   locale: "pl_PL",
   title: "MONCRÉ — kosmetyki do stylizacji męskich włosów",
   description:
-    "MONCRÉ to kosmetyki do stylizacji męskich włosów: glinka, pomada, puder i spray z solą morską. Proste produkty. Mocny efekt.",
+    "MONCRÉ — kosmetyki do stylizacji męskich włosów. No.1 Matte Clay: glinka do włosów z matowym wykończeniem.",
   email: "hello@moncre.pl",
   social: {
     instagram: "https://www.instagram.com/moncre",

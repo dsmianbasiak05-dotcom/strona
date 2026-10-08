@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Search, X } from "lucide-react";
-import type { Product, ProductCategory, SortKey, StyleKey } from "@/lib/commerce/types";
+import type { Product, ProductCategory, SortKey } from "@/lib/commerce/types";
 import { filterProducts } from "@/lib/commerce";
-import { categories, styles } from "@/data/products";
+import { categories } from "@/data/products";
 import { ProductCard } from "@/components/product/product-card";
 import { cn } from "@/lib/utils";
 import { pluralProducts } from "@/lib/format";
@@ -20,34 +19,31 @@ const sortOptions: { key: SortKey; label: string }[] = [
 
 export interface ShopInitialState {
   category: ProductCategory | "all";
-  style: StyleKey | null;
   q: string;
   sort: SortKey;
 }
 
 export function ShopView({ products, initial }: { products: Product[]; initial: ShopInitialState }) {
   const [category, setCategory] = useState(initial.category);
-  const [style, setStyle] = useState<StyleKey | null>(initial.style);
   const [q, setQ] = useState(initial.q);
   const [sort, setSort] = useState<SortKey>(initial.sort);
 
   const results = useMemo(
-    () => filterProducts(products, { category, style, q, sort }),
-    [products, category, style, q, sort],
+    () => filterProducts(products, { category, q, sort }),
+    [products, category, q, sort],
   );
 
   // Keep the URL shareable without triggering a server round-trip.
   useEffect(() => {
     const params = new URLSearchParams();
     if (category !== "all") params.set("category", category);
-    if (style) params.set("style", style);
     if (q.trim()) params.set("q", q.trim());
     if (sort !== "featured") params.set("sort", sort);
     const qs = params.toString();
     window.history.replaceState(null, "", qs ? `/shop?${qs}` : "/shop");
-  }, [category, style, q, sort]);
+  }, [category, q, sort]);
 
-  const hasFilters = category !== "all" || style !== null || q.trim() !== "";
+  const hasFilters = category !== "all" || q.trim() !== "";
   const counts = useMemo(() => {
     const map = new Map<string, number>();
     for (const c of categories) {
@@ -126,46 +122,21 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
       </div>
 
       <div className="container-x pt-6 pb-24 md:pt-8 md:pb-32">
-        {/* Style filter */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="label mr-2 text-navy-500">Style</span>
-          {styles.map((s) => {
-            const active = style === s.key;
-            return (
-              <button
-                key={s.key}
-                type="button"
-                aria-pressed={active}
-                onClick={() => setStyle(active ? null : s.key)}
-                className={cn(
-                  "label h-9 border px-4 transition-colors duration-300",
-                  active
-                    ? "border-navy-900 bg-navy-900 text-cream"
-                    : "border-navy-900/20 hover:border-navy-900",
-                )}
-              >
-                {s.label}
-              </button>
-            );
-          })}
-          {hasFilters && (
-            <button
-              type="button"
-              onClick={() => {
-                setCategory("all");
-                setStyle(null);
-                setQ("");
-              }}
-              className="label ml-auto inline-flex h-9 items-center gap-1.5 text-navy-500 hover:text-navy-900"
-            >
-              <X className="size-3.5" /> Clear
-            </button>
-          )}
-        </div>
+        {hasFilters && (
+          <button
+            type="button"
+            onClick={() => {
+              setCategory("all");
+              setQ("");
+            }}
+            className="label inline-flex h-9 items-center gap-1.5 text-navy-500 hover:text-navy-900"
+          >
+            <X className="size-3.5" /> Clear filters
+          </button>
+        )}
 
         <p className="mt-6 text-sm text-navy-500" aria-live="polite">
           {results.length} {pluralProducts(results.length)}
-          {style && <> · efekt <strong className="text-navy-900">{styles.find((s) => s.key === style)?.label}</strong></>}
           {q.trim() && <> · „{q.trim()}”</>}
         </p>
 
@@ -193,28 +164,6 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
                   />
                 </motion.li>
               ))}
-              {!hasFilters && (
-                <motion.li
-                  key="editorial"
-                  layout
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="col-span-2 md:col-span-1"
-                >
-                  <Link
-                    href="/#style"
-                    className="grain group relative flex aspect-[2/1] flex-col justify-between overflow-hidden bg-navy-900 p-5 text-cream md:aspect-[4/5] md:p-6"
-                  >
-                    <span className="label text-cream/55">Not sure?</span>
-                    <span className="display text-5xl leading-[0.88] md:text-6xl">
-                      Shop by
-                      <br />
-                      style →
-                    </span>
-                  </Link>
-                </motion.li>
-              )}
             </AnimatePresence>
           </motion.ul>
         )}

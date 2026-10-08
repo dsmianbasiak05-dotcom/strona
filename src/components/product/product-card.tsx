@@ -85,7 +85,7 @@ export function ProductCard({
           </p>
         </div>
         <p className="mt-1 text-[13px] text-navy-500">
-          {product.category === "sets" ? product.type.replace("Set — ", "") : product.variants.map((v) => v.title).join(" · ")}
+          {product.variants.length > 1 ? product.variants.map((v) => v.title).join(" · ") : product.tagline}
         </p>
         {showDescription && (
           <p className="mt-3 max-w-[34ch] text-sm leading-relaxed text-navy-900/75">{product.tagline}</p>

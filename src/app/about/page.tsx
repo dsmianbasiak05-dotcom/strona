@@ -10,19 +10,19 @@ import { ProductMedia } from "@/components/product/product-media";
 export const metadata: Metadata = {
   title: "About — marka kosmetyków do stylizacji włosów dla mężczyzn",
   description:
-    "MONCRÉ tworzy kosmetyki do stylizacji męskich włosów. Proste produkty, mocny efekt, minimalistyczny design.",
+    "MONCRÉ — kosmetyki do stylizacji męskich włosów. Pierwszy produkt marki: No.1 Matte Clay.",
   alternates: { canonical: "/about" },
   openGraph: { url: "/about", title: "About MONCRÉ" },
 };
 
 const principles = [
-  { k: "Simple", t: "Cztery produkty zamiast czterdziestu. Każdy ma jedno zadanie." },
-  { k: "Strong", t: "Efekt, który widać. Fryzura, którą kontrolujesz." },
+  { k: "Simple", t: "Jeden produkt zamiast czterdziestu." },
+  { k: "Strong", t: "Simple products. Strong results." },
   { k: "Clean", t: "Opakowanie, które dobrze wygląda na półce, w łazience i na zdjęciu." },
 ];
 
 export default async function AboutPage() {
-  const products = (await getProducts()).filter((p) => p.category !== "sets");
+  const [product] = await getProducts();
 
   return (
     <>
@@ -30,27 +30,37 @@ export default async function AboutPage() {
         MONCRÉ to polska marka kosmetyków do stylizacji męskich włosów. Robimy mniej, ale lepiej.
       </PageIntro>
 
-      <section className="grain grain-light relative overflow-hidden bg-navy-900 py-20 text-cream md:py-32" aria-labelledby="lineup-title">
-        <div className="container-x">
-          <h2 id="lineup-title" className="label text-cream/55">The line-up</h2>
-          <ul className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4">
-            {products.map((p, i) => (
-              <li key={p.id}>
-                <Reveal delay={i * 0.08}>
-                  <Link href={`/product/${p.slug}`} className="group block">
-                    <div className="relative aspect-[4/5] bg-cream">
-                      <div className="absolute inset-[10%_8%] transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-[1.04]">
-                        <ProductMedia product={p} sizes="(min-width: 768px) 25vw, 50vw" />
+      {product && (
+        <section className="grain grain-light relative overflow-hidden bg-navy-900 py-20 text-cream md:py-32" aria-labelledby="first-title">
+          <div className="container-x grid gap-10 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-4">
+              <p className="label text-cream/55">The first one</p>
+              <h2 id="first-title" className="display mt-4 text-7xl leading-[0.9] md:text-8xl">
+                {product.type}
+              </h2>
+              <p className="mt-4 text-lg text-cream/80">{product.tagline}</p>
+              <Link href={`/product/${product.slug}`} className="label link-underline mt-8 inline-block">
+                View product →
+              </Link>
+            </div>
+            <ul className="grid grid-cols-2 gap-3 lg:col-span-8">
+              {[0, 1].map((i) => (
+                <li key={i}>
+                  <Reveal delay={i * 0.08}>
+                    <Link href={`/product/${product.slug}`} className="group block" tabIndex={i === 0 ? 0 : -1}>
+                      <div className="relative aspect-[4/3] bg-cream">
+                        <div className="absolute inset-[12%] transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-[1.04]">
+                          <ProductMedia product={product} index={i} sizes="(min-width: 1024px) 30vw, 50vw" />
+                        </div>
                       </div>
-                    </div>
-                    <p className="label mt-4 text-cream/80">{p.type}</p>
-                  </Link>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+                    </Link>
+                  </Reveal>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       <section className="container-x grid gap-12 py-20 md:py-32 lg:grid-cols-12" aria-labelledby="manifesto-title">
         <div className="lg:col-span-7">
@@ -64,8 +74,8 @@ export default async function AboutPage() {
             zależeć od skomplikowanej rutyny.
           </p>
           <p className="text-navy-900/75">
-            MONCRÉ to zestaw podstawowych narzędzi: glinka, pomada, puder i spray. Każdy produkt odpowiada na konkretny
-            efekt — matte, textured, volume, slick albo natural. Wybierasz styl, my dajemy narzędzie.
+            Zaczynamy od jednego produktu: No.1 Matte Clay — glinki do włosów z matowym wykończeniem. For daily
+            chaos.
           </p>
           <ButtonLink href="/shop" size="lg" arrow>
             Shop products

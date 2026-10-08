@@ -33,9 +33,7 @@ export const metadata: Metadata = {
   keywords: [
     "kosmetyki do włosów męskie",
     "kosmetyki do stylizacji włosów",
-    "pomada do włosów",
     "glinka do włosów",
-    "puder do włosów",
     "kosmetyki dla mężczyzn",
   ],
   alternates: { canonical: "/" },

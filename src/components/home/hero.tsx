@@ -81,7 +81,7 @@ export function Hero({ product }: { product: Product }) {
                 <p className="max-w-[30ch] text-base leading-snug font-medium text-navy-900 md:text-lg">
                   Professional styling products for everyday control.
                 </p>
-                <p className="label mt-3 whitespace-nowrap text-navy-500">Clay · Powder · Pomade · Spray</p>
+                <p className="label mt-3 whitespace-nowrap text-navy-500">No.1 Matte Clay — {formatMoney(variant.price)}</p>
               </div>
               <div className="grid shrink-0 grid-cols-2 gap-2 sm:flex sm:gap-3">
                 <ButtonLink href="/shop" size="lg" className="px-4 sm:px-9" arrow>
@@ -114,7 +114,7 @@ export function Hero({ product }: { product: Product }) {
         >
           <div className="relative z-10 flex items-start justify-between p-5 md:p-7">
             <p className="label text-navy-900">{product.type}</p>
-            <p className="label text-navy-900/60">{variant.title}</p>
+            <p className="label text-navy-900 tabular-nums">{formatMoney(variant.price)}</p>
           </div>
 
           <motion.div style={{ y: stageY }} className="relative flex-1">
@@ -164,7 +164,7 @@ export function Hero({ product }: { product: Product }) {
             <div>
               <p className="display text-3xl leading-none text-navy-900 md:text-4xl">For daily chaos.</p>
               <p className="mt-2 text-sm text-navy-900/70">
-                {variant.title} · <span className="font-semibold text-navy-900 tabular-nums">{formatMoney(variant.price)}</span>
+                <span className="font-semibold text-navy-900 tabular-nums">{formatMoney(variant.price)}</span> · cena brutto
               </p>
             </div>
             <div className="flex shrink-0 flex-col items-end gap-3">

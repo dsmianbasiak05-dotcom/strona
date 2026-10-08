@@ -40,8 +40,9 @@ src/
 
 | Co | Gdzie |
 |---|---|
-| Zdjęcia produktów | Oficjalne packshoty ma tylko **No.1 Matte Clay** (`public/images/products/matte-clay/`). Pozostałe produkty mają pusty `product.images` → neutralny kafel „Packshot coming soon” (nigdy wymyślone opakowanie). Nowe zdjęcia: dodać PNG z przezroczystym tłem do `images` produktu. |
-| Ceny, opisy, skład INCI | `src/data/products.ts`. Dla Matte Clay copy z opakowania („For daily chaos”, sposób użycia); gramatura `75 g` jest na makiecie w nawiasie (do potwierdzenia), INCI to wciąż szablon. |
+| Katalog | MONCRÉ sprzedaje obecnie **jeden produkt: No.1 Matte Clay, 85 zł brutto** (`src/data/products.ts`). Dane produktu pochodzą wyłącznie od marki (cena) lub z opakowania (nazwa, „For daily chaos”, wykończenie matowe, sposób użycia). Gramatura nie jest pokazywana (na makiecie „[75] g” — do potwierdzenia), skład INCI nie jest publikowany (na makiecie szablon). |
+| Kolejne produkty | Dodać obiekt do `products` — sklep automatycznie przełączy się z widoku jednego produktu na siatkę z kategoriami, wyszukiwarką i sortowaniem. Produkt bez zdjęć pokaże neutralny kafel „Packshot coming soon”. |
+| Dostawa i zwroty | `src/config/site.ts` — koszty InPost/DPD, próg darmowej dostawy (199 zł) i terminy to nadal dane demonstracyjne. |
 | Logo | `src/components/ui/logo.tsx` — wordmark złożony fontem Anton. Opakowanie używa innego kroju (szeryf blokowy) — podmienić na oficjalny plik SVG. |
 | Community | `community.tsx` — oficjalne packshoty + tekstury jako podgląd feedu; brak prawdziwych zdjęć UGC. |
 | E-mail, social, progi dostawy | `src/config/site.ts` |

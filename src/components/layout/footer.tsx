@@ -7,8 +7,7 @@ const columns = [
     title: "Shop",
     links: [
       { href: "/shop", label: "All Products" },
-      { href: "/#essentials", label: "Bestsellers" },
-      { href: "/#style", label: "Styling" },
+      { href: "/product/matte-clay", label: "No.1 Matte Clay" },
     ],
   },
   {

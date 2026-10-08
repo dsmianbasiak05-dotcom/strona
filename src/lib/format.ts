@@ -6,9 +6,17 @@ const formatter = new Intl.NumberFormat("pl-PL", {
   minimumFractionDigits: 2,
 });
 
+const wholeFormatter = new Intl.NumberFormat("pl-PL", {
+  style: "currency",
+  currency: "PLN",
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});
+
 export function formatMoney(money: Money | number): string {
   const amount = typeof money === "number" ? money : money.amount;
-  return formatter.format(amount / 100);
+  // Whole złoty amounts read cleaner without ",00" (85 zł, not 85,00 zł).
+  return amount % 100 === 0 ? wholeFormatter.format(amount / 100) : formatter.format(amount / 100);
 }
 
 /** Polish plural for "produkt". */

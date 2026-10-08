@@ -13,7 +13,9 @@ import { useMounted } from "@/hooks/use-mounted";
 import { useCartDetails } from "@/hooks/use-cart-details";
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/lib/format";
-import { products, styles } from "@/data/products";
+import { products } from "@/data/products";
+
+const featured = products[0];
 import { ProductMedia } from "@/components/product/product-media";
 
 const iconBtn =
@@ -194,40 +196,41 @@ export function Header() {
             className="absolute inset-x-0 top-full hidden border-b border-navy-900/10 bg-paper lg:block"
           >
             <div className="container-x grid grid-cols-12 gap-8 py-10">
-              <div className="col-span-3">
-                <p className="label mb-5 text-navy-500">Shop by style</p>
-                <ul className="space-y-1">
-                  {styles.map((s) => (
-                    <li key={s.key}>
-                      <Link
-                        href={`/shop?style=${s.key}`}
-                        className="display block text-4xl transition-[padding,color] duration-500 hover:pl-2 hover:text-navy-700"
-                      >
-                        {s.label}
+              <div className="col-span-4 flex flex-col">
+                <p className="label mb-5 text-navy-500">Products</p>
+                <ul className="space-y-3">
+                  {products.map((p) => (
+                    <li key={p.id}>
+                      <Link href={`/product/${p.slug}`} className="group block">
+                        <span className="display block text-5xl transition-colors duration-500 group-hover:text-navy-700">
+                          {p.type}
+                        </span>
+                        <span className="mt-2 block text-sm text-navy-500">
+                          {p.tagline} · <span className="text-navy-900 tabular-nums">{formatMoney(p.variants[0].price)}</span>
+                        </span>
                       </Link>
                     </li>
                   ))}
                 </ul>
+                <Link href="/shop" className="label link-underline mt-auto self-start pt-8">
+                  Shop all →
+                </Link>
               </div>
-              <ul className="col-span-9 grid grid-cols-4 gap-4">
-                {products
-                  .filter((p) => p.category !== "sets")
-                  .map((p) => (
-                    <li key={p.id}>
-                      <Link href={`/product/${p.slug}`} className="group block">
-                        <div className="aspect-square overflow-hidden bg-cream p-[12%] transition-colors duration-500 group-hover:bg-cream-dark">
-                          <div className="relative h-full w-full transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-105">
-                            <ProductMedia product={p} sizes="20vw" />
+              {featured && (
+                <ul className="col-span-8 grid grid-cols-2 gap-4">
+                  {[0, 1].map((i) => (
+                    <li key={i}>
+                      <Link href={`/product/${featured.slug}`} className="group block" tabIndex={-1} aria-hidden>
+                        <div className="relative aspect-[16/10] overflow-hidden bg-cream transition-colors duration-500 group-hover:bg-cream-dark">
+                          <div className="absolute inset-[12%] transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-105">
+                            <ProductMedia product={featured} index={i} sizes="30vw" />
                           </div>
-                        </div>
-                        <div className="mt-3 flex items-baseline justify-between gap-2">
-                          <p className="label">{p.type}</p>
-                          <p className="text-sm text-navy-500 tabular-nums">{formatMoney(p.variants[0].price)}</p>
                         </div>
                       </Link>
                     </li>
                   ))}
-              </ul>
+                </ul>
+              )}
             </div>
           </motion.div>
         )}

@@ -72,7 +72,7 @@ export function PurchasePanel({ product }: { product: Product }) {
       <p className="mt-6 text-2xl font-bold tabular-nums" aria-live="polite">
         {formatMoney(variant.price)}
       </p>
-      <p className="mt-1 text-xs text-navy-500">Cena zawiera VAT. Dane demonstracyjne.</p>
+      <p className="mt-1 text-xs text-navy-500">Cena brutto (zawiera VAT).</p>
 
       {product.variants.length > 1 && (
         <fieldset className="mt-7">
@@ -183,7 +183,8 @@ export function PurchasePanel({ product }: { product: Product }) {
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-bold">{product.name.replace("MONCRÉ ", "")}</p>
                 <p className="text-sm text-navy-500 tabular-nums">
-                  {variant.title} · {formatMoney(variant.price)}
+                  {product.variants.length > 1 && `${variant.title} · `}
+                  {formatMoney(variant.price)}
                 </p>
               </div>
               <AddToCartButton product={product} variantId={variant.id} quantity={quantity} className="h-12 px-6" />

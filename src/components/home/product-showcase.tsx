@@ -92,11 +92,11 @@ export function ProductShowcase({ product }: { product: Product }) {
       <div className="grain sticky top-0 flex h-[100svh] flex-col overflow-hidden">
         <div className="container-x flex items-start justify-between pt-20 md:pt-28">
           <p className="label flex items-center gap-3 text-navy-900/60">
-            <span className="tabular-nums">04</span>
+            <span className="tabular-nums">03</span>
             <span className="inline-block h-px w-8 bg-current" aria-hidden />
             In focus
           </p>
-          <p className="label text-navy-900/60">{variant.title}</p>
+          <p className="label text-navy-900 tabular-nums">{formatMoney(variant.price)}</p>
         </div>
 
         {/* Oversized sliding type behind the product */}
@@ -137,7 +137,7 @@ export function ProductShowcase({ product }: { product: Product }) {
               product={product}
               size="md"
               className="md:h-16 md:px-10"
-              label={`Add ${variant.title} — ${formatMoney(variant.price)}`}
+              label={`Add to cart — ${formatMoney(variant.price)}`}
             />
             <ButtonLink href={`/product/${product.slug}`} variant="secondary" size="md" className="md:h-16 md:px-10">
               Details

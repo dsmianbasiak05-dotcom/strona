@@ -13,7 +13,7 @@ import { formatMoney } from "@/lib/format";
 import { ProductMedia } from "@/components/product/product-media";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const suggestions = ["Clay", "Pomade", "Powder", "Spray", "Volume", "Matte"];
+const suggestions = ["Matte Clay", "No.1", "Clay"];
 
 export function SearchOverlay() {
   const open = useUI((s) => s.searchOpen);

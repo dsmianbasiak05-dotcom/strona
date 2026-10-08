@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 
 // ⚠️ PLACEHOLDER copy — confirm policies with the brand before launch.
 const faq = [
-  { title: "Jak dobrać produkt do fryzury?", content: "Zacznij od efektu: matte, textured, volume, slick lub natural. Na stronie głównej i w sklepie możesz filtrować produkty po stylu." },
   { title: "Ile trwa wysyłka?", content: "Zamówienia wysyłamy w 1–2 dni robocze (informacja demonstracyjna)." },
   { title: "Czy mogę zwrócić produkt?", content: "Masz 14 dni na zwrot nieotwartego produktu. Szczegóły znajdziesz w regulaminie." },
 ];
