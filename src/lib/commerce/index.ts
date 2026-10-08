@@ -36,6 +36,11 @@ export function getProductById(id: string): Product | undefined {
   return products.find((p) => p.id === id);
 }
 
+/** Single switch for "can this be bought right now?" */
+export function isPurchasable(product: Product): boolean {
+  return product.status === "active" && product.variants.some((v) => v.available);
+}
+
 export function lowestPrice(product: Product): number {
   return Math.min(...product.variants.map((v) => v.price.amount));
 }

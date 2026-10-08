@@ -14,6 +14,7 @@ import { useCartDetails } from "@/hooks/use-cart-details";
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/lib/format";
 import { products } from "@/data/products";
+import { isPurchasable } from "@/lib/commerce";
 
 const featured = products[0];
 import { ProductMedia } from "@/components/product/product-media";
@@ -206,7 +207,9 @@ export function Header() {
                           {p.type}
                         </span>
                         <span className="mt-2 block text-sm text-navy-500">
-                          {p.tagline} · <span className="text-navy-900 tabular-nums">{formatMoney(p.variants[0].price)}</span>
+                          {p.specs?.find((s) => s.label === "Rodzaj")?.value ?? p.tagline} ·{" "}
+                          <span className="text-navy-900 tabular-nums">{formatMoney(p.variants[0].price)}</span>
+                          {!isPurchasable(p) && " · Coming soon"}
                         </span>
                       </Link>
                     </li>

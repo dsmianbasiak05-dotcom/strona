@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { siteConfig } from "@/config/site";
+import { siteConfig, SHIPPING_TBA } from "@/config/site";
 import { PageIntro } from "@/components/ui/page-intro";
 import { ContactForm } from "@/components/shop/contact-form";
 import { Accordion } from "@/components/product/accordion";
@@ -10,10 +10,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-// ⚠️ PLACEHOLDER copy — confirm policies with the brand before launch.
 const faq = [
-  { title: "Ile trwa wysyłka?", content: "Zamówienia wysyłamy w 1–2 dni robocze (informacja demonstracyjna)." },
-  { title: "Czy mogę zwrócić produkt?", content: "Masz 14 dni na zwrot nieotwartego produktu. Szczegóły znajdziesz w regulaminie." },
+  {
+    title: "Kiedy MONCRÉ No.1 będzie dostępny?",
+    content: "Produkt nie jest jeszcze dostępny w sprzedaży. Zapisz się na listę oczekujących na stronie produktu — damy znać o starcie.",
+  },
+  { title: "Jakie są warunki dostawy i zwrotów?", content: SHIPPING_TBA },
 ];
 
 const legal = [
@@ -59,13 +61,11 @@ export default function ContactPage() {
           <div className="space-y-10">
             <div id="shipping" className="scroll-mt-24">
               <h2 className="display text-4xl">Shipping</h2>
-              <ul className="mt-4 space-y-1 text-[15px] text-navy-900/80">
-                {siteConfig.shipping.notes.map((n) => <li key={n}>{n}</li>)}
-              </ul>
+              <p className="mt-4 text-[15px] text-navy-900/80">{SHIPPING_TBA}</p>
             </div>
             <div id="returns" className="scroll-mt-24">
               <h2 className="display text-4xl">Returns</h2>
-              <p className="mt-4 text-[15px] text-navy-900/80">14 dni na zwrot nieotwartego produktu. Napisz do nas, a prześlemy instrukcję.</p>
+              <p className="mt-4 text-[15px] text-navy-900/80">{SHIPPING_TBA}</p>
             </div>
             {legal.map((l) => (
               <div key={l.id} id={l.id} className="scroll-mt-24">

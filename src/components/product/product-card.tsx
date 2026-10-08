@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { Product } from "@/lib/commerce/types";
 import { formatMoney } from "@/lib/format";
-import { lowestPrice } from "@/lib/commerce";
+import { isPurchasable, lowestPrice } from "@/lib/commerce";
+import { ComingSoonBadge } from "./coming-soon-badge";
 import { cn } from "@/lib/utils";
 import { ProductMedia } from "./product-media";
 import { FavoriteButton } from "./favorite-button";
@@ -57,9 +58,13 @@ export function ProductCard({
           )}
         </Link>
 
-        <span className="label pointer-events-none absolute top-4 left-4 text-[10px] text-navy-900/70">
-          {categoryLabel[product.category]}
-        </span>
+        {isPurchasable(product) ? (
+          <span className="label pointer-events-none absolute top-4 left-4 text-[10px] text-navy-900/70">
+            {categoryLabel[product.category]}
+          </span>
+        ) : (
+          <ComingSoonBadge className="pointer-events-none absolute top-3 left-3" />
+        )}
         <FavoriteButton
           productId={product.id}
           productName={product.name}

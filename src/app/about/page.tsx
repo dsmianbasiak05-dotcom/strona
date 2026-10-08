@@ -10,7 +10,7 @@ import { ProductMedia } from "@/components/product/product-media";
 export const metadata: Metadata = {
   title: "About — marka kosmetyków do stylizacji włosów dla mężczyzn",
   description:
-    "MONCRÉ — kosmetyki do stylizacji męskich włosów. Pierwszy produkt marki: No.1 Matte Clay.",
+    "MONCRÉ — kosmetyki do stylizacji męskich włosów. Pierwszy produkt marki: MONCRÉ No.1.",
   alternates: { canonical: "/about" },
   openGraph: { url: "/about", title: "About MONCRÉ" },
 };
@@ -74,8 +74,8 @@ export default async function AboutPage() {
             zależeć od skomplikowanej rutyny.
           </p>
           <p className="text-navy-900/75">
-            Zaczynamy od jednego produktu: No.1 Matte Clay — glinki do włosów z matowym wykończeniem. For daily
-            chaos.
+            Zaczynamy od jednego produktu: MONCRÉ No.1 — glinki do włosów o efekcie mat + tekstura. Wkrótce w
+            sprzedaży.
           </p>
           <ButtonLink href="/shop" size="lg" arrow>
             Shop products

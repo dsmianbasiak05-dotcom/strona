@@ -40,9 +40,12 @@ src/
 
 | Co | Gdzie |
 |---|---|
-| Katalog | MONCRÉ sprzedaje obecnie **jeden produkt: No.1 Matte Clay, 85 zł brutto** (`src/data/products.ts`). Dane produktu pochodzą wyłącznie od marki (cena) lub z opakowania (nazwa, „For daily chaos”, wykończenie matowe, sposób użycia). Gramatura nie jest pokazywana (na makiecie „[75] g” — do potwierdzenia), skład INCI nie jest publikowany (na makiecie szablon). |
-| Kolejne produkty | Dodać obiekt do `products` — sklep automatycznie przełączy się z widoku jednego produktu na siatkę z kategoriami, wyszukiwarką i sortowaniem. Produkt bez zdjęć pokaże neutralny kafel „Packshot coming soon”. |
-| Dostawa i zwroty | `src/config/site.ts` — koszty InPost/DPD, próg darmowej dostawy (199 zł) i terminy to nadal dane demonstracyjne. |
+| Katalog | Jeden produkt: **MONCRÉ No.1** — glinka do włosów, 75 ml, 85 zł brutto, efekt mat + tekstura, utrwalenie średnie do mocnego, do wszystkich rodzajów włosów (`src/data/products.ts`). Zapach nieustalony — nie jest pokazywany. Skład INCI nie jest publikowany. Nie dodawać danych, których marka nie podała. |
+| Status sprzedaży | `status: "coming_soon"` — cena jest widoczna, ale wszystkie przyciski zakupu zamieniają się w „Join the waitlist”, a koszyk ignoruje produkty niedostępne. **Start sprzedaży:** zmienić na `status: "active"` (helper `isPurchasable` w `src/lib/commerce/index.ts`). |
+| Lista oczekujących | `src/components/product/waitlist-form.tsx` — formularz demonstracyjny, niczego nie zapisuje. Podłączyć do dostawcy (Klaviyo, Mailchimp, Supabase…). |
+| Dostawa i zwroty | Nieustalone. `siteConfig.shipping.options` jest puste — UI pokazuje „Warunki dostawy i zwrotów ogłosimy przed startem sprzedaży”, a checkout blokuje złożenie zamówienia do czasu dodania metod dostawy. |
+| Metody płatności w checkoucie | BLIK / Przelewy24 / karta to układ demonstracyjny (checkout jest nieosiągalny, dopóki produkt ma status `coming_soon`). |
+| Kolejne produkty | Dodać obiekt do `products` — sklep automatycznie przełączy się z widoku jednego produktu na siatkę z kategoriami, wyszukiwarką i sortowaniem. |
 | Logo | `src/components/ui/logo.tsx` — wordmark złożony fontem Anton. Opakowanie używa innego kroju (szeryf blokowy) — podmienić na oficjalny plik SVG. |
 | Community | `community.tsx` — oficjalne packshoty + tekstury jako podgląd feedu; brak prawdziwych zdjęć UGC. |
 | E-mail, social, progi dostawy | `src/config/site.ts` |
@@ -50,7 +53,7 @@ src/
 
 ## Zdjęcia produktów — pipeline
 
-Packshoty Matte Clay powstały z dostarczonych renderów: usunięcie neutralnego szarego tła studia
+Packshoty MONCRÉ No.1 powstały z dostarczonych renderów: usunięcie neutralnego szarego tła studia
 (maska na podstawie chromatyczności — piksele opakowania nie są modyfikowane), rozdzielenie słoika i pudełka,
 przycięcie i jednolite skalowanie 2× (bez zmiany proporcji). Wyświetlane zawsze z `object-contain`.
 Rendery mają ok. 360 px szczegółu na produkt — do większych formatów (hero, kampanie) potrzebne są pliki ≥ 2000 px.

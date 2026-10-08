@@ -13,6 +13,8 @@ import {
 } from "framer-motion";
 import type { Product } from "@/lib/commerce/types";
 import { formatMoney } from "@/lib/format";
+import { isPurchasable } from "@/lib/commerce";
+import { ComingSoonBadge } from "@/components/product/coming-soon-badge";
 import { ButtonLink } from "@/components/ui/button";
 import { RevealLines } from "@/components/ui/reveal";
 import { AddToCartButton } from "@/components/product/add-to-cart-button";
@@ -21,7 +23,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 /**
  * First screen of the brand. Left: the statement. Right: a campaign still
- * of No.1 Matte Clay built from the official packshots — box behind, jar
+ * of MONCRÉ No.1 built from the official packshots — box behind, jar
  * in front, each on its own parallax depth.
  */
 export function Hero({ product }: { product: Product }) {
@@ -29,6 +31,7 @@ export function Hero({ product }: { product: Product }) {
   const reduce = useReducedMotion();
   const [jar, box] = product.images;
   const variant = product.variants[0];
+  const onSale = isPurchasable(product);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const typeY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "-14%"]);
@@ -81,11 +84,11 @@ export function Hero({ product }: { product: Product }) {
                 <p className="max-w-[30ch] text-base leading-snug font-medium text-navy-900 md:text-lg">
                   Professional styling products for everyday control.
                 </p>
-                <p className="label mt-3 whitespace-nowrap text-navy-500">No.1 Matte Clay — {formatMoney(variant.price)}</p>
+                <p className="label mt-3 whitespace-nowrap text-navy-500">MONCRÉ No.1 — coming soon</p>
               </div>
               <div className="grid shrink-0 grid-cols-2 gap-2 sm:flex sm:gap-3">
-                <ButtonLink href="/shop" size="lg" className="px-4 sm:px-9" arrow>
-                  Shop products
+                <ButtonLink href={onSale ? "/shop" : `/product/${product.slug}`} size="lg" className="px-4 sm:px-9" arrow>
+                  {onSale ? "Shop products" : "Discover No.1"}
                 </ButtonLink>
                 <ButtonLink href="/about" size="lg" variant="secondary" className="px-4 sm:px-9">
                   Discover MONCRÉ
@@ -113,7 +116,10 @@ export function Hero({ product }: { product: Product }) {
           }}
         >
           <div className="relative z-10 flex items-start justify-between p-5 md:p-7">
-            <p className="label text-navy-900">{product.type}</p>
+            <div className="flex items-center gap-3">
+              <p className="label text-navy-900">MONCRÉ {product.type}</p>
+              {!onSale && <ComingSoonBadge />}
+            </div>
             <p className="label text-navy-900 tabular-nums">{formatMoney(variant.price)}</p>
           </div>
 

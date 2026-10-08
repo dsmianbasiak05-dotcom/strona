@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCartDetails } from "@/hooks/use-cart-details";
 import { ButtonLink } from "@/components/ui/button";
 import { CartLineItem } from "@/components/product/cart-line-item";
-import { FreeShippingBar } from "@/components/product/free-shipping-bar";
 import { PageIntro } from "@/components/ui/page-intro";
 import { SummaryRows } from "./order-summary";
 
@@ -37,16 +36,12 @@ export function CartView() {
             <aside className="lg:col-span-4">
               <div className="bg-cream p-6 md:p-8 lg:sticky lg:top-24">
                 <h2 className="display text-4xl">Summary</h2>
-                <div className="mt-6">
-                  <FreeShippingBar subtotal={subtotal} />
-                </div>
                 <div className="mt-8">
                   <SummaryRows subtotal={subtotal} shipping={null} />
                 </div>
                 <ButtonLink href="/checkout" size="lg" className="mt-8 w-full" arrow>
                   Checkout
                 </ButtonLink>
-                <p className="mt-4 text-center text-xs text-navy-500">BLIK · Przelewy24 · Karta (w przygotowaniu)</p>
               </div>
             </aside>
           </div>

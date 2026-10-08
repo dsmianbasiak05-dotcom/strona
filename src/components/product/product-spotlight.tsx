@@ -10,6 +10,9 @@ import { ButtonLink } from "@/components/ui/button";
 import { AddToCartButton } from "./add-to-cart-button";
 import { FavoriteButton } from "./favorite-button";
 import { ProductMedia } from "./product-media";
+import { WaitlistForm } from "./waitlist-form";
+import { ComingSoonBadge } from "./coming-soon-badge";
+import { isPurchasable } from "@/lib/commerce";
 
 /**
  * Single-product presentation: large packshot with view switcher on the
@@ -27,6 +30,7 @@ export function ProductSpotlight({
 }) {
   const [view, setView] = useState(0);
   const variant = product.variants[0];
+  const onSale = isPurchasable(product);
   const Heading = headingLevel;
   const views = product.images.slice(0, 4);
 
@@ -87,6 +91,7 @@ export function ProductSpotlight({
             <Heading className="display mt-3 text-6xl leading-[0.9] md:text-7xl xl:text-8xl">
               <Link href={`/product/${product.slug}`}>{product.type}</Link>
             </Heading>
+            <p className="mt-2 text-[15px] text-navy-500">{product.specs?.find((s) => s.label === "Rodzaj")?.value}</p>
           </div>
           <FavoriteButton productId={product.id} productName={product.name} className="shrink-0 border border-navy-900/15" />
         </div>
@@ -94,28 +99,37 @@ export function ProductSpotlight({
         <p className="mt-5 text-lg font-semibold">{product.tagline}</p>
         <p className="mt-2 max-w-[44ch] text-[15px] leading-relaxed text-navy-900/75">{product.description}</p>
 
-        <p className="mt-6 text-3xl font-bold tabular-nums">{formatMoney(variant.price)}</p>
+        <div className="mt-6 flex items-center gap-4">
+          <p className="text-3xl font-bold tabular-nums">{formatMoney(variant.price)}</p>
+          {!onSale && <ComingSoonBadge />}
+        </div>
         <p className="mt-1 text-xs text-navy-500">Cena brutto (zawiera VAT).</p>
 
-        <div className="mt-6 grid gap-2 sm:grid-cols-2">
-          <AddToCartButton product={product} size="lg" className="w-full" />
-          <ButtonLink href={`/product/${product.slug}`} size="lg" variant="secondary" className="w-full">
-            Details
-          </ButtonLink>
-        </div>
-
-        {product.howToUse.length > 0 && (
-          <div className="mt-10 border-t border-navy-900/15 pt-6 lg:mt-auto">
-            <p className="label text-navy-500">Sposób użycia</p>
-            <ol className="mt-4 space-y-2 text-[15px]">
-              {product.howToUse.map((step, i) => (
-                <li key={step} className="flex gap-3">
-                  <span className="label pt-1 text-navy-500 tabular-nums">0{i + 1}</span>
-                  {step}
-                </li>
-              ))}
-            </ol>
+        {onSale ? (
+          <div className="mt-6 grid gap-2 sm:grid-cols-2">
+            <AddToCartButton product={product} size="lg" className="w-full" />
+            <ButtonLink href={`/product/${product.slug}`} size="lg" variant="secondary" className="w-full">
+              Details
+            </ButtonLink>
           </div>
+        ) : (
+          <>
+            <WaitlistForm productName={product.name} className="mt-6" />
+            <Link href={`/product/${product.slug}`} className="label link-underline mt-5 self-start">
+              Product details →
+            </Link>
+          </>
+        )}
+
+        {product.specs && product.specs.length > 0 && (
+          <dl className="mt-10 grid grid-cols-2 border-t border-navy-900/15 lg:mt-auto">
+            {product.specs.map((spec) => (
+              <div key={spec.label} className="border-b border-navy-900/15 py-3 odd:pr-4">
+                <dt className="label text-[10px] text-navy-500">{spec.label}</dt>
+                <dd className="mt-1 text-[15px] font-semibold">{spec.value}</dd>
+              </div>
+            ))}
+          </dl>
         )}
       </div>
     </div>

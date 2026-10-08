@@ -10,6 +10,7 @@ import { Logo } from "@/components/ui/logo";
 import { siteConfig } from "@/config/site";
 import { products } from "@/data/products";
 import { formatMoney } from "@/lib/format";
+import { isPurchasable } from "@/lib/commerce";
 import { ProductMedia } from "@/components/product/product-media";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -99,7 +100,10 @@ export function MobileMenu() {
                       </div>
                       <div className="min-w-0">
                         <p className="display text-3xl leading-none">{p.type}</p>
-                        <p className="mt-2 text-sm text-cream/70 tabular-nums">{formatMoney(p.variants[0].price)}</p>
+                        <p className="mt-2 text-sm text-cream/70 tabular-nums">
+                          {formatMoney(p.variants[0].price)}
+                          {!isPurchasable(p) && " · Coming soon"}
+                        </p>
                       </div>
                     </Link>
                   </li>

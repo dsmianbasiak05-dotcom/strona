@@ -10,7 +10,6 @@ import { useDialog } from "@/hooks/use-dialog";
 import { formatMoney } from "@/lib/format";
 import { ButtonLink } from "@/components/ui/button";
 import { CartLineItem } from "@/components/product/cart-line-item";
-import { FreeShippingBar } from "@/components/product/free-shipping-bar";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -73,9 +72,6 @@ export function CartDrawer() {
               </div>
             ) : (
               <>
-                <div className="px-5 pt-5 md:px-8">
-                  <FreeShippingBar subtotal={subtotal} />
-                </div>
                 <ul className="flex-1 divide-y divide-navy-900/10 overflow-y-auto px-5 md:px-8">
                   <AnimatePresence initial={false}>
                     {lines.map((line) => (
@@ -97,7 +93,7 @@ export function CartDrawer() {
                     <span className="label">Subtotal</span>
                     <span className="text-lg font-bold tabular-nums">{formatMoney(subtotal)}</span>
                   </div>
-                  <p className="mt-1 text-xs text-navy-500">Koszt dostawy obliczymy w kolejnym kroku.</p>
+                  <p className="mt-1 text-xs text-navy-500">Koszt dostawy: do ustalenia.</p>
                   <div className="mt-5 grid gap-2">
                     <ButtonLink href="/checkout" onClick={close} size="lg" className="w-full" arrow>
                       Checkout

@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * ⚠️ PLACEHOLDER FEED
- * No real UGC yet. Tiles use official No.1 Matte Clay packshots, type and
+ * No real UGC yet. Tiles use official MONCRÉ No.1 packshots, type and
  * textures to preview the feed's art direction — not customer photos.
  * Replace with real posts (e.g. Instagram Graph API). Never add
  * fabricated testimonials, handles or follower counts here.
@@ -39,7 +39,7 @@ const tiles: Tile[] = [
     content: (
       <>
         <div className="absolute inset-[10%_8%_30%]">
-          {shot("jar-front", "MONCRÉ No.1 Matte Clay — słoik", "(min-width: 768px) 46vw, 90vw")}
+          {shot("jar-front", "MONCRÉ No.1 — słoik", "(min-width: 768px) 46vw, 90vw")}
         </div>
         <p className="display absolute bottom-5 left-5 text-4xl leading-[0.9] md:bottom-7 md:left-7 md:text-6xl">
           For daily
@@ -66,7 +66,7 @@ const tiles: Tile[] = [
   },
   {
     className: "bg-paper",
-    content: <div className="absolute inset-[14%_8%]">{shot("jar-side", "Słoik MONCRÉ No.1 Matte Clay — bok", "25vw")}</div>,
+    content: <div className="absolute inset-[14%_8%]">{shot("jar-side", "Słoik MONCRÉ No.1 — bok", "25vw")}</div>,
   },
   {
     className: "bg-navy-900 text-cream",

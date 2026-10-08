@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProductBySlug, getProducts, getRelatedProducts } from "@/lib/commerce";
+import { getProductBySlug, getProducts, getRelatedProducts, isPurchasable } from "@/lib/commerce";
 import { siteConfig } from "@/config/site";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { PurchasePanel } from "@/components/product/purchase-panel";
@@ -69,7 +69,8 @@ export default async function ProductPage({ params }: { params: Params }) {
       name: product.variants.length > 1 ? `${product.name} ${v.title}` : product.name,
       price: (v.price.amount / 100).toFixed(2),
       priceCurrency: v.price.currency,
-      availability: v.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      // Not on sale yet → OutOfStock (no orders accepted).
+      availability: isPurchasable(product) && v.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
     })),
   };
   const breadcrumbLd = {

@@ -8,7 +8,7 @@ import { ProductSpotlight } from "@/components/product/product-spotlight";
 
 export const metadata: Metadata = {
   title: "Shop — kosmetyki do stylizacji włosów męskich",
-  description: "Sklep MONCRÉ: No.1 Matte Clay — glinka do włosów z matowym wykończeniem.",
+  description: "Sklep MONCRÉ: MONCRÉ No.1 — glinka do włosów, efekt mat + tekstura. Wkrótce w sprzedaży.",
   alternates: { canonical: "/shop" },
   openGraph: { url: "/shop", title: "Shop MONCRÉ" },
 };

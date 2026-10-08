@@ -7,7 +7,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { Product } from "@/lib/commerce/types";
 import { useCart, CART_MAX_QTY } from "@/store/cart";
 import { formatMoney } from "@/lib/format";
-import { siteConfig } from "@/config/site";
+import { SHIPPING_TBA } from "@/config/site";
+import { isPurchasable } from "@/lib/commerce";
+import { WaitlistForm } from "./waitlist-form";
+import { ComingSoonBadge } from "./coming-soon-badge";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { QuantityStepper } from "@/components/ui/quantity-stepper";
@@ -21,6 +24,7 @@ export function PurchasePanel({ product }: { product: Product }) {
   const [variantId, setVariantId] = useState(product.variants[0].id);
   const [quantity, setQuantity] = useState(1);
   const variant = product.variants.find((v) => v.id === variantId) ?? product.variants[0];
+  const onSale = isPurchasable(product);
 
   // Show the mobile sticky bar once the main CTA scrolls out of view.
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -66,13 +70,30 @@ export function PurchasePanel({ product }: { product: Product }) {
         <FavoriteButton productId={product.id} productName={product.name} className="mt-1 shrink-0 border border-navy-900/15" />
       </div>
 
+      {product.specs?.find((sp) => sp.label === "Rodzaj") && (
+        <p className="mt-3 text-[15px] text-navy-500">{product.specs.find((sp) => sp.label === "Rodzaj")?.value}</p>
+      )}
       <p className="mt-5 text-lg font-semibold">{product.tagline}</p>
       <p className="mt-2 max-w-[48ch] text-[15px] leading-relaxed text-navy-900/75">{product.description}</p>
 
-      <p className="mt-6 text-2xl font-bold tabular-nums" aria-live="polite">
-        {formatMoney(variant.price)}
-      </p>
+      <div className="mt-6 flex items-center gap-4">
+        <p className="text-2xl font-bold tabular-nums" aria-live="polite">
+          {formatMoney(variant.price)}
+        </p>
+        {!onSale && <ComingSoonBadge />}
+      </div>
       <p className="mt-1 text-xs text-navy-500">Cena brutto (zawiera VAT).</p>
+
+      {product.specs && product.specs.length > 0 && (
+        <dl className="mt-7 grid grid-cols-2 border-t border-navy-900/15">
+          {product.specs.map((spec) => (
+            <div key={spec.label} className="border-b border-navy-900/15 py-3 odd:pr-4">
+              <dt className="label text-[10px] text-navy-500">{spec.label}</dt>
+              <dd className="mt-1 text-[15px] font-semibold">{spec.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
 
       {product.variants.length > 1 && (
         <fieldset className="mt-7">
@@ -103,36 +124,42 @@ export function PurchasePanel({ product }: { product: Product }) {
         </fieldset>
       )}
 
-      <div ref={ctaRef} className="mt-7 grid grid-cols-[auto_1fr] gap-2">
-        <QuantityStepper value={quantity} onChange={setQuantity} max={CART_MAX_QTY} label="Ilość" />
-        <AddToCartButton product={product} variantId={variant.id} quantity={quantity} className="h-12 w-full" />
-        <Button variant="secondary" className="col-span-2 h-12 w-full" onClick={buyNow} disabled={!variant.available}>
-          Buy now
-        </Button>
-      </div>
-
-      <ul className="mt-6 space-y-1.5 text-[13px] text-navy-900/70">
-        {siteConfig.shipping.notes.map((n) => (
-          <li key={n} className="flex items-center gap-2">
-            <span className="size-1 rounded-full bg-navy-900" aria-hidden />
-            {n}
-          </li>
-        ))}
-      </ul>
+      {onSale ? (
+        <div ref={ctaRef} className="mt-7 grid grid-cols-[auto_1fr] gap-2">
+          <QuantityStepper value={quantity} onChange={setQuantity} max={CART_MAX_QTY} label="Ilość" />
+          <AddToCartButton product={product} variantId={variant.id} quantity={quantity} className="h-12 w-full" />
+          <Button variant="secondary" className="col-span-2 h-12 w-full" onClick={buyNow} disabled={!variant.available}>
+            Buy now
+          </Button>
+        </div>
+      ) : (
+        <div ref={ctaRef} className="mt-7 bg-cream p-5 md:p-6">
+          <p className="display text-4xl leading-none md:text-5xl">Coming soon.</p>
+          <p className="mt-3 max-w-[44ch] text-[15px] leading-relaxed text-navy-900/80">
+            {product.name} nie jest jeszcze dostępny w sprzedaży. Zapisz się na listę — damy znać jako pierwszym.
+          </p>
+          <WaitlistForm id="waitlist" productName={product.name} className="mt-5" />
+        </div>
+      )}
 
       <div className="mt-10">
         <Accordion
           items={[
+            // Specs grid above already lists the product facts; avoid repeating them.
+            ...(product.specs?.length
+              ? []
+              : [
             {
-              title: "Product details",
-              content: (
-                <ul className="list-inside list-disc space-y-1">
-                  {product.details.map((d) => (
-                    <li key={d}>{d}</li>
-                  ))}
-                </ul>
-              ),
-            },
+                    title: "Product details",
+                    content: (
+                      <ul className="list-inside list-disc space-y-1">
+                        {product.details.map((d) => (
+                          <li key={d}>{d}</li>
+                        ))}
+                      </ul>
+                    ),
+                  },
+                ]),
             {
               title: "How to use",
               content: (
@@ -154,16 +181,7 @@ export function PurchasePanel({ product }: { product: Product }) {
             },
             {
               title: "Shipping",
-              content: (
-                <ul className="space-y-1">
-                  {siteConfig.shipping.options.map((o) => (
-                    <li key={o.id}>
-                      {o.label} — {formatMoney(o.price)} ({o.eta})
-                    </li>
-                  ))}
-                  <li>Darmowa dostawa od {formatMoney(siteConfig.shipping.freeThreshold)}.</li>
-                </ul>
-              ),
+              content: <p>{SHIPPING_TBA}</p>,
             },
           ]}
         />

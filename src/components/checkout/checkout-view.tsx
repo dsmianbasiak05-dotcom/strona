@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Lock } from "lucide-react";
 import { useCart } from "@/store/cart";
 import { useCartDetails } from "@/hooks/use-cart-details";
-import { siteConfig } from "@/config/site";
+import { siteConfig, SHIPPING_TBA } from "@/config/site";
 import { formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { paymentProvider, type CheckoutCustomer, type PaymentMethod } from "@/lib/commerce/checkout";
@@ -93,7 +93,8 @@ export function CheckoutView() {
   const { lines, subtotal, mounted } = useCartDetails();
   const clear = useCart((s) => s.clear);
   const [customer, setCustomer] = useState(emptyCustomer);
-  const [shippingId, setShippingId] = useState<string>(siteConfig.shipping.options[0].id);
+  const shippingOptions = siteConfig.shipping.options;
+  const [shippingId, setShippingId] = useState<string>(shippingOptions[0]?.id ?? "");
   const [payment, setPayment] = useState<PaymentMethod>("blik");
   const [terms, setTerms] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
@@ -101,9 +102,11 @@ export function CheckoutView() {
   const [orderId, setOrderId] = useState<string | null>(null);
   const [summaryOpen, setSummaryOpen] = useState(false);
 
-  const shippingOption = siteConfig.shipping.options.find((o) => o.id === shippingId)!;
-  const shipping = subtotal >= siteConfig.shipping.freeThreshold ? 0 : shippingOption.price;
-  const total = subtotal + shipping;
+  // No shipping terms configured yet → cost "to be decided" and ordering is blocked.
+  const shippingOption = shippingOptions.find((o) => o.id === shippingId);
+  const shipping = shippingOption ? shippingOption.price : null;
+  const total = subtotal + (shipping ?? 0);
+  const canOrder = shippingOptions.length > 0;
 
   const update = (key: keyof CheckoutCustomer) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setCustomer((c) => ({ ...c, [key]: e.target.value }));
@@ -119,6 +122,7 @@ export function CheckoutView() {
       document.getElementById(firstKey)?.focus();
       return;
     }
+    if (!canOrder) return;
     setSubmitting(true);
     const result = await paymentProvider.createCheckout({
       lines: lines.map(({ productId, variantId, quantity }) => ({ productId, variantId, quantity })),
@@ -244,26 +248,28 @@ export function CheckoutView() {
 
             <fieldset className="mt-8">
               <legend className="label mb-3 text-[10px] text-navy-900/70">Metoda dostawy</legend>
-              <div className="grid gap-2">
-                {siteConfig.shipping.options.map((o) => (
-                  <label
-                    key={o.id}
-                    className={cn(
-                      "flex cursor-pointer items-center gap-4 border p-4 transition-colors has-[:focus-visible]:outline-2",
-                      shippingId === o.id ? "border-navy-900 bg-cream/60" : "border-navy-900/20 hover:border-navy-900/50",
-                    )}
-                  >
-                    <input type="radio" name="shipping" value={o.id} checked={shippingId === o.id} onChange={() => setShippingId(o.id)} className="size-4 accent-navy-900" />
-                    <span className="flex-1">
-                      <span className="block text-[15px] font-semibold">{o.label}</span>
-                      <span className="block text-xs text-navy-500">{o.eta}</span>
-                    </span>
-                    <span className="text-sm tabular-nums">
-                      {subtotal >= siteConfig.shipping.freeThreshold ? "Gratis" : formatMoney(o.price)}
-                    </span>
-                  </label>
-                ))}
-              </div>
+              {shippingOptions.length === 0 ? (
+                <p className="border border-navy-900/20 bg-cream/60 p-4 text-sm">{SHIPPING_TBA}</p>
+              ) : (
+                <div className="grid gap-2">
+                  {shippingOptions.map((o) => (
+                    <label
+                      key={o.id}
+                      className={cn(
+                        "flex cursor-pointer items-center gap-4 border p-4 transition-colors has-[:focus-visible]:outline-2",
+                        shippingId === o.id ? "border-navy-900 bg-cream/60" : "border-navy-900/20 hover:border-navy-900/50",
+                      )}
+                    >
+                      <input type="radio" name="shipping" value={o.id} checked={shippingId === o.id} onChange={() => setShippingId(o.id)} className="size-4 accent-navy-900" />
+                      <span className="flex-1">
+                        <span className="block text-[15px] font-semibold">{o.label}</span>
+                        <span className="block text-xs text-navy-500">{o.eta}</span>
+                      </span>
+                      <span className="text-sm tabular-nums">{formatMoney(o.price)}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
             </fieldset>
           </Step>
 
@@ -322,7 +328,7 @@ export function CheckoutView() {
             )}
           </Step>
 
-          <Button type="submit" size="lg" className="w-full" disabled={submitting || !mounted}>
+          <Button type="submit" size="lg" className="w-full" disabled={submitting || !mounted || !canOrder}>
             {submitting ? "Processing…" : `Place order — ${formatMoney(total)}`}
           </Button>
         </form>

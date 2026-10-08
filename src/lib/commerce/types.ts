@@ -29,11 +29,18 @@ export interface ProductImage {
   height: number;
 }
 
+/**
+ * "coming_soon": shown with price, but cannot be added to cart — UI offers
+ * the waitlist instead. Switch to "active" to open sales.
+ */
+export type ProductStatus = "active" | "coming_soon";
+
 export interface Product {
   id: string;
+  status: ProductStatus;
   slug: string;
   name: string;
-  /** Short type line, e.g. "Matte Clay" */
+  /** Short display name, e.g. "No.1" */
   type: string;
   category: ProductCategory;
   styles: StyleKey[];
@@ -53,6 +60,8 @@ export interface Product {
   /** For sets: slugs of products included. */
   includes?: string[];
   bestseller?: boolean;
+  /** Short key/value facts shown on the product page (only brand-confirmed data). */
+  specs?: { label: string; value: string }[];
   /** Marks demo data that must be replaced before going live. */
   placeholder?: boolean;
 }

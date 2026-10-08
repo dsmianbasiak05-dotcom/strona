@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/store/cart";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLink } from "@/components/ui/button";
+import { isPurchasable } from "@/lib/commerce";
 import type { Product } from "@/lib/commerce/types";
 
 interface Props {
@@ -32,6 +33,21 @@ export function AddToCartButton({
   const [added, setAdded] = useState(false);
   const variantToAdd = product.variants.find((v) => v.id === variantId) ?? product.variants[0];
   const available = variantToAdd?.available ?? false;
+
+  // Not on sale yet: every "add" entry point becomes a waitlist CTA.
+  if (!isPurchasable(product)) {
+    return (
+      <ButtonLink
+        href={`/product/${product.slug}#waitlist`}
+        size={size}
+        variant={variant}
+        className={className}
+        onClick={(e) => e.stopPropagation()}
+      >
+        Join the waitlist
+      </ButtonLink>
+    );
+  }
 
   return (
     <Button
