@@ -4,7 +4,7 @@ import { isPurchasable, productPrice } from "@/lib/commerce";
 import { formatMoney } from "@/lib/format";
 import { themeStyle } from "@/lib/theme";
 import { Reveal } from "@/components/ui/reveal";
-import { ProductMedia } from "./product-media";
+import { InsetRender } from "./product-media";
 
 /**
  * A product presented in its own colours: render on the product surface,
@@ -26,7 +26,8 @@ export function FeaturedProduct({ product }: { product: Product }) {
           className="group relative block aspect-[4/3] overflow-hidden bg-product-bg md:aspect-auto md:h-full md:min-h-[560px]"
         >
           <div className="absolute inset-0 transition-transform duration-[1400ms] ease-[var(--ease-premium)] group-hover:scale-[1.03]">
-            <ProductMedia product={product} role="front" sizes="(min-width: 768px) 58vw, 100vw" />
+            {/* Whole jar, ~68% of the frame width (render pack = 71% of its width) */}
+            <InsetRender product={product} role="front" scale={0.95} sizes="(min-width: 768px) 55vw, 95vw" />
           </div>
         </Link>
       </Reveal>

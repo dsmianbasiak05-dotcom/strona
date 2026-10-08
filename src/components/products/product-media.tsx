@@ -51,6 +51,68 @@ export function ProductMedia({
   return <PackshotPlaceholder product={product} compact={compact} className={className} />;
 }
 
+/**
+ * Studio surface of the square renders as a function of the rendered image
+ * width (in cqw). Stops follow the render's own vignette — measured from
+ * the official files, radius in source px of a 2000 px render — so the
+ * surface continues past the image edges without a seam.
+ */
+const VIGNETTE: [number, string][] = [
+  [700, "rgb(238 237 233)"],
+  [850, "rgb(228 228 224)"],
+  [1000, "rgb(222 221 217)"],
+  [1150, "rgb(218 217 214)"],
+  [1300, "rgb(211 210 206)"],
+  [1410, "rgb(207 206 202)"],
+  [1800, "rgb(198 197 193)"],
+];
+
+function studioSurface(imageCqw: number) {
+  const stops = VIGNETTE.map(([r, color]) => `${color} ${((r / 2000) * imageCqw).toFixed(1)}cqw`);
+  return `radial-gradient(circle at 50% 50%, ${stops.join(", ")})`;
+}
+
+/** Edges feathered on all four sides; the pack stays inside the opaque core. */
+const FEATHER =
+  "linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)";
+
+/**
+ * A square render shown whole and smaller than its frame: the image sits
+ * centred at `scale` × frame width, its edges feathered into the studio
+ * surface. Fill the frame (`absolute inset-0`); no crop, no distortion.
+ */
+export function InsetRender({
+  product,
+  role = "front",
+  scale,
+  sizes,
+  priority = false,
+  className,
+}: {
+  product: Product;
+  role?: ImageRole;
+  /** Image width as a fraction of the frame width. */
+  scale: number;
+  sizes?: string;
+  priority?: boolean;
+  /** Extra classes for the image box (e.g. a vertical offset). */
+  className?: string;
+}) {
+  if (!productImage(product, role)) return <ProductMedia product={product} role={role} sizes={sizes} />;
+  const width = scale * 100;
+  return (
+    <div className="absolute inset-0" style={{ containerType: "inline-size" }}>
+      <div aria-hidden className="absolute inset-0" style={{ backgroundImage: studioSurface(width) }} />
+      <div
+        className={cn("absolute top-1/2 left-1/2 aspect-square -translate-x-1/2 -translate-y-1/2", className)}
+        style={{ width: `${width}%`, maskImage: FEATHER, maskComposite: "intersect" }}
+      >
+        <ProductMedia product={product} role={role} sizes={sizes} priority={priority} />
+      </div>
+    </div>
+  );
+}
+
 /** Honest stand-in until the brand delivers imagery. */
 export function PackshotPlaceholder({
   product,
