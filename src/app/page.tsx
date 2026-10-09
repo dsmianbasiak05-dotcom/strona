@@ -1,14 +1,16 @@
 import { notFound } from "next/navigation";
 import { Hero } from "@/components/home/hero";
-import { ProductVisuals } from "@/components/home/product-visuals";
+import { Philosophy } from "@/components/home/philosophy";
+import { ProductShowcase } from "@/components/home/product-showcase";
+import { ChaosBand } from "@/components/home/chaos-band";
 import { WaitlistSection } from "@/components/home/waitlist-section";
-import { BrandStatement } from "@/components/brand/brand-statement";
 import { getFeaturedProduct } from "@/lib/commerce";
 import { siteConfig } from "@/config/site";
 
 /**
- * Home: the product first (claim, image, price, one action), then its
- * packaging, one brand line and the waitlist. Nothing repeats the hero.
+ * Home, as a campaign: claim + product (dark), philosophy, MONCRÉ No.1,
+ * the supporting line with the "ATTENTION!" note, then the waitlist.
+ * Every image is an official MONCRÉ render.
  */
 export default async function HomePage() {
   const featured = await getFeaturedProduct();
@@ -26,8 +28,9 @@ export default async function HomePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
       <Hero product={featured} />
-      <ProductVisuals product={featured} />
-      <BrandStatement />
+      <Philosophy product={featured} />
+      <ProductShowcase product={featured} />
+      <ChaosBand product={featured} />
       <WaitlistSection product={featured} />
     </>
   );

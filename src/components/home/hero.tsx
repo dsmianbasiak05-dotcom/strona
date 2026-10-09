@@ -5,54 +5,61 @@ import Link from "next/link";
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import type { Product } from "@/lib/commerce/types";
-import { productImage, productPrice, productSize } from "@/lib/commerce";
-import { formatMoney } from "@/lib/format";
+import { productImage } from "@/lib/commerce";
 import { themeStyle } from "@/lib/theme";
-import { StatusBadge } from "@/components/products/coming-soon-badge";
+import { ProductMedia } from "@/components/products/product-media";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const LINES = ["Your hair.", "Your rules."];
 
+/** Printer's crop marks around the product plate — a print/campaign cue. */
+function CropMarks() {
+  const mark = "absolute size-5 border-bone/45 md:size-7";
+  return (
+    <span aria-hidden className="pointer-events-none absolute -inset-3 md:-inset-5">
+      <span className={`${mark} top-0 left-0 border-t border-l`} />
+      <span className={`${mark} top-0 right-0 border-t border-r`} />
+      <span className={`${mark} bottom-0 left-0 border-b border-l`} />
+      <span className={`${mark} right-0 bottom-0 border-r border-b`} />
+    </span>
+  );
+}
+
 /**
- * Home opener in two parts:
- * 1. Brand (dark, the first screen): the claim in cream on the ink surface
- *    with film grain, the lid's round M monogram under it — clipped to its
- *    circular edge, the render itself untouched.
- * 2. Product, directly below on cream: the official jar + box render at
- *    content width (16:9 frame = the render's own ratio, nothing cropped),
- *    then name, size · price, status and one action.
+ * Campaign opener on ink: the claim set large on the left, the official
+ * No.1 jar render on its own studio plate on the right (square frame =
+ * the render's own ratio, nothing cropped), the lid's M monogram as a
+ * seal on the plate's corner. Film grain, crop marks — no extra slogans.
  */
 export function Hero({ product }: { product: Product }) {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const lid = productImage(product, "lid");
   const hasLid = lid?.role === "lid";
-  const set = productImage(product, "set");
-  const price = productPrice(product);
-  const size = productSize(product);
   const href = `/product/${product.slug}`;
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 24]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 40]);
 
   return (
-    <>
-      <section
-        ref={ref}
-        aria-labelledby="hero-title"
-        className="grain grain-light relative overflow-hidden bg-ink pt-14 text-bone md:pt-[72px]"
-      >
-        <div className="container-x flex flex-col items-center pt-10 pb-12 text-center md:pt-12 md:pb-16">
-          <p className="label text-bone/55">MONCRÉ — stylizacja męskich włosów</p>
+    <section
+      ref={ref}
+      aria-labelledby="hero-title"
+      style={themeStyle(product.theme)}
+      className="grain grain-light relative overflow-hidden bg-ink pt-14 text-bone md:pt-[72px]"
+    >
+      <div className="container-x grid items-center gap-12 pt-10 pb-16 md:pt-14 md:pb-20 lg:grid-cols-12 lg:gap-8 lg:pt-12 lg:pb-24">
+        <div className="lg:col-span-7">
+          <p className="label flex items-center gap-3 text-bone/55">
+            <span className="inline-block h-px w-8 bg-current" aria-hidden />
+            MONCRÉ — stylizacja męskich włosów
+          </p>
 
-          <h1 id="hero-title" className="display mt-5 text-[15.5vw] leading-[0.86] md:mt-6 md:text-[8.6vw] lg:text-[min(8.6vw,9.5rem)]">
-            <span className="sr-only">Your hair. Your rules. MONCRÉ — kosmetyki do stylizacji męskich włosów</span>
+          <h1 id="hero-title" className="display mt-6 text-[17vw] leading-[0.9] md:text-[13vw] lg:text-[min(9.4vw,10rem)]">
+            <span className="sr-only">Your hair. Your rules.</span>
             <span aria-hidden className="block">
               {LINES.map((line, i) => (
-                <span
-                  key={line}
-                  className="-mt-[0.14em] block overflow-hidden pt-[0.14em] pb-[0.02em] md:inline-block md:px-[0.13em]"
-                >
+                <span key={line} className="-mt-[0.14em] block overflow-hidden pt-[0.14em] pb-[0.02em]">
                   <motion.span
                     className="block"
                     initial={{ y: "105%" }}
@@ -66,76 +73,62 @@ export function Hero({ product }: { product: Product }) {
             </span>
           </h1>
 
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease, delay: 0.45 }}
+            className="mt-8 flex flex-col gap-8 md:mt-10 md:flex-row md:items-end md:justify-between lg:max-w-[40rem]"
+          >
+            <p className="max-w-[30ch] text-lg leading-relaxed text-bone/80 md:text-xl">
+              Stylizacja dla tych, którzy nie układają się w ramy.
+            </p>
+            <Link
+              href={href}
+              className="group/cta label inline-flex h-14 shrink-0 items-center justify-center gap-3 bg-bone px-9 text-ink transition-colors duration-500 hover:bg-paper"
+            >
+              Poznaj {product.type}
+              <span aria-hidden className="transition-transform duration-500 ease-[var(--ease-premium)] group-hover/cta:translate-x-1">
+                →
+              </span>
+            </Link>
+          </motion.div>
+        </div>
+
+        <motion.figure
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, ease, delay: 0.25 }}
+          className="relative mx-3 md:mx-5 lg:col-span-5 lg:mx-0 lg:mr-5"
+        >
+          <CropMarks />
+          <Link href={href} aria-label={`${product.name} — zobacz produkt`} className="relative block aspect-square overflow-hidden bg-product-bg">
+            <ProductMedia product={product} role="front" priority sizes="(min-width: 1024px) 38vw, 90vw" />
+          </Link>
+
           {hasLid && lid && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.94 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.1, ease, delay: 0.35 }}
-              className="mt-6 w-[58vw] max-w-[300px] md:mt-8 md:w-[26vw]"
+              style={{ rotate }}
+              className="absolute -bottom-8 -left-6 w-24 md:-bottom-12 md:-left-10 md:w-36"
+              aria-hidden
             >
-              <motion.div style={{ rotate }} className="relative aspect-square">
+              <div className="relative aspect-square">
                 <Image
                   src={lid.src}
-                  alt={lid.alt}
+                  alt=""
                   fill
-                  loading="eager"
-                  sizes="(min-width: 768px) 26vw, 58vw"
+                  sizes="144px"
                   quality={85}
                   className="object-cover [clip-path:circle(37.3%_at_50%_50%)]"
                 />
-              </motion.div>
+              </div>
             </motion.div>
           )}
-        </div>
-      </section>
 
-      <section
-        aria-labelledby="hero-product-title"
-        style={themeStyle(product.theme)}
-        className="container-x pt-6 pb-16 md:pt-10 md:pb-24"
-      >
-        {set && (
-          <Link
-            href={href}
-            aria-label={`${product.name} — zobacz produkt`}
-            className="relative block aspect-[16/9] w-full overflow-hidden bg-product-bg"
-          >
-            <Image
-              src={set.src}
-              alt={set.alt}
-              fill
-              loading="eager"
-              fetchPriority="high"
-              quality={85}
-              sizes="(min-width: 1440px) 1344px, calc(100vw - 2rem)"
-              className="object-contain"
-            />
-          </Link>
-        )}
-
-        <div className="mt-5 flex flex-col gap-5 md:mt-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 id="hero-product-title" className="display text-4xl leading-none md:text-5xl">
-              {product.name}
-            </h2>
-            {(size || price) && (
-              <p className="mt-2 text-[15px] font-bold tabular-nums">
-                {[size, price && formatMoney(price)].filter(Boolean).join(" · ")}
-              </p>
-            )}
-            <StatusBadge product={product} className="mt-3" />
-          </div>
-          <Link
-            href={href}
-            className="group/cta label inline-flex h-14 items-center justify-center gap-3 bg-ink px-10 text-paper transition-colors duration-500 hover:bg-ink-700"
-          >
-            Poznaj {product.type}
-            <span aria-hidden className="transition-transform duration-500 ease-[var(--ease-premium)] group-hover/cta:translate-x-1">
-              →
-            </span>
-          </Link>
-        </div>
-      </section>
-    </>
+          <figcaption className="label mt-4 flex justify-end gap-3 text-[10px] text-bone/55">
+            MONCRÉ {product.type}
+          </figcaption>
+        </motion.figure>
+      </div>
+    </section>
   );
 }

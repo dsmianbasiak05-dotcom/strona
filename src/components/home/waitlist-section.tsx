@@ -7,15 +7,22 @@ export function WaitlistSection({ product }: { product: Product }) {
   if (isPurchasable(product)) return null;
 
   return (
-    <section id="waitlist" aria-labelledby="waitlist-title" className="section-y scroll-mt-20 bg-bone">
-      <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
-        <div className="lg:col-span-6">
-          <h2 id="waitlist-title" className="display text-[12vw] leading-[0.9] md:text-7xl">
-            Lista oczekujących
+    <section id="waitlist" aria-labelledby="waitlist-title" className="section-y scroll-mt-20">
+      <div className="container-x grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
+        <div className="lg:col-span-7">
+          <p className="label flex items-center gap-3 text-graphite">
+            <span className="tabular-nums">03</span>
+            <span className="inline-block h-px w-8 bg-current" aria-hidden />
+            Premiera MONCRÉ {product.type}
+          </p>
+          <h2 id="waitlist-title" className="display mt-6 text-[12vw] leading-[1.22] whitespace-nowrap md:text-[10vw] lg:text-[min(8.2vw,8.75rem)]">
+            Bądź na liście.
           </h2>
-          <p className="mt-4 text-lg leading-relaxed">Bądź na liście. Dowiedz się o premierze jako pierwszy.</p>
+          <p className="mt-6 text-lg leading-relaxed md:text-xl">Dowiedz się o premierze jako pierwszy.</p>
         </div>
-        <WaitlistForm productName={product.name} className="lg:col-span-6" />
+        <div className="border-t border-ink pt-6 lg:col-span-5">
+          <WaitlistForm productName={product.name} />
+        </div>
       </div>
     </section>
   );
