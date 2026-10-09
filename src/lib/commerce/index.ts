@@ -49,7 +49,7 @@ export async function getRelatedProducts(product: Product, limit = 4): Promise<P
     .map(({ p }) => p);
 }
 
-/** Synchronous lookup for client-side stores (cart, favorites). */
+/** Synchronous lookup for client-side stores (cart). */
 export function getProductById(id: string): Product | undefined {
   return products.find((p) => p.id === id);
 }

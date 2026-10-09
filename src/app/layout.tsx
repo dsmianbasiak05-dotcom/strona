@@ -7,7 +7,6 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { CartDrawer } from "@/components/layout/cart-drawer";
 import { MobileMenu } from "@/components/layout/mobile-menu";
-import { SearchOverlay } from "@/components/layout/search-overlay";
 
 const anton = Anton({
   weight: "400",
@@ -73,7 +72,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <CartDrawer />
           <MobileMenu />
-          <SearchOverlay />
         </Providers>
       </body>
     </html>

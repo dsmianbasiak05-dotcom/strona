@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { RevealLines } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
 
-/** Eyebrow index + display heading pairing used across home sections. */
+/** Eyebrow + display heading pairing used across sections. */
 export function SectionHeading({
   index,
   eyebrow,
@@ -12,7 +12,7 @@ export function SectionHeading({
   id,
   tone = "dark",
 }: {
-  index: string;
+  index?: string;
   eyebrow: string;
   lines: string[];
   className?: string;
@@ -24,7 +24,7 @@ export function SectionHeading({
     <div className={cn("flex flex-col gap-6 md:flex-row md:items-end md:justify-between", className)}>
       <div>
         <p className={cn("label mb-5 flex items-center gap-3", tone === "dark" ? "text-graphite" : "text-bone/55")}>
-          <span className="tabular-nums">{index}</span>
+          {index && <span className="tabular-nums">{index}</span>}
           <span className="inline-block h-px w-8 bg-current" aria-hidden />
           {eyebrow}
         </p>

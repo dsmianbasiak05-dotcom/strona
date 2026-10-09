@@ -36,7 +36,6 @@ export const siteConfig = {
 
 export const mainNav = [
   { href: "/shop", label: "Sklep" },
-  { href: "/shop?category=all", label: "Produkty", mega: true },
   { href: "/about", label: "O marce" },
   { href: "/contact", label: "Kontakt" },
 ] as const;

@@ -27,7 +27,7 @@ export function ProductVisuals({ product }: { product: Product }) {
   return (
     <section style={themeStyle(product.theme)} aria-labelledby="visuals-title" className="section-y">
       <div className="container-x">
-        <SectionHeading id="visuals-title" index="03" eyebrow={`MONCRÉ ${product.type}`} lines={["Opakowanie."]} />
+        <SectionHeading id="visuals-title" eyebrow={`MONCRÉ ${product.type}`} lines={["Opakowanie."]} />
         <div className="mt-10 grid gap-10 md:mt-16 lg:grid-cols-12 lg:gap-8">
           {frames.map((f, i) => (
             <Reveal key={f.role} delay={i * 0.1} className={f.layout}>

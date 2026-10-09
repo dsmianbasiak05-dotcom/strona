@@ -1,11 +1,11 @@
 import type { Product } from "@/lib/commerce/types";
 import { cn } from "@/lib/utils";
 
-/** "COMING SOON" stays in English — it is campaign language, not UI copy. */
+/** Availability status — UI copy, so Polish; one wording across the shop. */
 export function ComingSoonBadge({ className }: { className?: string }) {
   return (
     <span className={cn("label inline-flex h-7 items-center bg-ink px-3 text-[10px] text-paper", className)}>
-      Coming soon
+      Wkrótce w sprzedaży
     </span>
   );
 }
@@ -19,7 +19,7 @@ export function DemoBadge({ className }: { className?: string }) {
   );
 }
 
-/** Status badge for any product: demo → DEMO / CONCEPT, not on sale → COMING SOON. */
+/** Status badge for any product: demo → DEMO / CONCEPT, not on sale → WKRÓTCE W SPRZEDAŻY. */
 export function StatusBadge({ product, className }: { product: Product; className?: string }) {
   if (product.demo) return <DemoBadge className={className} />;
   if (product.status !== "active") return <ComingSoonBadge className={className} />;

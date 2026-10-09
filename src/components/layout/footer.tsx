@@ -26,20 +26,13 @@ const columns = [
       { href: siteConfig.social.tiktok, label: "TikTok", external: true },
     ],
   },
-  {
-    title: "Informacje prawne",
-    // Placeholder routes — legal documents to be provided by the brand.
-    links: [
-      { href: "/contact#privacy", label: "Polityka prywatności" },
-      { href: "/contact#terms", label: "Regulamin" },
-      { href: "/contact#cookies", label: "Pliki cookies" },
-    ],
-  },
+  // Legal documents (privacy policy, terms, cookies) — add links here once
+  // the brand provides them; no placeholder links until then.
 ];
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-ink text-bone">
+    <footer className="bg-ink text-bone">
       <div className="container-x pt-16 md:pt-24">
         <div className="grid gap-12 lg:grid-cols-3">
           <div>
@@ -48,7 +41,7 @@ export function Footer() {
               Kosmetyki do stylizacji męskich włosów.
             </p>
           </div>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 lg:col-span-2">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:col-span-2">
           {columns.map((col) => (
             <div key={col.title}>
               <h2 className="label mb-5 text-bone/45">{col.title}</h2>
@@ -73,18 +66,8 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Oversized wordmark — sits on the bottom edge like a campaign sign-off */}
-      <div className="container-x mt-16 md:mt-24" aria-hidden>
-        <p className="display translate-y-[0.08em] text-center text-[23vw] leading-[0.78] text-bone select-none 2xl:text-[23rem]">
-          MONCRÉ
-        </p>
-      </div>
-
-      <div className="relative border-t border-bone/12 bg-ink">
-        <div className="container-x flex flex-col gap-2 py-5 text-xs text-bone/55 md:flex-row md:items-center md:justify-between">
-          <p>© MONCRÉ 2026</p>
-          <p>Kosmetyki do stylizacji męskich włosów</p>
-        </div>
+      <div className="mt-16 border-t border-bone/12 md:mt-24">
+        <p className="container-x py-5 text-xs text-bone/55">© MONCRÉ 2026</p>
       </div>
     </footer>
   );

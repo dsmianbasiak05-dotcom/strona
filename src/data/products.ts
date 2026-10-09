@@ -28,9 +28,8 @@ export const products: Product[] = [
     category: "clay",
     styles: ["matte", "textured"],
     tagline: "For daily chaos.", // printed on the pack
-    lead: "Nie układaj się. Układaj włosy.",
     description:
-      "MONCRÉ No.1 to glinka dla tych, którzy stawiają na matowe wykończenie, wyraźną teksturę i własny styl. Średnie do mocnego utrwalenie. Bez zbędnych zasad.",
+      "MONCRÉ No.1 to glinka dla tych, którzy stawiają na matowe wykończenie, wyraźną teksturę i własny styl. Bez zbędnych zasad.",
     // Exactly as provided by the brand.
     specs: [
       { label: "Rodzaj", value: "Glinka do włosów" },

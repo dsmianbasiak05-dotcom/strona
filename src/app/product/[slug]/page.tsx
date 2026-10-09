@@ -7,7 +7,6 @@ import { ProductGallery } from "@/components/products/product-gallery";
 import { PurchasePanel } from "@/components/products/purchase-panel";
 import { DemoPanel } from "@/components/products/demo-panel";
 import { ProductCard } from "@/components/products/product-card";
-import { ProductBand } from "@/components/products/product-band";
 import { ProductAttention } from "@/components/products/product-attention";
 import { themeStyle } from "@/lib/theme";
 import { RevealLines } from "@/components/ui/reveal";
@@ -124,15 +123,13 @@ export default async function ProductPage({ params }: { params: Params }) {
         )}
       </article>
 
-      {!product.demo && <ProductAttention product={product} />}
-
-      <ProductBand product={product} />
+      {!product.demo && <ProductAttention />}
 
       {related.length > 0 ? (
       <section aria-labelledby="related-title" className="container-x py-20 md:py-28">
         <div className="mb-10 flex items-end justify-between gap-6 md:mb-14">
           <div id="related-title">
-            <RevealLines lines={["Zobacz też."]} className="display text-[14vw] md:text-8xl" />
+            <RevealLines lines={["Zobacz też."]} className="display text-5xl md:text-6xl" />
           </div>
           <Link href="/shop" className="label link-underline shrink-0">
             Cały sklep →

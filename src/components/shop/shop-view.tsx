@@ -23,25 +23,30 @@ export interface ShopInitialState {
   sort: SortKey;
 }
 
+/** Filters, search and sort only earn their place once the catalogue grows. */
+const TOOLS_FROM = 5;
+
 export function ShopView({ products, initial }: { products: Product[]; initial: ShopInitialState }) {
+  const showTools = products.length >= TOOLS_FROM;
   const [category, setCategory] = useState(initial.category);
   const [q, setQ] = useState(initial.q);
   const [sort, setSort] = useState<SortKey>(initial.sort);
 
   const results = useMemo(
-    () => filterProducts(products, { category, q, sort }),
-    [products, category, q, sort],
+    () => (showTools ? filterProducts(products, { category, q, sort }) : products),
+    [showTools, products, category, q, sort],
   );
 
   // Keep the URL shareable without triggering a server round-trip.
   useEffect(() => {
+    if (!showTools) return;
     const params = new URLSearchParams();
     if (category !== "all") params.set("category", category);
     if (q.trim()) params.set("q", q.trim());
     if (sort !== "featured") params.set("sort", sort);
     const qs = params.toString();
     window.history.replaceState(null, "", qs ? `/shop?${qs}` : "/shop");
-  }, [category, q, sort]);
+  }, [showTools, category, q, sort]);
 
   const hasFilters = category !== "all" || q.trim() !== "";
   const counts = useMemo(() => {
@@ -55,6 +60,7 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
   return (
     <>
       {/* Toolbar */}
+      {showTools && (
       <div className="sticky top-14 z-30 border-y border-ink/10 bg-paper/92 backdrop-blur-xl md:top-16">
         <div className="container-x flex flex-col gap-0 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
           <div
@@ -120,9 +126,10 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
           </div>
         </div>
       </div>
+      )}
 
       <div className="container-x pt-6 pb-24 md:pt-8 md:pb-32">
-        {hasFilters && (
+        {showTools && hasFilters && (
           <button
             type="button"
             onClick={() => {
@@ -135,10 +142,12 @@ export function ShopView({ products, initial }: { products: Product[]; initial: 
           </button>
         )}
 
-        <p className="mt-6 text-sm text-graphite" aria-live="polite">
-          {results.length} {pluralProducts(results.length)}
-          {q.trim() && <> · „{q.trim()}”</>}
-        </p>
+        {showTools && (
+          <p className="mt-6 text-sm text-graphite" aria-live="polite">
+            {results.length} {pluralProducts(results.length)}
+            {q.trim() && <> · „{q.trim()}”</>}
+          </p>
+        )}
 
         {results.length === 0 ? (
           <div className="py-24 text-center">
