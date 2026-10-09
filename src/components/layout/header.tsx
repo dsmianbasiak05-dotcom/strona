@@ -12,9 +12,9 @@ import { useCartDetails } from "@/hooks/use-cart-details";
 import { mainNav } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-const iconBtn = "relative grid size-10 place-items-center rounded-full transition-colors hover:bg-ink/6";
+const iconBtn = "relative grid size-10 place-items-center rounded-full transition-colors hover:bg-current/10";
 
-/** Logo · Sklep · O marce · Kontakt · cart. Phone: logo · cart · menu. */
+/** Logo · Sklep · O marce · Kontakt · cart. Phone: logo · cart · menu. Cream over the dark home hero. */
 export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -30,11 +30,15 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Home opens on the dark hero: the bar stays transparent there, in cream.
+  const onDark = pathname === "/" && !scrolled;
+
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 border-b bg-paper transition-colors duration-500",
-        scrolled ? "border-ink/10" : "border-transparent",
+        "fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,color] duration-500",
+        onDark ? "border-transparent bg-transparent text-bone" : "bg-paper",
+        !onDark && (scrolled ? "border-ink/10" : "border-transparent"),
       )}
     >
       <a
@@ -93,7 +97,10 @@ export function Header() {
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.4, opacity: 0 }}
                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute top-0.5 right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-ink px-1 text-[10px] font-bold text-bone tabular-nums"
+                  className={cn(
+                    "absolute top-0.5 right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full px-1 text-[10px] font-bold tabular-nums",
+                    onDark ? "bg-bone text-ink" : "bg-ink text-bone",
+                  )}
                   aria-hidden
                 >
                   {count}
