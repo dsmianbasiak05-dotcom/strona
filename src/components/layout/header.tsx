@@ -65,13 +65,17 @@ export function Header() {
     return path === "/" ? pathname === "/" : pathname.startsWith(path);
   };
 
+  // Home opens on the dark hero: the bar stays transparent there, in cream.
+  const onDark = pathname === "/" && !scrolled && !megaOpen;
+
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500",
+        "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,color,backdrop-filter] duration-500",
         scrolled || megaOpen
           ? "border-b border-ink/10 bg-paper"
           : "border-b border-transparent bg-transparent",
+        onDark && "text-bone",
       )}
       onMouseLeave={scheduleCloseMega}
     >
@@ -146,7 +150,7 @@ export function Header() {
           >
             <Heart className="size-[18px]" strokeWidth={1.5} />
             {mounted && favCount > 0 && (
-              <span className="absolute top-2 right-2 size-1.5 rounded-full bg-ink" aria-hidden />
+              <span className={cn("absolute top-2 right-2 size-1.5 rounded-full", onDark ? "bg-bone" : "bg-ink")} aria-hidden />
             )}
           </Link>
           <button
@@ -172,7 +176,10 @@ export function Header() {
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.4, opacity: 0 }}
                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute top-0.5 right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-ink px-1 text-[10px] font-bold text-bone tabular-nums"
+                  className={cn(
+                    "absolute top-0.5 right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full px-1 text-[10px] font-bold tabular-nums",
+                    onDark ? "bg-bone text-ink" : "bg-ink text-bone",
+                  )}
                   aria-hidden
                 >
                   {count}

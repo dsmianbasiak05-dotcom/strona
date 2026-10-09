@@ -8,171 +8,137 @@ import type { Product } from "@/lib/commerce/types";
 import { isPurchasable, productImage, productPrice, productSize } from "@/lib/commerce";
 import { formatMoney } from "@/lib/format";
 import { themeStyle } from "@/lib/theme";
-import { cn } from "@/lib/utils";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const LINES = ["Your hair.", "Your rules."];
 
 /**
- * Brand campaign opener built around the featured product's landscape
- * render (`set`: jar + box). One clean, opaque image — no masks, no
- * layering — framed per breakpoint so the pack is never cut:
- * - phone: label → 2-line headline → 4:3 render → product line → CTA
- * - tablet: one-line headline → 16:9 render → product line + CTAs
- * - desktop: full-bleed 16:9 stage, headline on the render's empty top
- *   band, product line + CTAs on its bottom band.
+ * Home opener in two parts:
+ * 1. Brand: the claim in cream on the ink surface (film grain), with the
+ *    lid's round M monogram under it — clipped to its circular edge, the
+ *    render itself untouched. "For daily chaos." stays a supporting line.
+ * 2. Product, directly below: the official jar + box render at content
+ *    width (16:9 frame = the render's own ratio, so nothing is cropped),
+ *    then name · size · price, status and the way to the product page.
  */
 export function Hero({ product }: { product: Product }) {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
-  const image = productImage(product, "set");
+  const lid = productImage(product, "lid");
+  const hasLid = lid?.role === "lid";
+  const set = productImage(product, "set");
   const price = productPrice(product);
   const size = productSize(product);
   const onSale = isPurchasable(product);
   const href = `/product/${product.slug}`;
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "8%"]);
-
-  const headline = (
-    <h1 className="display text-ink">
-      <span className="sr-only">Your hair. Your rules. MONCRÉ — kosmetyki do stylizacji męskich włosów</span>
-      <span aria-hidden className="block">
-        {LINES.map((line, i) => (
-          <span key={line} className="-mt-[0.14em] block overflow-hidden pt-[0.14em] pb-[0.02em] md:inline-block md:pr-[0.26em]">
-            <motion.span
-              className="block"
-              initial={{ y: "105%" }}
-              animate={{ y: "0%" }}
-              transition={{ duration: 1, ease, delay: 0.15 + i * 0.08 }}
-            >
-              {line}
-            </motion.span>
-          </span>
-        ))}
-      </span>
-    </h1>
-  );
-
-  const eyebrow = <p className="label text-ink/65">MONCRÉ — stylizacja męskich włosów</p>;
-
-  const productLine = (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-      <p className="label flex items-center gap-2 text-ink">
-        <span aria-hidden className="inline-block size-2.5 bg-product" />
-        MONCRÉ {product.type}
-      </p>
-      {(size || price) && (
-        <p className="label text-ink/70 tabular-nums">
-          {[size, price && formatMoney(price)].filter(Boolean).join(" · ")}
-        </p>
-      )}
-      {!onSale && (
-        <span className="label inline-flex h-7 items-center bg-ink px-3 text-[10px] text-paper">Wkrótce w sprzedaży</span>
-      )}
-    </div>
-  );
-
-  const primary = (
-    <Link
-      href={href}
-      className="group/cta label inline-flex h-14 w-full items-center justify-center gap-3 bg-ink px-8 text-paper transition-colors duration-500 hover:bg-ink-700 md:w-auto"
-    >
-      Poznaj {product.type}
-      <span aria-hidden className="transition-transform duration-500 ease-[var(--ease-premium)] group-hover/cta:translate-x-1">
-        →
-      </span>
-    </Link>
-  );
-
-  const secondary = (
-    <Link href="/about" className="label link-underline py-2 text-ink">
-      Poznaj MONCRÉ
-    </Link>
-  );
-
-  const render = image && (
-    <motion.div style={{ y: imageY }} className="absolute inset-0">
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        loading="eager"
-        fetchPriority="high"
-        quality={85}
-        sizes="100vw"
-        className="object-cover"
-        style={{ objectPosition: image.focus ?? "50% 50%" }}
-      />
-    </motion.div>
-  );
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 24]);
 
   return (
-    <section
-      ref={ref}
-      style={themeStyle(product.theme)}
-      aria-label="MONCRÉ — your hair, your rules"
-      className="relative overflow-hidden pt-14 md:pt-[72px]"
-    >
-      {/* Phone + tablet: type above the render */}
-      <div className="container-x pt-5 pb-4 md:pt-8 md:pb-6 lg:hidden">
-        {eyebrow}
-        <div className="mt-3 text-[12.6vw] leading-[0.86] md:mt-4 md:text-[8.4vw]">{headline}</div>
-      </div>
-
-      {/* Stage: one opaque render on its own studio surface */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, ease }}
-        className={cn(
-          "relative w-full overflow-hidden bg-product-bg",
-          "aspect-[4/3] md:aspect-[16/9]",
-          "lg:max-h-[calc(100svh-72px)] lg:min-h-[540px]",
-        )}
+    <>
+      <section
+        ref={ref}
+        aria-label="MONCRÉ — your hair, your rules"
+        className="grain grain-light relative overflow-hidden bg-ink pt-14 text-bone md:pt-[72px]"
       >
-        <Link href={href} aria-label={`${product.name} — zobacz produkt`} className="absolute inset-0 block">
-          {render}
-        </Link>
+        <div className="container-x flex flex-col items-center pt-10 pb-12 text-center md:pt-12 md:pb-14">
+          <p className="label text-bone/55">MONCRÉ — stylizacja męskich włosów</p>
 
-        {/* Desktop overlay: headline on the top band, actions on the bottom band */}
-        <div className="pointer-events-none absolute inset-0 hidden lg:block">
-          <div className="container-x flex h-full flex-col justify-between pt-8 pb-8 xl:pt-10 xl:pb-10">
-            <div className="pointer-events-auto">
-              {eyebrow}
-              <div className="mt-4 text-[min(7.2vw,8.75rem)] leading-[0.84] whitespace-nowrap">{headline}</div>
-            </div>
+          <h1 className="display mt-5 text-[15.5vw] leading-[0.86] md:mt-6 md:text-[8.6vw] lg:text-[min(8.6vw,9.5rem)]">
+            <span className="sr-only">Your hair. Your rules. MONCRÉ — kosmetyki do stylizacji męskich włosów</span>
+            <span aria-hidden className="block">
+              {LINES.map((line, i) => (
+                <span
+                  key={line}
+                  className="-mt-[0.14em] block overflow-hidden pt-[0.14em] pb-[0.02em] md:inline-block md:px-[0.13em]"
+                >
+                  <motion.span
+                    className="block"
+                    initial={{ y: "105%" }}
+                    animate={{ y: "0%" }}
+                    transition={{ duration: 1, ease, delay: 0.15 + i * 0.08 }}
+                  >
+                    {line}
+                  </motion.span>
+                </span>
+              ))}
+            </span>
+          </h1>
+
+          {hasLid && lid && (
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease, delay: 0.5 }}
-              className="pointer-events-auto flex items-end justify-between gap-8"
+              initial={{ opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.1, ease, delay: 0.35 }}
+              className="mt-6 w-[58vw] max-w-[300px] md:mt-7 md:w-[26vw]"
             >
-              <div className="flex items-center gap-6">
-                {primary}
-                {secondary}
-              </div>
-              {productLine}
+              <motion.div style={{ rotate }} className="relative aspect-square">
+                <Image
+                  src={lid.src}
+                  alt={lid.alt}
+                  fill
+                  loading="eager"
+                  sizes="(min-width: 768px) 26vw, 58vw"
+                  quality={85}
+                  className="object-cover [clip-path:circle(37.3%_at_50%_50%)]"
+                />
+              </motion.div>
             </motion.div>
-          </div>
-        </div>
-      </motion.div>
+          )}
 
-      {/* Phone + tablet: product line and actions under the render */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease, delay: 0.4 }}
-        className="container-x pt-5 pb-10 md:pt-6 md:pb-14 lg:hidden"
+          <p className="label mt-4 text-bone/55 md:mt-5">For daily chaos.</p>
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="hero-product-title"
+        style={themeStyle(product.theme)}
+        className="container-x pt-6 pb-12 md:pt-10 md:pb-16"
       >
-        <div className="md:flex md:items-center md:justify-between md:gap-6">
-          {productLine}
-          <div className="mt-5 flex flex-col items-center gap-3 md:mt-0 md:flex-row md:gap-6">
-            {primary}
-            {secondary}
+        {set && (
+          <Link
+            href={href}
+            aria-label={`${product.name} — zobacz produkt`}
+            className="relative block aspect-[16/9] w-full overflow-hidden bg-product-bg"
+          >
+            <Image
+              src={set.src}
+              alt={set.alt}
+              fill
+              loading="eager"
+              fetchPriority="high"
+              quality={85}
+              sizes="(min-width: 1440px) 1344px, calc(100vw - 2rem)"
+              className="object-contain"
+            />
+          </Link>
+        )}
+
+        <div className="mt-5 flex flex-col gap-3 md:mt-6 md:flex-row md:items-center md:justify-between md:gap-6">
+          <h2 id="hero-product-title" className="label flex items-center justify-center gap-2 text-[13px] text-ink md:justify-start">
+            <span aria-hidden className="inline-block size-2.5 bg-product" />
+            {["MONCRÉ " + product.type, size, price && formatMoney(price)].filter(Boolean).join(" · ")}
+          </h2>
+
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
+            {!onSale && (
+              <p className="label inline-flex h-12 items-center justify-center border border-ink/25 px-6 text-ink/70">
+                Wkrótce w sprzedaży
+              </p>
+            )}
+            <Link
+              href={href}
+              className="group/cta label inline-flex h-14 items-center justify-center gap-3 bg-ink px-10 text-paper transition-colors duration-500 hover:bg-ink-700"
+            >
+              Poznaj {product.type}
+              <span aria-hidden className="transition-transform duration-500 ease-[var(--ease-premium)] group-hover/cta:translate-x-1">
+                →
+              </span>
+            </Link>
           </div>
         </div>
-      </motion.div>
-    </section>
+      </section>
+    </>
   );
 }

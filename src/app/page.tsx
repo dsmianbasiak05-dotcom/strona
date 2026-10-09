@@ -4,15 +4,14 @@ import { LineupSection } from "@/components/home/lineup-section";
 import { ProductVisuals } from "@/components/home/product-visuals";
 import { WaitlistSection } from "@/components/home/waitlist-section";
 import { BrandStatement } from "@/components/brand/brand-statement";
-import { DailyChaos } from "@/components/brand/daily-chaos";
 import { Marquee } from "@/components/brand/marquee";
 import { getFeaturedProduct, getProducts } from "@/lib/commerce";
 import { siteConfig } from "@/config/site";
 
 /**
- * Home = the BRAND first (campaign hero, statements on brand surfaces),
- * products second (line-up driven by data). The featured product only
- * colours its own blocks.
+ * Home = the BRAND first (claim + monogram on ink), the featured product
+ * right under it, then the line-up driven by data. The featured product
+ * only colours its own blocks.
  */
 export default async function HomePage() {
   const [products, featured] = await Promise.all([getProducts(), getFeaturedProduct()]);
@@ -38,7 +37,6 @@ export default async function HomePage() {
       <LineupSection featured={featured} products={products} />
       <BrandStatement />
       <ProductVisuals product={featured} />
-      <DailyChaos product={featured} />
       <WaitlistSection product={featured} />
     </>
   );
