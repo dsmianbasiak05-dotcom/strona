@@ -52,7 +52,7 @@ export function PurchasePanel({ product }: { product: Product }) {
           <li aria-hidden>/</li>
           <li>
             <Link href={`/shop?category=${product.category}`} className="hover:text-ink">
-              {product.category}
+              {product.categoryLabel}
             </Link>
           </li>
           <li aria-hidden>/</li>
@@ -70,10 +70,9 @@ export function PurchasePanel({ product }: { product: Product }) {
         <FavoriteButton productId={product.id} productName={product.name} className="mt-1 shrink-0 border border-ink/15" />
       </div>
 
-      {product.specs?.find((sp) => sp.label === "Rodzaj") && (
-        <p className="mt-3 text-[15px] text-graphite">{product.specs.find((sp) => sp.label === "Rodzaj")?.value}</p>
-      )}
-      <p className="mt-5 text-lg font-semibold">{product.tagline}</p>
+      {/* Brand copy; the facts (type, effect, hold…) live in the specs grid below. */}
+      <p className="display mt-6 text-4xl leading-[0.9] md:text-5xl">{product.tagline}</p>
+      {product.lead && <p className="mt-3 text-lg font-semibold">{product.lead}</p>}
       <p className="mt-2 max-w-[48ch] text-[15px] leading-relaxed text-ink/75">{product.description}</p>
 
       <div className="mt-6 flex items-center gap-4">
@@ -136,7 +135,7 @@ export function PurchasePanel({ product }: { product: Product }) {
         <div ref={ctaRef} className="mt-7 bg-product p-5 text-product-secondary md:p-6">
           <p className="display text-4xl leading-none md:text-5xl">Coming soon.</p>
           <p className="mt-3 max-w-[44ch] text-[15px] leading-relaxed text-product-secondary/80">
-            {product.name} nie jest jeszcze dostępny w sprzedaży. Zapisz się na listę — damy znać jako pierwszym.
+            Bądź na liście. Dowiedz się o premierze jako pierwszy.
           </p>
           <WaitlistForm id="waitlist" productName={product.name} tone="product" className="mt-5" />
         </div>

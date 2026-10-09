@@ -77,6 +77,8 @@ export interface Product {
   category: ProductCategory;
   styles: StyleKey[];
   tagline: string;
+  /** Short brand line shown under the tagline on the product page. */
+  lead?: string;
   description: string;
   details: string[];
   howToUse: string[];

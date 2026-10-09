@@ -8,6 +8,7 @@ import { PurchasePanel } from "@/components/products/purchase-panel";
 import { DemoPanel } from "@/components/products/demo-panel";
 import { ProductCard } from "@/components/products/product-card";
 import { ProductBand } from "@/components/products/product-band";
+import { ProductAttention } from "@/components/products/product-attention";
 import { themeStyle } from "@/lib/theme";
 import { RevealLines } from "@/components/ui/reveal";
 
@@ -122,6 +123,8 @@ export default async function ProductPage({ params }: { params: Params }) {
           </section>
         )}
       </article>
+
+      {!product.demo && <ProductAttention product={product} />}
 
       <ProductBand product={product} />
 

@@ -27,7 +27,7 @@ export function WaitlistSection({ product }: { product: Product }) {
         </div>
         <Reveal delay={0.1} className="lg:col-span-5 lg:pb-3">
           <p className="text-lg leading-snug font-medium md:text-xl">
-            MONCRÉ {product.type} — matte clay, 75 ml, {formatMoney(product.variants[0].price)}.
+            MONCRÉ {product.type} — {product.categoryLabel.toLowerCase()}, 75 ml, {formatMoney(product.variants[0].price)}.
           </p>
           {onSale ? (
             <ButtonLink href={`/product/${product.slug}`} size="lg" className="mt-6 w-full" arrow>
@@ -36,7 +36,7 @@ export function WaitlistSection({ product }: { product: Product }) {
           ) : (
             <>
               <p className="mt-2 text-[15px] leading-relaxed text-ink/75">
-                Jeszcze nie w sprzedaży. Zapisz się na listę — damy znać o starcie.
+                Bądź na liście. Dowiedz się o premierze jako pierwszy.
               </p>
               <WaitlistForm productName={product.name} className="mt-6" />
             </>

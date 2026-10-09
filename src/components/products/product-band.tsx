@@ -33,10 +33,13 @@ export function ProductBand({ product }: { product: Product }) {
         </div>
         <div className="md:col-span-4 md:pb-4">
           <p className="display text-4xl leading-none md:text-5xl">{product.tagline}</p>
-          <p className="mt-4 text-[15px] text-product-secondary/75">
-            {product.categoryLabel}
-            {size && <> · {size}</>}
-          </p>
+          {/* Real products show their facts in the specs grid above — no repeat here. */}
+          {product.demo && (
+            <p className="mt-4 text-[15px] text-product-secondary/75">
+              {product.categoryLabel}
+              {size && <> · {size}</>}
+            </p>
+          )}
         </div>
       </div>
       <Marquee
