@@ -11,7 +11,7 @@ export function WaitlistSection({ product }: { product: Product }) {
       <div className="container-x grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
         <div className="lg:col-span-7">
           <p className="label flex items-center gap-3 text-graphite">
-            <span className="tabular-nums">03</span>
+            <span className="tabular-nums">05</span>
             <span className="inline-block h-px w-8 bg-current" aria-hidden />
             Premiera MONCRÉ {product.type}
           </p>

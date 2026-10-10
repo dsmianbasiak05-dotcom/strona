@@ -1,14 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+type Status = "idle" | "invalid" | "sending" | "success" | "closed" | "failed";
+
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 /**
- * Waitlist sign-up for products that are not on sale yet.
- * ⚠️ MOCK — not connected to any list/ESP yet; nothing is stored. Wire the
- * submit handler to the chosen provider (Klaviyo, Mailchimp, Supabase…)
- * before going live.
+ * Waitlist sign-up for products that are not on sale yet. Posts to
+ * /api/waitlist, which forwards the address to the configured provider.
+ * Success is shown only when the server confirms; if sign-ups are not
+ * configured yet the form says so instead of pretending.
  */
 export function WaitlistForm({
   productName,
@@ -27,22 +32,61 @@ export function WaitlistForm({
       ? {
           ok: "border-product-secondary/50 text-product-secondary",
           label: "text-product-secondary/70",
-          input: "bg-transparent text-product-secondary placeholder:text-product-secondary/45 focus:border-product-secondary",
-          inputBorder: "border-product-secondary/35",
+          input: "text-product-secondary placeholder:text-product-secondary/45 focus:border-product-secondary",
+          inputBorder: "border-product-secondary/40",
           button: "bg-product-secondary text-product hover:opacity-85",
           hint: "text-product-secondary/60",
         }
       : {
-          ok: "border-ink bg-bone/60",
+          ok: "border-ink",
           label: "text-ink/70",
-          input: "bg-paper focus:border-ink",
-          inputBorder: "border-ink/25",
+          input: "text-ink placeholder:text-ink/35 focus:border-ink",
+          inputBorder: "border-ink/30",
           button: "bg-ink text-paper hover:bg-ink-700",
           hint: "text-graphite",
         };
   const inputId = useId();
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "error" | "success">("idle");
+  const [status, setStatus] = useState<Status>("idle");
+
+  const submit = async () => {
+    if (!EMAIL.test(email.trim())) {
+      setStatus("invalid");
+      return;
+    }
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), product: productName }),
+      });
+      if (res.ok) setStatus("success");
+      else if (res.status === 400) setStatus("invalid");
+      else if (res.status === 503) setStatus("closed");
+      else setStatus("failed");
+    } catch {
+      setStatus("failed");
+    }
+  };
+
+  const message: Record<Status, React.ReactNode> = {
+    idle: "Zostaw e-mail — powiadomimy Cię o starcie sprzedaży.",
+    sending: "Zapisuję…",
+    invalid: "Podaj poprawny adres e-mail.",
+    closed: (
+      <>
+        Zapisy na listę jeszcze nie ruszyły — nic nie zostało zapisane. Zajrzyj wkrótce albo{" "}
+        <Link href="/contact" className="underline underline-offset-2">
+          napisz do nas
+        </Link>
+        .
+      </>
+    ),
+    failed: "Nie udało się zapisać. Spróbuj ponownie za chwilę.",
+    success: null,
+  };
+  const isError = status === "invalid" || status === "closed" || status === "failed";
 
   return (
     <div id={id} className={cn("scroll-mt-28", className)}>
@@ -53,7 +97,7 @@ export function WaitlistForm({
             role="status"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className={cn("border p-4 text-[15px]", t.ok)}
+            className={cn("border-l-2 py-2 pl-4 text-[15px]", t.ok)}
           >
             <span className="display mr-2 text-2xl">Jesteś na liście.</span>
             Damy znać, gdy {productName} będzie dostępny.
@@ -65,46 +109,49 @@ export function WaitlistForm({
             noValidate
             onSubmit={(e) => {
               e.preventDefault();
-              setStatus(/^\S+@\S+\.\S+$/.test(email) ? "success" : "error");
+              if (status !== "sending") void submit();
             }}
           >
-            <label htmlFor={inputId} className={cn("label mb-2 block text-[10px]", t.label)}>
-              E-mail
+            <label htmlFor={inputId} className={cn("label block text-[10px]", t.label)}>
+              Twój e-mail
             </label>
-            <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+            <div className="mt-1 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
               <input
                 id={inputId}
                 type="email"
                 autoComplete="email"
                 inputMode="email"
-                placeholder="TWÓJ E-MAIL"
+                placeholder="adres@email.pl"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  if (status === "error") setStatus("idle");
+                  if (isError) setStatus("idle");
                 }}
-                aria-invalid={status === "error"}
+                aria-invalid={status === "invalid"}
                 aria-describedby={`${inputId}-hint`}
                 className={cn(
-                  "h-14 w-full min-w-0 border px-4 text-[15px] focus:outline-none",
+                  "h-14 w-full min-w-0 border-0 border-b-2 bg-transparent px-0 text-lg focus:outline-none",
                   t.input,
-                  status === "error" ? "border-error" : t.inputBorder,
+                  status === "invalid" ? "border-error" : t.inputBorder,
                 )}
               />
               <button
                 type="submit"
-                className={cn("label h-14 px-8 transition-[background-color,opacity] duration-500", t.button)}
+                disabled={status === "sending"}
+                className={cn(
+                  "label h-14 px-10 transition-[background-color,opacity] duration-500 disabled:opacity-60",
+                  t.button,
+                )}
               >
-                Zapisz się
+                {status === "sending" ? "Zapisuję…" : "Zapisz się"}
               </button>
             </div>
             <p
               id={`${inputId}-hint`}
-              className={status === "error" ? "mt-2 text-sm text-error" : cn("mt-2 text-xs", t.hint)}
+              role={isError ? "alert" : undefined}
+              className={cn("mt-3 text-xs leading-relaxed", isError ? "text-error" : t.hint)}
             >
-              {status === "error"
-                ? "Podaj poprawny adres e-mail."
-                : "Zostaw e-mail — powiadomimy Cię o starcie sprzedaży."}
+              {message[status]}
             </p>
           </motion.form>
         )}
