@@ -1,18 +1,20 @@
 import type { NextConfig } from "next";
 
+const securityHeaders = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+];
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
-    // 85 for the official product renders (fine label typography).
-    qualities: [75, 85],
   },
-  async redirects() {
-    // Product was renamed from "No.1 Matte Clay" to "MONCRÉ No.1".
-    return [{ source: "/product/matte-clay", destination: "/product/no-1", permanent: true }];
-  },
-  experimental: {
-    optimizePackageImports: ["lucide-react", "framer-motion"],
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders }];
   },
 };
 

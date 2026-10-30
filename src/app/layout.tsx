@@ -1,78 +1,79 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Space_Mono } from "next/font/google";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
-import { Providers } from "@/components/layout/providers";
+import { palette } from "@/config/theme";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { CartDrawer } from "@/components/layout/cart-drawer";
-import { MobileMenu } from "@/components/layout/mobile-menu";
+import { RevealObserver } from "@/components/ui/reveal-observer";
 
-const anton = Anton({
-  weight: "400",
+// Both families are SIL Open Font License — self-hosted at build time by next/font.
+const cormorant = Cormorant_Garamond({
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
   subsets: ["latin", "latin-ext"],
-  variable: "--font-anton",
+  variable: "--font-cormorant",
   display: "swap",
 });
 
-// Monospace echoes the small print on MONCRÉ packaging ("FOR DAILY CHAOS").
-const spaceMono = Space_Mono({
-  weight: ["400", "700"],
+const manrope = Manrope({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-space-mono",
+  variable: "--font-manrope",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: siteConfig.title,
-    template: "%s — MONCRÉ",
+    default: siteConfig.seo.title,
+    template: `%s — ${siteConfig.name}`,
   },
-  description: siteConfig.description,
+  description: siteConfig.seo.description,
   applicationName: siteConfig.name,
-  keywords: [
-    "kosmetyki do włosów męskie",
-    "kosmetyki do stylizacji włosów",
-    "glinka do włosów",
-    "kosmetyki dla mężczyzn",
-  ],
-  alternates: { canonical: "/" },
+  keywords: [...siteConfig.seo.keywords],
+  alternates: siteConfig.hasProductionUrl ? { canonical: "/" } : undefined,
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
     siteName: siteConfig.name,
-    title: siteConfig.title,
-    description: siteConfig.description,
+    title: siteConfig.seo.title,
+    description: siteConfig.seo.description,
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: siteConfig.title,
-    description: siteConfig.description,
+    title: siteConfig.seo.title,
+    description: siteConfig.seo.description,
   },
   robots: { index: true, follow: true },
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
+  formatDetection: { telephone: false, email: false, address: false },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F7F6F2",
+  themeColor: palette.paper,
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pl" className={`${anton.variable} ${spaceMono.variable}`}>
+    <html lang={siteConfig.language} className={`${cormorant.variable} ${manrope.variable}`}>
       <body className="min-h-dvh overflow-x-clip">
-        <Providers>
-          <Header />
-          <main id="main" className="min-h-[60vh]">
-            {children}
-          </main>
-          <Footer />
-          <CartDrawer />
-          <MobileMenu />
-        </Providers>
+        <a
+          href="#main"
+          className="sr-only z-[60] bg-ink px-5 py-3 text-sm text-paper focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+        >
+          Przejdź do treści
+        </a>
+        <Header />
+        <main id="main" tabIndex={-1} className="focus:outline-none">
+          {children}
+        </main>
+        <Footer />
+        <RevealObserver />
       </body>
     </html>
   );

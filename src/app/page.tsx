@@ -1,39 +1,51 @@
-import { notFound } from "next/navigation";
-import { Hero } from "@/components/home/hero";
-import { Philosophy } from "@/components/home/philosophy";
-import { ProductShowcase } from "@/components/home/product-showcase";
-import { AttentionPoster } from "@/components/home/attention-poster";
-import { Features } from "@/components/home/features";
-import { WaitlistSection } from "@/components/home/waitlist-section";
-import { getFeaturedProduct } from "@/lib/commerce";
 import { siteConfig } from "@/config/site";
+import { Hero } from "@/components/sections/hero";
+import { Intro } from "@/components/sections/intro";
+import { Services } from "@/components/sections/services";
+import { Approach } from "@/components/sections/approach";
+import { Portfolio } from "@/components/sections/portfolio";
+import { Testimonials } from "@/components/sections/testimonials";
+import { Contact } from "@/components/sections/contact";
 
 /**
- * Home, as a campaign: claim + product (ink) → philosophy (cream) →
- * MONCRÉ No.1 (bone) → "ATTENTION!" poster (navy) → effect (ink) →
- * waitlist (cream). Every image is an official MONCRÉ render.
+ * Structured data uses only confirmed facts (brand name + URL).
+ * Extend with logo, contact points or address once the brand provides them.
  */
-export default async function HomePage() {
-  const featured = await getFeaturedProduct();
-  if (!featured) notFound();
-
-  const orgJsonLd = {
+function StructuredData() {
+  if (!siteConfig.hasProductionUrl) return null;
+  const data = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: siteConfig.name,
-    url: siteConfig.url,
-    sameAs: [siteConfig.social.instagram, siteConfig.social.tiktok],
+    "@graph": [
+      { "@type": "Organization", "@id": `${siteConfig.url}/#organization`, name: siteConfig.name, url: siteConfig.url },
+      {
+        "@type": "WebSite",
+        "@id": `${siteConfig.url}/#website`,
+        name: siteConfig.name,
+        url: siteConfig.url,
+        inLanguage: siteConfig.language,
+        publisher: { "@id": `${siteConfig.url}/#organization` },
+      },
+    ],
   };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
+    />
+  );
+}
 
+export default function HomePage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
-      <Hero product={featured} />
-      <Philosophy product={featured} />
-      <ProductShowcase product={featured} />
-      <AttentionPoster product={featured} />
-      <Features product={featured} />
-      <WaitlistSection product={featured} />
+      <StructuredData />
+      <Hero />
+      <Intro />
+      <Services />
+      <Approach />
+      <Portfolio />
+      <Testimonials />
+      <Contact />
     </>
   );
 }

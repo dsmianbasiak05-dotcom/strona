@@ -1,41 +1,74 @@
 /**
- * Global site configuration.
- * ⚠️ Contact details and social handles are PLACEHOLDERS — confirm with
- * the brand before launch. Shipping/returns terms are not set yet.
+ * Central site configuration: brand, URL, contact details, social links, SEO.
+ *
+ * Fill in real data only. Empty values are not rendered anywhere,
+ * so the site never shows placeholder contact details or dead social links.
  */
-export interface ShippingOption {
-  id: string;
-  label: string;
-  /** grosze */
-  price: number;
-  eta: string;
+
+function resolveSiteUrl(): string {
+  const explicit = process.env.SITE_URL?.trim();
+  if (explicit) return explicit.replace(/\/$/, "");
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (vercel) return `https://${vercel}`;
+  return "http://localhost:3000";
 }
 
-export const SHIPPING_TBA = "Warunki dostawy i zwrotów ogłosimy przed startem sprzedaży.";
-
 export const siteConfig = {
-  name: "MONCRÉ",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://moncre.pl",
+  name: "STILL LIVING",
+  tagline: "Przestrzeń, która ma znaczenie.",
+  url: resolveSiteUrl(),
+  /** True once a production domain is known — enables canonical URLs and structured data. */
+  hasProductionUrl: Boolean(process.env.SITE_URL?.trim() || process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim()),
   locale: "pl_PL",
-  title: "MONCRÉ — kosmetyki do stylizacji męskich włosów",
-  description:
-    "MONCRÉ — kosmetyki do stylizacji męskich włosów. MONCRÉ No.1: glinka do włosów, efekt mat + tekstura. Wkrótce w sprzedaży.",
-  email: "hello@moncre.pl",
+  language: "pl",
+
+  seo: {
+    title: "STILL LIVING — projektowanie wnętrz, dobór materiałów i obsługa realizacji",
+    description:
+      "Projektowanie wnętrz, świadomy dobór materiałów wykończeniowych i wyposażenia oraz wsparcie w organizacji zamówień i dostaw. Od pierwszej koncepcji po ostatni detal.",
+    /** Natural topics of the site — no city keywords until the service area is confirmed. */
+    keywords: [
+      "projektowanie wnętrz",
+      "architektura wnętrz",
+      "dobór materiałów wykończeniowych",
+      "wyposażenie wnętrz",
+      "dostawa materiałów wykończeniowych",
+      "kompleksowa obsługa realizacji wnętrz",
+    ],
+    ogImageAlt: "STILL LIVING — Przestrzeń, która ma znaczenie.",
+  },
+
+  /** Real contact details only. Leave empty until confirmed — empty fields are hidden. */
+  contact: {
+    email: "",
+    phone: "",
+    address: "",
+  },
+
+  /** Real profile URLs only. Empty entries are not rendered. */
   social: {
-    instagram: "https://www.instagram.com/moncre",
-    tiktok: "https://www.tiktok.com/@moncre",
-    handle: "@moncre",
-  },
-  shipping: {
-    // Delivery methods, costs and times are NOT decided yet. Leave empty —
-    // the UI then states that terms will be announced before launch.
-    options: [] as ShippingOption[],
+    instagram: "",
+    facebook: "",
+    pinterest: "",
+    linkedin: "",
   },
 
-} as const;
+  /** Legal entity shown in the privacy policy and footer once provided. */
+  company: {
+    legalName: "",
+    taxId: "",
+  },
+};
 
-export const mainNav = [
-  { href: "/shop", label: "Sklep" },
-  { href: "/about", label: "O marce" },
-  { href: "/contact", label: "Kontakt" },
-] as const;
+export const socialLabels: Record<keyof typeof siteConfig.social, string> = {
+  instagram: "Instagram",
+  facebook: "Facebook",
+  pinterest: "Pinterest",
+  linkedin: "LinkedIn",
+};
+
+export function getSocialLinks() {
+  return (Object.keys(siteConfig.social) as (keyof typeof siteConfig.social)[])
+    .filter((key) => siteConfig.social[key])
+    .map((key) => ({ key, label: socialLabels[key], href: siteConfig.social[key] }));
+}
